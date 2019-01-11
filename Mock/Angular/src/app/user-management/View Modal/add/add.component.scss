@@ -1,0 +1,177 @@
+form{
+ margin-top: 0px;
+}
+body {font-family: Arial, Helvetica, sans-serif;}
+* {box-sizing: border-box;}
+
+/* Full-width input fields */
+input[type=text], input[type=password] {
+  width: 100%;
+  padding: 15px;
+  margin: 5px 0 22px 0;
+  display: inline-block;
+  border: none;
+  background: #f1f1f1;
+}
+
+/* Add a background color when the inputs get focus */
+input[type=text]:focus, input[type=password]:focus {
+  background-color: #ddd;
+  outline: none;
+}
+
+/* Set a style for all buttons */
+button {
+  background-color: #4CAF50;
+  color: white;
+  padding: 14px 20px;
+  margin: 8px 0;
+  border: none;
+  cursor: pointer;
+  width: 100%;
+  opacity: 0.9;
+}
+
+button:hover {
+  opacity:1;
+}
+
+/* Extra styles for the cancel button */
+.cancelbtn {
+  padding: 14px 20px;
+  background-color: #f44336;
+}
+
+/* Float cancel and signup buttons and add an equal width */
+.cancelbtn, .signupbtn {
+  float: left;
+  width: 50%;
+}
+
+/* Add padding to container elements */
+.container {
+  padding: 16px;
+}
+
+hr {
+  border: 1px solid #f1f1f1;
+  margin-bottom: 25px;
+}
+ 
+/* The Close Button (x) */
+.close {
+  position: absolute;
+  right: 35px;
+  top: 15px;
+  font-size: 40px;
+  font-weight: bold;
+  color: #f1f1f1;
+}
+
+.close:hover,
+.close:focus {
+  color: #f44336;
+  cursor: pointer;
+}
+
+/* Clear floats */
+.clearfix::after {
+  content: "";
+  clear: both;
+  display: table;
+}
+
+/* Change styles for cancel button and signup button on extra small screens */
+@media screen and (max-width: 300px) {
+  .cancelbtn, .signupbtn {
+     width: 100%;
+  }
+}
+#date{
+  vertical-align: center;
+}
+
+#gender{
+  
+  margin: 0px;
+  padding: 0px;
+  .btn{
+    border: 3px solid rgb(255, 255, 255);
+    display: inline-block;
+    padding: 10px;
+    position: relative;
+    text-align: center;
+    transition: background 600ms ease, color 600ms ease;
+  }
+  
+  input[type="radio"].toggle {
+    display: none;
+    & + label{
+      cursor: pointer;
+      color: rgb(255, 0, 170);
+      z-index: 5;
+      min-width: 90px;
+      &:hover{
+        background: none;
+        color: rgb(245, 14, 14);
+      }
+      &:after{
+        background: #f88f8f;
+        content: "";
+        height: 100%;
+        position: absolute;
+        top: 0;
+        transition: left 200ms cubic-bezier(0.77, 0, 0.175, 1);
+        width: 100%;
+        z-index: 1;
+      }
+    }
+    &.toggle-right + label{
+      margin-left: -5px;
+      &:after{
+        
+        left: -100%;
+      }
+    }
+    &.toggle-left + label {
+      border-right: 0;
+      &:after{
+        
+        left: 100%
+      }
+    }
+    &:checked + label {
+      
+      cursor: default;
+      color: rgb(8, 240, 143);
+      transition: color 200ms;
+      &:after{
+        
+        right:0;
+        left: 0;
+      }
+    }
+    
+  }
+  
+  
+}
+  
+  
+  .pull-right{
+    text-align: right;
+  }
+  .row{
+  margin-left: 0px;
+  margin-right: 0px;
+}
+#date-gen #date #gender{
+  margin: 0px;
+  padding: 0px;
+}
+button:disabled,
+button[disabled]{
+  border: 1px solid #999999;
+  background-color: #cccccc;
+  color: #666666;
+}

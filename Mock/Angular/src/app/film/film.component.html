@@ -1,0 +1,173 @@
+<div id="content">
+    <div id="right-content">
+        <div id="film-control">
+            <nav aria-label="breadcrumb" role="navigation">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="#">Home</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Film</li>
+                </ol>
+                <button type="button" class="btn btn-primary float-left" style="width:98%" data-toggle="modal"
+                    data-target=".bd-example-modal-lg">Thêm Phim Mới</button>
+            </nav>
+        </div>
+        <div id="film-list">
+            <div id="header-table"></div>
+            <div id="item-table">
+                <table class="table table-striped table-hover">
+                    <thead>
+                        <tr>
+                            <th scope="col" width="5%">#</th>
+                            <th scope="col" width="15%">Tên phim</th>
+                            <th scope="col" width="20%">Hình ảnh</th>
+                            <th scope="col" width="10%">Ngày Phát Hành</th>
+                            <th scope="col" width="20%">Diễn viên</th>
+                            <th scope="col" width="20%">Đạo diễn</th>
+                            <th scope="col" width="20%">Giới thiệu</th>
+                            <th scope="col" width="5%">Trạng thái</th>
+                            <th scope="col" width="5%">Chỉnh sửa</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let film of lstFilm | paginate: { itemsPerPage: 6, currentPage: p }; let i = index">
+                            <th scope="row">{{ film.FilmID }}</th>
+                            <td>{{ film.FilmName }}</td>
+                            <td><img src="{{ film.Img }}" width="150px" height="90px"></td>
+                            <td>{{ film.Year | date:'dd/MM/yyyy' }}</td>
+                            <td>       
+                                <tr *ngFor="let actor of film.Actors">
+                                    {{ actor.ActorName }}
+                                </tr>
+                            </td>
+                            <td>       
+                                <tr *ngFor="let directors of film.Directors">
+                                    {{ directors.DirectorName }}
+                                </tr>
+                            </td>
+                            <td>{{ film.Describe }}</td>
+                            <td>
+                                <ng-container *ngIf="film.Status == true ; else elseTemplate">
+                                    <span class="badge badge-pill badge-success">Kích hoạt</span>
+                                </ng-container>
+                                <ng-template #elseTemplate>
+                                    <span class="badge badge-pill badge-success" style="background-color:red">Khóa</span>
+                                </ng-template>
+                            </td>
+                            <td>
+                                <button class="btn btn-info"  data-toggle="modal" data-target=".bd-example-modal-lg-pl"
+                                    (click)="findEditFilm(i,p)"><i class="fas fa-pencil-alt"></i>
+                                    <div class="ripple-container"></div>
+                                </button>
+                                <button class="btn btn-info" (click)="updateStatusFilm(film.FilmID)"><i
+                                        class="fa fa-trash"></i>
+                                    <div class="ripple-container"></div>
+                                </button>
+
+                            </td>
+                            
+                            <!---->
+                        </tr>
+                    </tbody>
+                </table>
+                <hr />
+                <pagination-controls (pageChange)="p = $event"></pagination-controls>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--Edit-->
+<div class="modal fade bd-example-modal-lg-pl" tabindex="-1" role="dialog" aria-labelledby="myEditFilmModel"
+aria-hidden="true">
+<div class="modal-dialog modal-lg">
+    <div class="modal-content">
+        <div style="display: flex; margin: 50px">
+            <form style="margin: auto; width: 100%;">
+                <h4 class="align-center">Chỉnh Sữa Phim</h4>
+                <div class="form-group">
+                    <label for="exampleFormControlInput0">Tên phim</label>
+                    <input type="text" class="form-control" id="exampleFormControlInput0"
+                          [(ngModel)]="filmName" [ngModelOptions]="{standalone: true}">
+                          <label *ngIf="_filmNameValidate != ''"><span>{{ _filmNameValidate }}</span></label>
+                </div>
+                <div class="form-group">
+                    <label for="exampleFormControlInput0">Thời gian ra mắt</label>
+                    <input type="date" class="form-control" id="exampleFormControlInput1"
+                         [(ngModel)]="yearCreate" [ngModelOptions]="{standalone: true}">
+                </div>
+                <!--Add-->
+                <!--Get image (modify side)-->
+                <div class="form-group form-file-upload form-file-simple">
+                    <label for="inputImagePath" class="bmd-label-static">Hình ảnh</label>
+                    <input id="text_modify" type="image" class="form-control" src="{{ filmImage }}"
+                         onclick="document.getElementById('fileInput_modify').click();"
+                        readonly style="width:100%; height:240px;" />
+                    <!-- disabled -->
+                    <input id="fileInput_modify" type="file" style="display:none;"
+                        (change)="getImageDataModify($event)" />
+                </div>
+
+                <div class="form-group">
+                    <label for="exampleFormControlTextarea3">Giới Thiệu</label>
+                    <textarea class="form-control" id="exampleFormControlTextarea5"
+                        rows="3" [(ngModel)]="describe" [ngModelOptions]="{standalone: true}"></textarea>
+                        <label *ngIf="_filmDescribeValidate != ''"><span>{{ _describeValidate }}</span></label>
+                </div>
+                <div class="form-group">
+                    <button type="reset" class="btn btn-danger btn-sm">Làm Mới<div
+                            class="ripple-container"></div></button>
+                    <button type="reset" class="btn btn-success btn-sm float-right"
+                        (click)="editFilm()" data-dismiss="modal">Chỉnh Sữa<div class="ripple-container" ></div></button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+</div>
+
+
+<!-- thêm mới -->
+
+<div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div style="display: flex; margin: 50px">
+                <form style="margin: auto; width: 100%;">
+                    <h4 class="align-center">Thêm Phim Mới</h4>
+                    <div class="form-group">
+                        <label for="exampleFormControlInput0">Tên phim</label>
+                        <input type="text" class="form-control" id="exampleFormControlInput0" placeholder=""
+                            [(ngModel)]="filmName" [ngModelOptions]="{standalone: true}">
+                    </div>
+                    <div class="form-group">
+                        <label for="exampleFormControlInput0">Giới thiệu</label>
+                        <input type="text" class="form-control" id="exampleFormControlInput1" placeholder=""
+                            [(ngModel)]="describe" [ngModelOptions]="{standalone: true}">
+                    </div>
+                    <div class="form-group">
+                        <label for="exampleFormControlInput0">Thời gian sản xuất</label>
+                        <input type="date" class="form-control" id="exampleFormControlInput1" placeholder=""
+                            [(ngModel)]="yearCreate" [ngModelOptions]="{standalone: true}">
+                    </div>
+                    <!--Add-->
+                    <div class="form-group">
+                        <label for="inputImagePath" class="bmd-label-static">Hình ảnh</label>
+                        <input id="text" type="image" class="form-control" placeholder="" onclick="document.getElementById('fileInput').click();"
+                            readonly style="width:100%; height:240px;"  src="{{ filmImage }}"/>
+                        <!-- disabled -->
+                        <input id="fileInput" type="file" style="display:none;" (change)="getImageDataAdd($event)" />
+                    </div>
+
+                    <div class="form-group">
+                        <button type="reset" class="btn btn-danger btn-sm">Làm Mới<div class="ripple-container"></div></button>
+                        <button type="reset" class="btn btn-success btn-sm float-right" (click)="addFilm()" data-dismiss="modal">Thêm Mới<div
+                                class="ripple-container"></div></button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!---->
+
+<div routerLink= "login"></div>

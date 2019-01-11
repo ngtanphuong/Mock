@@ -1,0 +1,106 @@
+
+#header{
+    width: 100%;
+    height: 60px;
+    box-shadow: 0 5px 5px #666;
+    position: fixed;
+    background: #F1F1F1;
+    z-index: 999;
+}
+
+#menu-logo{
+    height: 60px;
+    margin-left: 3.5%;
+    float: left;
+    display: flex;
+}
+
+.big-logo{
+    margin: auto;
+}
+
+#menu-top{
+    height: 60px;
+    margin-left: 1.5%;
+    float: left;
+}
+
+#menu-top ul {
+    list-style-type: none;
+    text-align: center;
+}
+
+#menu-top li {
+    display: inline-block;
+    width: 90px;
+    height: 60px;
+    line-height: 60px;
+    margin-left: -5px;
+}
+
+#menu-top a {
+    font-size: 13px;
+    color: #666;
+    text-decoration: none;
+    display: block;
+}
+
+#menu-top a:hover {
+    background: #F1F1F1;
+    color: red;
+}
+
+/*==Dropdown Menu==*/
+.sub-menu {
+    display: none;
+    position: absolute;
+  }
+  #menu-top li {
+    position: relative;
+  }
+  #menu-top li:hover .sub-menu {
+    display: block;
+  }
+  .sub-menu li {
+    margin-left: 0 !important;
+  }
+  
+
+#search{
+    width: 20%;
+    height: 60px;
+    margin-left: 5%;
+    float: left;
+    display: flex;
+}
+
+#pl-flex{
+    display: flex;
+}
+
+#pl-margin-auto{
+    margin: auto;
+}
+
+#user{
+    height: 60px;
+    margin-right: 3%;
+    float: right;
+    display: flex;
+}
+
+.user-login-btn{
+    height: 40px;
+    margin: auto;
+}
+
+#footer{
+    width: 100%;
+    height: 100px;
+    background: rebeccapurple;
+}
+
+#sub-header{
+    width: 100%;
+    height: 60px;
+}

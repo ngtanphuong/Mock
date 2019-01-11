@@ -1,0 +1,93 @@
+<div class="row">
+    <button style="margin-top: 2%;font-style:inherit ;" class="btn btn-info" data-toggle="modal" data-target="#exampleModalLong"
+        (click)="init()">Thêm thể loại
+        <div class="ripple-container"></div>
+    </button>
+    <table id="customers">
+        <thead class="style">
+            <tr>
+                <th width="15%">ID</th>
+                <th>Thể loại</th>
+                <th width="25%">Hiểu chỉnh</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let type of Types | paginate: { itemsPerPage: 4, currentPage: p }; let i = index">
+                <td>{{type.TypeID}}</td>
+                <td>{{type.NameType}}</td>
+                <td>
+
+                    <button class="btn btn-info" data-toggle="modal" data-target="#exampleModalEdit" (click)="showType(i,p)"><i
+                            class="fas fa-pencil-alt"></i>
+                        <div class="ripple-container"></div>
+                    </button>
+                    <button class="btn btn-info" (click)="removeType(i,p)"><i class="fa fa-trash"></i>
+                        <div class="ripple-container"></div>
+                    </button>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <pagination-controls (pageChange)="p = $event"></pagination-controls>
+</div>
+
+<!-- Thêm thể loại -->
+<!-- Modal -->
+<div class="modal fade" id="exampleModalLong" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="card-body">
+                <p style="font-size: 150%; color: cornflowerblue" class="description text-center">Thêm thể loại</p>
+                <div class="form-group">
+                    <div>
+                        <!-- nhập tên thể loại -->
+                        <input type="text" class="form-control" placeholder="Tên thể loại ..." [(ngModel)]="nameType">
+                        <label *ngIf="nameTypeValidate != ''"><span style="color: crimson;">
+                            {{nameTypeValidate}}<i class="fas fa-exclamation-circle"></i></span></label>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                   <button type="button" class="btn btn-info" data-dismiss="modal" (click)="insertType()"><i class="fa fa-save"></i></button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- Sửa thể loại -->
+<!-- Modal -->
+<div class="modal fade" id="exampleModalEdit" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="card-body">
+                <p style="font-size: 150%; color: cornflowerblue" class="description text-center">Sửa thể loại</p>
+
+                <div class="form-group">
+                    <div>
+                        <!-- nhập tên thể loại -->
+                        <input type="text" class="form-control" placeholder="Tên thể loại ..." [(ngModel)]="nameType">
+                        <label *ngIf="nameTypeValidate != ''">
+                            <span style="color: crimson;">{{nameTypeValidate}}</span></label>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-info" data-dismiss="modal" (click)="editType()"><i class="fa fa-save"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
