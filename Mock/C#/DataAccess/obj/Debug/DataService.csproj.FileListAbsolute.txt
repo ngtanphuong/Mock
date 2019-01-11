@@ -13,3 +13,18 @@ C:\Users\phuongnt68\Desktop\SVN\trunk\2. Content\Advance\Source\Team2\Project 1\
 C:\Users\phuongnt68\Desktop\SVN\trunk\2. Content\Advance\Source\Team2\Project 1\DataAccess\obj\Debug\DataService.csproj.CopyComplete
 C:\Users\phuongnt68\Desktop\SVN\trunk\2. Content\Advance\Source\Team2\Project 1\DataAccess\obj\Debug\DataAccess.dll
 C:\Users\phuongnt68\Desktop\SVN\trunk\2. Content\Advance\Source\Team2\Project 1\DataAccess\obj\Debug\DataAccess.pdb
+D:\FPT\GitHub\Mock\Mock\C#\DataAccess\bin\Debug\DataAccess.dll.config
+D:\FPT\GitHub\Mock\Mock\C#\DataAccess\bin\Debug\DataAccess.dll
+D:\FPT\GitHub\Mock\Mock\C#\DataAccess\bin\Debug\DataAccess.pdb
+D:\FPT\GitHub\Mock\Mock\C#\DataAccess\bin\Debug\DataObject.dll
+D:\FPT\GitHub\Mock\Mock\C#\DataAccess\bin\Debug\EntityFramework.dll
+D:\FPT\GitHub\Mock\Mock\C#\DataAccess\bin\Debug\EntityFramework.SqlServer.dll
+D:\FPT\GitHub\Mock\Mock\C#\DataAccess\bin\Debug\DataObject.pdb
+D:\FPT\GitHub\Mock\Mock\C#\DataAccess\bin\Debug\DataObject.dll.config
+D:\FPT\GitHub\Mock\Mock\C#\DataAccess\bin\Debug\EntityFramework.xml
+D:\FPT\GitHub\Mock\Mock\C#\DataAccess\bin\Debug\EntityFramework.SqlServer.xml
+D:\FPT\GitHub\Mock\Mock\C#\DataAccess\obj\Debug\DataService.csprojAssemblyReference.cache
+D:\FPT\GitHub\Mock\Mock\C#\DataAccess\obj\Debug\DataService.csproj.CoreCompileInputs.cache
+D:\FPT\GitHub\Mock\Mock\C#\DataAccess\obj\Debug\DataService.csproj.CopyComplete
+D:\FPT\GitHub\Mock\Mock\C#\DataAccess\obj\Debug\DataAccess.dll
+D:\FPT\GitHub\Mock\Mock\C#\DataAccess\obj\Debug\DataAccess.pdb

@@ -1,6 +1,6 @@
 <div class="row">
-    <button style="margin-top: 2%;font-style:inherit ;" class="btn btn-info" data-toggle="modal" data-target="#exampleModalLong"
-        (click)="init()">Thêm thể loại
+    <button style="margin-top: 2%;font-style:inherit ;" class="btn btn-info" data-toggle="modal" data-target="#exampleModalInsert"
+        (click)="init()"> Thêm thể loại
         <div class="ripple-container"></div>
     </button>
     <table id="customers">
@@ -16,12 +16,11 @@
                 <td>{{type.TypeID}}</td>
                 <td>{{type.NameType}}</td>
                 <td>
-
                     <button class="btn btn-info" data-toggle="modal" data-target="#exampleModalEdit" (click)="showType(i,p)"><i
                             class="fas fa-pencil-alt"></i>
                         <div class="ripple-container"></div>
                     </button>
-                    <button class="btn btn-info" (click)="removeType(i,p)"><i class="fa fa-trash"></i>
+                    <button class="btn btn-info" data-toggle="modal" data-target="#exampleModalRemove"><i class="fa fa-trash"></i>
                         <div class="ripple-container"></div>
                     </button>
                 </td>
@@ -31,29 +30,51 @@
     <pagination-controls (pageChange)="p = $event"></pagination-controls>
 </div>
 
+<!-- Xóa thể loại -->
+<!-- Modal -->
+<div class="modal fade" id="exampleModalRemove" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+                <div class="modal-header">                       
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                        <p style="font-size: 150%; color: red" class="description text-center">Bạn có thật sự muốn xóa thể loại này ?</p>
+                    </div>
+            <div class="card-body">              
+                <div class="form-group" style="text-align: center">
+                    <button type="button" class="btn btn-info" data-dismiss="modal" (click)="removeType(i,p)">OK</button>
+                    <button type="button" class="btn btn-info" data-dismiss="modal">Cancel</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
 <!-- Thêm thể loại -->
 <!-- Modal -->
-<div class="modal fade" id="exampleModalLong" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle"
+<div class="modal fade" id="exampleModalInsert" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle"
     aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
+                <p style="font-size: 150%; color: cornflowerblue" class="description text-center">Thêm thể loại</p>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
             <div class="card-body">
-                <p style="font-size: 150%; color: cornflowerblue" class="description text-center">Thêm thể loại</p>
-                <div class="form-group">
+                <div class="form-group" style="text-align: center">
                     <div>
                         <!-- nhập tên thể loại -->
                         <input type="text" class="form-control" placeholder="Tên thể loại ..." [(ngModel)]="nameType">
                         <label *ngIf="nameTypeValidate != ''"><span style="color: crimson;">
-                            {{nameTypeValidate}}<i class="fas fa-exclamation-circle"></i></span></label>
+                                {{nameTypeValidate}}<i class="fas fa-exclamation-circle"></i></span></label>
                     </div>
                 </div>
                 <div class="modal-footer">
-                   <button type="button" class="btn btn-info" data-dismiss="modal" (click)="insertType()"><i class="fa fa-save"></i></button>
+                    <button type="button" class="btn btn-info" data-dismiss="modal" (click)="insertType()"><i class="fa fa-save"></i></button>
                 </div>
             </div>
         </div>
@@ -68,13 +89,12 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
+                <p style="font-size: 150%; color: cornflowerblue" class="description text-center">Sửa thể loại</p>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
             <div class="card-body">
-                <p style="font-size: 150%; color: cornflowerblue" class="description text-center">Sửa thể loại</p>
-
                 <div class="form-group">
                     <div>
                         <!-- nhập tên thể loại -->
@@ -84,8 +104,8 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-info" data-dismiss="modal" (click)="editType()"><i class="fa fa-save"></i>
-                    </button>
+                    <button type="button" class="btn btn-info" data-dismiss="modal" (click)="editType()"><i class="fa fa-save"></i></button>
+                    <button type="button" class="btn btn-info" data-dismiss="modal">Cancel</button>
                 </div>
             </div>
         </div>

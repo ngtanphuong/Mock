@@ -9,3 +9,15 @@ C:\Users\phuongnt68\Desktop\SVN\trunk\2. Content\Advance\Source\Team2\Project 1\
 C:\Users\phuongnt68\Desktop\SVN\trunk\2. Content\Advance\Source\Team2\Project 1\DataObject\obj\Debug\DataObject.csproj.CopyComplete
 C:\Users\phuongnt68\Desktop\SVN\trunk\2. Content\Advance\Source\Team2\Project 1\DataObject\obj\Debug\DataObject.dll
 C:\Users\phuongnt68\Desktop\SVN\trunk\2. Content\Advance\Source\Team2\Project 1\DataObject\obj\Debug\DataObject.pdb
+D:\FPT\GitHub\Mock\Mock\C#\DataObject\bin\Debug\DataObject.dll.config
+D:\FPT\GitHub\Mock\Mock\C#\DataObject\bin\Debug\DataObject.dll
+D:\FPT\GitHub\Mock\Mock\C#\DataObject\bin\Debug\DataObject.pdb
+D:\FPT\GitHub\Mock\Mock\C#\DataObject\bin\Debug\EntityFramework.dll
+D:\FPT\GitHub\Mock\Mock\C#\DataObject\bin\Debug\EntityFramework.SqlServer.dll
+D:\FPT\GitHub\Mock\Mock\C#\DataObject\bin\Debug\EntityFramework.xml
+D:\FPT\GitHub\Mock\Mock\C#\DataObject\bin\Debug\EntityFramework.SqlServer.xml
+D:\FPT\GitHub\Mock\Mock\C#\DataObject\obj\Debug\DataObject.csprojAssemblyReference.cache
+D:\FPT\GitHub\Mock\Mock\C#\DataObject\obj\Debug\DataObject.csproj.CoreCompileInputs.cache
+D:\FPT\GitHub\Mock\Mock\C#\DataObject\obj\Debug\DataObject.csproj.CopyComplete
+D:\FPT\GitHub\Mock\Mock\C#\DataObject\obj\Debug\DataObject.dll
+D:\FPT\GitHub\Mock\Mock\C#\DataObject\obj\Debug\DataObject.pdb
