@@ -17,10 +17,16 @@
             </tr>
         </thead>
         <tbody>
-            <tr *ngFor="let type of Types | paginate: { itemsPerPage: 4, currentPage: p }; let i = index">
-                <td>{{type.TypeID}}</td>
-                <td>{{type.NameType}}</td>
-                <td>
+            <tr *ngFor="let film of Films | paginate: { itemsPerPage: 4, currentPage: p }; let i = index">
+                <td>{{film.FilmName}}</td>
+                <td>{{film.Img}}</td>
+                <td>{{film.Year}}</td>
+                <td>{{film.Describe}}</td>
+                <td>{{film.Rate}}</td>
+                <td>{{film.Status}}</td>
+                <td>{{film.Status}}</td>
+                <td>{{film.Status}}</td>
+                <!-- <td>
 
                     <button class="btn btn-info" data-toggle="modal" data-target="#exampleModalEdit" (click)="showType(i,p)"><i
                             class="fas fa-pencil-alt"></i>
@@ -29,7 +35,7 @@
                     <button class="btn btn-info" (click)="removeType(i,p)"><i class="fa fa-trash"></i>
                         <div class="ripple-container"></div>
                     </button>
-                </td>
+                </td> -->
             </tr>
         </tbody>
     </table>

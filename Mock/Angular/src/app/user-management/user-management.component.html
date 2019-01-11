@@ -4,28 +4,43 @@
     </div>
     <br>
     <div class="row">
-      <div class="col-sm-6">
+      <div class="col-sm-6" >
           
-              <!-- <p *ngIf="code==success; else gai">Trai</p>
-              <ng-template #gai>
-                  <p>Gai</p>
-              </ng-template>
-          <div class="alert alert-success" role="alert">
-              <div class="container row">
-                <div class="alert-icon">
-                    <i class="far fa-thumbs-up"></i>
+              <div [hidden]="!show">
+                  <div *ngIf="code; else sai" class="alert alert-success"  role="alert">
+                      <div class="container row">
+                        <div class="alert-icon">
+                            <i class="far fa-thumbs-up"></i>
+                        </div>
+                        <br>
+                        <strong> &emsp; &ensp;     Well done!</strong> Thank you, your request was successful.
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                          <span aria-hidden="true">
+                              <i class="fas fa-times"></i>
+                          </span>
+                        </button>
+                      </div>
+                    </div>
+                <ng-template #sai>
+
+                
+                  <div class="alert alert-danger" role="alert">
+                    <div class="container">
+                      <div class="alert-icon">
+                        <i class="now-ui-icons objects_support-17"></i>
+                      </div>
+                      <strong>Oh no!</strong> Your request is unsuccessful, please try again.
+                      <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">
+                          <i class="now-ui-icons ui-1_simple-remove"></i>
+                        </span>
+                      </button>
+                    </div>
+                  </div>
+                </ng-template>
                 </div>
-                <br>
-                <strong> &emsp; &ensp;     Well done!</strong> Thank you, your request was success.
-                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                  <span aria-hidden="true">
-                      <i class="fas fa-times"></i>
-                  </span>
-                </button>
               </div>
-            </div> -->
-      </div>
-      <div class="col-sm-6">
+              <div class="col-sm-6">
         <div class="input-group">
          
           <input type="text" class="form-control" id="searchBar" placeholder="Search by name ............."  [(ngModel)]="nameSearch" (change)="searchlistUser()">
@@ -50,7 +65,7 @@
               <th>Phone</th>
               <th>Username</th>
               <th>Password</th>
-              <!-- <th>Admin</th> -->
+              <th>Admin</th>
               <th>Edit</th>
               <th>Delete</th>
             </tr>
@@ -78,17 +93,20 @@
               <td>{{user.Email}}</td>
               <td>{{user.Phone}}</td>
               <td>{{user.UserName}}</td>
-              <td class="hidetext">123456</td>
-              <!-- <td>
-                <input class="checkthis" type="checkbox" [checked]=user.Role disabled=true />
-              </td> -->
+              <td class="hidetext">******</td>
+              <td>
+                  <label class="switch">
+                      <input type="checkbox" [checked]=user.Role (click)="setRole(user)">
+                      <span class="slider round"></span>
+                    </label>
+              </td>
               <td>
                 <button class="btn btn-primary  btn-round" (click)="editModal(user)" >
                   <i class="fas fa-user-edit"></i>
                 </button>
               </td>
               <td>
-                <button class="btn btn-primary  btn-round" (click)="deleteModal(user)"><i class="fas fa-user-slash"></i></button>
+                <button class="btn btn-primary  btn-round" (click)="deleteModal(user)"><i class="fas fa-sword"></i></button>
               </td>
             </tr>
           </tbody>

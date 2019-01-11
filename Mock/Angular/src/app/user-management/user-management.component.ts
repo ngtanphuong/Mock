@@ -2,9 +2,10 @@ import { Component, OnInit } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { UserDataService } from 'src/app/user-management/user-data.service';
 import {AddComponent} from 'src/app/user-management/View Modal/add/add.component';
-import { User } from 'src/app/user-management/user';
+import { User, UserSetRole } from 'src/app/user-management/user';
 import { DeleteComponent } from 'src/app/user-management/View Modal/delete/delete.component';
 import { EditComponent } from 'src/app/user-management/View Modal/edit/edit.component';
+import { Router  } from '@angular/router';
 
 
 
@@ -15,20 +16,28 @@ import { EditComponent } from 'src/app/user-management/View Modal/edit/edit.comp
 })
 
 export class UserManagementComponent implements OnInit {
+  localToken = localStorage.getItem('My-Token');
   all;
   lUsers = [];
   user:  User;
   id: number;
   idd = [];
-  nameSearch: string;
+  nameSearch: string = null;
   data;
-  code: any;
-  constructor(private modalService: NgbModal, private _data: UserDataService) {
-    // this._data.GetData().subscribe(res => this.lUsers = res);
-    this._data.code.subscribe(res => this.code = res);
-    // this._data.code.subscribe(res => this.code = res);
-    console.log(this.code);
+  code: boolean;
+  show: boolean;
+  userSetRole: UserSetRole;
+  constructor(private modalService: NgbModal, private _data: UserDataService, private _router: Router) {
 
+    if (this.localToken == null) {
+      this._router.navigateByUrl('login');
+      console.log('User: token không tồn tại! đăng nhập lại');
+    } else {
+      console.log('User: local token: ' + this.localToken);
+      this.checkToken();
+    }
+    this._data.code.subscribe(res => this.code = res);
+    this._data.show.subscribe(res => this.show = res);
    }
 
 
@@ -40,7 +49,7 @@ export class UserManagementComponent implements OnInit {
 
   addModal() {
     const modalAddRef = this.modalService.open(AddComponent);
-
+    console.log(this.code);
   }
 
   editModal(user: User) {
@@ -49,11 +58,44 @@ export class UserManagementComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.lUsers = this._data.lUsers;
+
   }
 
   searchlistUser() {
     this.lUsers = this._data.SearchUser(this.nameSearch);
   }
+
+  setRole(user: User) {
+    this.userSetRole = new UserSetRole(user.UserID, user.isAdmin);
+    this._data.SetRole(this.userSetRole);
+    console.log(user.UserID, user.isAdmin);
+  }
+
+  // tslint:disable-next-line:use-life-cycle-interface
+  ngDoCheck() {
+    if (this.nameSearch !== null) {
+      this.searchlistUser();
+      console.log(this.nameSearch);
+    }
+
+
+  }
+  getData() {
+  }
+
+  checkToken() {
+    const params = {
+      'Token': this.localToken
+    };
+
+    this._data.sendToken(params).subscribe(data => {
+      console.log('Phim: token hợp lệ');
+      this.lUsers = this._data.lUsers;
+    }, Error => {
+      localStorage.removeItem('My-Token');
+      this._router.navigateByUrl('login');
+      console.log('Phim: token không tồn tại');
+    });
+}
 
 }

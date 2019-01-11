@@ -35,8 +35,8 @@ export class DataTypeService {
   }
 
   // GET Film By Type
-  getFilmByType(id: number): Observable<Film> {
-    return this.http.get<Film>(this.GetFilms + `/${id}`);
+  getFilmByType(id: number): Observable<any> {
+    return this.http.get(this.GetFilms + `/${id}`);
   }
 
   // POST

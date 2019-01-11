@@ -12,8 +12,10 @@ namespace DataObject.Models
     public class UserModel
     {
         #region infomation of each user
+       
         public int UserID { get; set; }
 
+       
         public string Name { get; set; }
 
         public string UserName { get; set; }
@@ -24,19 +26,23 @@ namespace DataObject.Models
 
         public DateTime Birthday { get; set; }
 
+        public string Email { get; set; }
+
         public string Phone { get; set; }
 
         public bool isAdmin { get; set; }
 
-        public string Email { get; set; }
 
-        public ICollection<FilmModel> FilmModels { get; set; }
+        public bool status { get; set; }
+
+        public virtual ICollection<FilmModel> filmModel { get; set; }
+
 
         #endregion
         // token infomation----------
         public string AccessToken { get; set; }
-
-        public DateTime AccessDate { get; set; }
+        
+        public DateTime? AccessDate { get; set; }
         //---------------------------
     }
 }

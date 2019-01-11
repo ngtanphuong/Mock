@@ -45,9 +45,9 @@ namespace DataObject.EF
         // PhatLA test random token
         public string AccessToken { get; set; }
 
-        public DateTime AccessDate { get; set; }
+        public DateTime? AccessDate { get; set; }
 
 
-        public ICollection<SubUser> SubUsers { get; set; }
+        public virtual ICollection<SubUser> SubUsers { get; set; }
     }
 }

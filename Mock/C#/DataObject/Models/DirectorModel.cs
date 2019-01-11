@@ -12,6 +12,7 @@ namespace DataObject.Models
     public class DirectorModel
     {
         #region infomation of director
+
         public int DirectorID { get; set; }
         
         public string DirectorName { get; set; }

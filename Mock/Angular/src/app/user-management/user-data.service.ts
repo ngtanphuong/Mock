@@ -1,27 +1,22 @@
 import { Injectable } from '@angular/core';
 import {BehaviorSubject} from 'rxjs';
-import { User, UserDelete } from 'src/app/user-management/user';
+import { User, UserDelete, UserSetRole } from 'src/app/user-management/user';
 
 import {HttpClient} from '@angular/common/http';
 
 import { Observable } from 'rxjs/internal/Observable';
-
-
-
-
-
 
 @Injectable({
   providedIn: 'root'
 })
 export class UserDataService {
 
-  private lUserss = new BehaviorSubject<any>('tr');
-
-  private currentTruckTrailer: BehaviorSubject<string> = new BehaviorSubject<string>('');
+  private _code: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
+  private _show: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
+  userNameExist = new Array<string>();
   lUsers = new Array<User>();
-
-  code = this.lUserss.asObservable();
+  show = this._show.asObservable();
+  code = this._code.asObservable();
   // ser:Observable<any> = Observable.create(this.lUsers);
   // listUser :Observable<any> = this.GetData();
   id: number;
@@ -31,6 +26,8 @@ export class UserDataService {
   private apiUrlEdit = 'http://localhost:51215/api/user/EditUser';
   private apiUrlGetById = 'http://localhost:51215/api/user/getUser/16';
   private apiUrlDelete = 'http://localhost:51215/api/user/DeleteUser';
+  private BaseToken = 'http://localhost:51215/api/login/check';
+  private apiUrlSetRole = 'http://localhost:51215/api/user/SetRole';
 
   text: any;
 
@@ -49,23 +46,32 @@ export class UserDataService {
           this.lUsers.length = 0;
       }
       this.GetData().subscribe(res => {
-        res.forEach(e => {this.lUsers.push(new User(e.UserID, e.Name, e.Gender, e.Birthday,
-           e.Email, e.Phone, false, e.UserName, e.Password)); });
+        res.forEach(e => {
+          this.lUsers.push(new User(e.UserID, e.Name, e.Gender, e.Birthday,
+           e.Email, e.Phone, false, e.UserName, e.Password, e.Status, e.FavoriteFilm));
+          this.userNameExist.push(e.UserName);
+        });
         });
     }
 
     AddData(user) {
       this.http.post(this.apiUrlPost, user).subscribe(res => {
         this.GetContact();
+        this._code.next(true);
+      }, Error => {
+        this._code.next(false);
       });
+      this._show.next(true);
     }
 
     EditData(user) {
       this.http.post(this.apiUrlEdit, user).subscribe(res => {this.GetContact();
-       this.lUserss.next('success');
-       });
-       console.log(this.lUserss);
-       // this.code.subscribe(res => this.codeee = res);
+            this._code.next(true);
+       }, Error => {
+        this._code.next(false);
+      });
+      this._show.next(true);
+
     }
 
     GetUserById(id: number) {
@@ -84,6 +90,14 @@ export class UserDataService {
       } else {
         return this.lUsers;
       }
+    }
+
+    sendToken(params): Observable<any> {
+      return this.http.post(this.BaseToken, params);
+    }
+
+    SetRole(userSetRole: UserSetRole) {
+      return this.http.post(this.apiUrlSetRole, userSetRole).subscribe(res => {});
     }
 
 }

@@ -9,91 +9,10 @@
           <li class="breadcrumb-item active" aria-current="page">Đạo diễn</li>
         </ol>
         <nav aria-label="breadcrumb" role="navigation">
-          <button type="button" style="float: right; margin-top: -2px" class="btn btn-primary" data-toggle="modal"
+          <button type="button" style="float: right; margin-top: -2px" class="btn btn-info" data-toggle="modal"
             data-target="#directorModalLong" (click)="ResetData()">
             <i class="material-icons"> + </i> Thêm đạo diễn
           </button>
-
-          <!-- Add director modal -->
-          <div class="modal fade" id="directorModalLong" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle"
-            aria-hidden="true">
-            <div class="modal-dialog" role="document">
-              <div class="modal-content">
-                <div class="modal-header">
-                  <h4 class="modal-title" id="directorModalLongTitle">Thêm đạo diễn</h4>
-                  <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="ResetData()">
-                    <span aria-hidden="true">&times;</span>
-                  </button>
-                </div>
-                <div class="modal-body">
-                  <form>
-                    <div class="form-group">
-                      <label for="exampleFormControlInput0">Tên đạo diễn</label>
-                      <input type="text" style="background-color: beige;" class="form-control" id="exampleFormControlInput0"
-                        placeholder="" [(ngModel)]="directorName" [ngModelOptions]="{standalone: true}">
-                      <label *ngIf="_DirectorNameValidate != ''"><span>{{ _DirectorNameValidate }}</span></label>
-
-                    </div>
-
-                    <!--input gender-->
-                    <div class="form-group">
-                      <label for="Genderoptions">Giới tính</label>
-                      <select style="border-radius: 10px; background-color: beige; border: 2px solid #73AD21;" class="form-control selectpicker"
-                        data-style="btn btn-link" id="Genderoptions" [(ngModel)]="directorGender" [ngModelOptions]="{standalone: true}">
-                        <option value="true">Nam</option>
-                        <option value="false">Nữ</option>
-                      </select>
-                    </div>
-
-                    <!--input birthday-->
-                    <div class="form-group bmd-form-group is-filled">
-                      <label class="label-control bmd-label-static">Ngày sinh</label>
-                      <!-- Customdatetimepicker -->
-                      <input type="date" style="background-color: beige;" class="form-control " [(ngModel)]="directorBirthday"
-                        [ngModelOptions]="{standalone: true}">
-                    </div>
-
-                    <!-- add picture-->
-                    <div class="form-group">
-                      <label for="inputImagePath" class="bmd-label-static">Hình ảnh</label>
-                      <input id="text" type="image" class="form-control" placeholder="" onclick="document.getElementById('fileInput').click();"
-                        readonly style="width:100%; height:240px;" src="{{ directorImg }}" />
-                      <!-- disabled -->
-                      <input id="fileInput" type="file" style="display:none;" (change)="getImageDataAdd($event)" />
-                      <label *ngIf="_DirectorImageValidate != ''"><span>{{ _DirectorImageValidate }}</span></label>
-                    </div>
-
-                    <!-- add status -->
-                    <div class="form-group">
-                      <label for="Statusoptions">Trạng thái </label>
-                      <select style="border-radius: 10px; background-color: beige; border: 2px solid #73AD21;" class="form-control selectpicker"
-                        data-style="btn btn-link" id="Statusoptions" [(ngModel)]="directorStatus" [ngModelOptions]="{standalone: true}">
-                        <option value="true"> Hiện </option>
-                        <option value="false"> Ẩn </option>
-                      </select>
-                    </div>
-
-
-                    <!-- add describe -->
-                    <div class="form-group">
-                      <label for="exampleFormControlTextarea1">Mô tả</label>
-                      <textarea style="background-color: beige;" class="form-control" id="exampleFormControlTextarea1"
-                        rows="5" [(ngModel)]="directorDescribe" [ngModelOptions]="{standalone: true}"></textarea>
-                      <label *ngIf="_DirectorDescribeValidate != ''"><span>{{ _DirectorDescribeValidate }}</span></label>
-                    </div>
-                  </form>
-
-                </div>
-
-                <!-- buttons modified -->
-                <div class="modal-footer">
-                  <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                  <button type="button" class="btn btn-primary" data-dismiss="modal" (click)="addDirector()">Save
-                    changes</button>
-                </div>
-              </div>
-            </div>
-          </div>
         </nav>
       </nav>
     </div>
@@ -119,9 +38,9 @@
 
             <!-- information of director -->
             <tbody>
-              <tr class="text-left" *ngFor="let item of lstDirector | paginate: { itemsPerPage: 6, currentPage: p }; let i = index">
-                <td>{{item.DirectorID}}</td>
-                <td>{{item.DirectorName}}</td>
+              <tr class="text-center" *ngFor="let item of lstDirector | paginate: { itemsPerPage: 6, currentPage: p }; let i = index">
+                <td>{{ item.DirectorID }}</td>
+                <td>{{ item.DirectorName }}</td>
 
                 <td *ngIf="item.DirectorGender; else Nu">
                   Nam
@@ -131,123 +50,31 @@
                 </ng-template>
 
                 <td>{{item.DirectorBirthday | date:'dd-MM-yyyy'}}</td>
-                <td><img src="{{ item.DirectorImg }}" alt="Không có hình ảnh để hiển thị." width="280px" height="300px"></td>
+                <td style="width:400px"><img src="{{ item.DirectorImg }}" alt="Không có hình ảnh để hiển thị."></td>
 
                 <td *ngIf="item.DirectorStatus; else An">
 
-                  <button type="button" class="btn btn-success" (click)="updateStatusDirector(item.DirectorID)"> Hiện </button>
+                  <label style="padding: 3px; border: 3px solid rgb(175, 170, 170); background-color: rgb(145, 240, 145);" (click)="updateStatusDirector(item.DirectorID)"> Hiện
+                  </label>
                 </td>
                 <ng-template #An>
                   <td>
-                    <button type="button" class="btn btn-danger" (click)="updateStatusDirector(item.DirectorID)"> Ẩn </button>
+                    <label style="padding: 3px; border: 3px solid; background-color: rgb(175, 170, 170);" (click)="updateStatusDirector(item.DirectorID)"> Ẩn
+                    </label>
                   </td>
                 </ng-template>
 
-                <td>{{item.DirectorDescribe}}</td>
+                <td>{{ item.DirectorDescribe }}</td>
 
                 <td style="text-align:center">
                   <!-- Buttons modified-->
                   <ul>
-                    <!-- (click)="removeDirector(director.directorId) -->
-                    <button class="btn btn-primary btn-round" (click)="removeDirector(item.DirectorID)">Xóa</button>
-                    <button class="btn btn-primary btn-round" data-toggle="modal" (click)="findEditDirector(item.DirectorID)"
-                      data-target=".bd-example-modal-lg-pl">Chỉnh sửa </button>
+                    <!-- Delete director -->
+                    <button class="btn btn-primary btn-round" data-toggle="modal" data-target="#DeleteDirector" (click)="findDirectorDelete(item.DirectorID)">Xóa</button>
+                    <button class="btn btn-primary btn-round" data-toggle="modal" data-target=".bd-example-modal-lg-pl"
+                      (click)="findEditDirector(item.DirectorID)"> Chỉnh sửa </button>
                   </ul>
                 </td>
-
-
-
-                <!-- Edit director modal -->
-
-                <div class="modal fade bd-example-modal-lg-pl" tabindex="-1" role="dialog" aria-labelledby="myEditFilmModel"
-                  aria-hidden="true" style="margin-top:-120px;">
-                  <div class="modal-dialog modal-lg">
-                    <div class="modal-content">
-                      <div class="modal-header">
-                        <h4 class="align-center">Chỉnh Sửa Đạo Diễn</h4>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="ResetData()">
-                          <span aria-hidden="true">&times;</span>
-                        </button>
-                      </div>
-
-                      <div class="modal-body">
-                        <div style="display: flex;">
-                          <form style="margin: auto; width: 100%;">
-                            <div class="form-group">
-                              <label for="exampleFormControlInput0">Tên đạo diễn</label>
-                              <input type="text" style="background-color: beige;" class="form-control" id="exampleFormControlInput4"
-                                placeholder="" [(ngModel)]="directorName" [ngModelOptions]="{standalone: true}">
-                              <label *ngIf="_DirectorNameValidate != ''"><span>{{ _DirectorNameValidate }}</span></label>
-
-                            </div>
-
-                            <!-- Edit gender -->
-                            <div class="form-group">
-                              <label for="Genderoptions">Giới tính</label>
-                              <select style="border-radius: 10px; background-color: beige; border: 2px solid #73AD21;"
-                                class="form-control selectpicker" data-style="btn btn-link" id="Genderoptions"
-                                [(ngModel)]="directorGender" [ngModelOptions]="{standalone: true}">
-                                <option value="true">Nam</option>
-                                <option value="false">Nữ</option>
-                              </select>
-                            </div>
-
-                            <!-- Edit birthday-->
-                            <div class="form-group bmd-form-group is-filled">
-                              <label class="label-control bmd-label-static">Ngày sinh</label>
-                              <!-- Customdatetimepicker -->
-                              <input type="date" style="background-color: beige;" class="form-control" [(ngModel)]="directorBirthday"
-                                [ngModelOptions]="{standalone: true}">
-                            </div>
-
-
-                            <!-- Edit picture-->
-                            <div class="form-group">
-                              <label for="inputImagePath" class="bmd-label-static">Hình ảnh</label>
-                              <input style="margin:auto; width:80%; height: 260px;display:block" id="text" type="image"
-                                class="form-control" placeholder="" onclick="document.getElementById('fileInput').click();"
-                                readonly src="{{ directorImg }}" />
-                              <!-- disabled -->
-                              <input id="fileInput_modify" type="file" style="display:none;" (change)="getImageDataModify($event)" />
-                            </div>
-
-
-                            <!-- Edit status -->
-
-                            <div class="form-group">
-                              <label for="Statusoptions">Trạng thái </label>
-                              <select style="border-radius: 10px; background-color: beige; border: 2px solid #73AD21;"
-                                class="form-control selectpicker" data-style="btn btn-link" id="Statusoptions"
-                                [(ngModel)]="directorStatus" [ngModelOptions]="{standalone: true}">
-                                <option value="true"> Hiện </option>
-                                <option value="false"> Ẩn </option>
-                              </select>
-                            </div>
-
-
-                            <!-- Edit describe -->
-                            <div class="form-group">
-                              <label for="exampleFormControlTextarea1">Mô tả</label>
-                              <textarea style="background-color: beige;" class="form-control" id="exampleFormControlTextarea1"
-                                rows="5" [(ngModel)]="directorDescribe" [ngModelOptions]="{standalone: true}"></textarea>
-                              <label *ngIf="_DirectorDescribeValidate != ''"><span>{{ _DirectorDescribeValidate }}</span></label>
-                            </div>
-
-                            <!-- Button save and refresh -->
-                            <div class="form-group">
-                              <button type="reset" class="btn btn-danger btn-sm">Làm Mới<div class="ripple-container"></div></button>
-                              <button type="reset" class="btn btn-success btn-sm float-right" data-dismiss="modal"
-                                (click)="editDirector()">Chỉnh
-                                Sửa<div class="ripple-container"></div></button>
-                            </div>
-
-
-                          </form>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
 
               </tr>
 
@@ -259,6 +86,213 @@
             <pagination-controls (pageChange)="p = $event"></pagination-controls>
           </div>
         </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
+<!-- Add director modal -->
+
+<div class="modal fade" id="directorModalLong" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle"
+  aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 class="modal-title" id="directorModalLongTitle">Thêm đạo diễn</h3>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="ResetData()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form>
+          <div class="form-group">
+            <label for="exampleFormControlInput0">Tên đạo diễn</label>
+            <input type="text" style="background-color: beige;" class="form-control" id="exampleFormControlInput0"
+              placeholder="" [(ngModel)]="directorName" [ngModelOptions]="{standalone: true}">
+            <label *ngIf="_DirectorNameValidate != ''"><span>{{ _DirectorNameValidate }}</span></label>
+
+          </div>
+
+          <!--input gender-->
+          <div class="form-group">
+            <label for="Genderoptions">Giới tính</label>
+            <select style="border-radius: 10px; background-color: beige; border: 2px solid #73AD21;" class="form-control selectpicker"
+              data-style="btn btn-link" id="Genderoptions" [(ngModel)]="directorGender" [ngModelOptions]="{standalone: true}">
+              <option value="true">Nam</option>
+              <option value="false">Nữ</option>
+            </select>
+          </div>
+
+          <!--input birthday-->
+          <div class="form-group bmd-form-group is-filled">
+            <label class="label-control bmd-label-static">Ngày sinh</label>
+            <!-- Customdatetimepicker -->
+            <input type="date" style="background-color: beige;" class="form-control " [(ngModel)]="directorBirthday"
+              [ngModelOptions]="{standalone: true}">
+          </div>
+
+          <!-- add picture-->
+          <div class="form-group">
+            <label for="inputImagePath" class="bmd-label-static">Hình ảnh</label>
+            <input id="text" type="image" class="form-control" placeholder="" onclick="document.getElementById('fileInput').click();"
+              readonly style="width:100%; height:240px;" src="{{ directorImg }}" />
+            <!-- disabled -->
+            <input id="fileInput" type="file" style="display:none;" (change)="getImageDataAndName($event, 'text')" />
+            <label *ngIf="_DirectorImageValidate != ''">
+              <span>{{ _DirectorImageValidate }}</span>
+            </label>
+          </div>
+
+          <!-- add status -->
+          <div class="form-group">
+            <label for="Statusoptions">Trạng thái </label>
+            <select style="border-radius: 10px; background-color: beige; border: 2px solid #73AD21;" class="form-control selectpicker"
+              data-style="btn btn-link" id="Statusoptions" [(ngModel)]="directorStatus" [ngModelOptions]="{standalone: true}">
+              <option value="true"> Hiện </option>
+              <option value="false"> Ẩn </option>
+            </select>
+          </div>
+
+
+          <!-- add describe -->
+          <div class="form-group">
+            <label for="exampleFormControlTextarea1">Mô tả</label>
+            <textarea style="background-color: beige;" class="form-control" id="exampleFormControlTextarea1" rows="5"
+              [(ngModel)]="directorDescribe" [ngModelOptions]="{standalone: true}"></textarea>
+            <label *ngIf="_DirectorDescribeValidate != ''"><span>{{ _DirectorDescribeValidate }}</span></label>
+          </div>
+        </form>
+
+      </div>
+
+      <!-- buttons modified -->
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary" data-dismiss="modal" (click)="addDirector()">Save
+          changes</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
+<!-- Edit director modal-->
+
+<div class="modal fade bd-example-modal-lg-pl" tabindex="-1" role="dialog" aria-labelledby="myEditFilmModel"
+  aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="align-center">Chỉnh Sửa Đạo Diễn</h4>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="ResetData()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+
+      <div class="modal-body">
+        <form>
+          <div class="form-group">
+            <label for="exampleFormControlInput0">Tên đạo diễn</label>
+            <input type="text" style="background-color: beige;" class="form-control" id="exampleFormControlInput4"
+              placeholder="" [(ngModel)]="directorName" [ngModelOptions]="{standalone: true} ">
+            <label *ngIf="_DirectorNameValidate != ''"><span>{{ _DirectorNameValidate }}</span></label>
+
+          </div>
+
+          <!-- Edit gender -->
+          <div class="form-group">
+            <label for="Genderoptions">Giới tính</label>
+            <select style="border-radius: 10px; background-color: beige; border: 2px solid #73AD21;" class="form-control selectpicker"
+              data-style="btn btn-link" id="Genderoptions" [(ngModel)]="directorGender" [ngModelOptions]="{standalone: true}">
+              <option value="true">Nam</option>
+              <option value="false">Nữ</option>
+            </select>
+          </div>
+
+          <!-- Edit birthday-->
+          <div class="form-group bmd-form-group is-filled">
+            <label class="label-control bmd-label-static">Ngày sinh</label>
+            <!-- Customdatetimepicker -->
+            <input type="date" style="background-color: beige;" class="form-control" [(ngModel)]="directorBirthday"
+              [ngModelOptions]="{standalone: true}">
+          </div>
+
+
+          <!-- Edit picture-->
+          <div class="form-group">
+            <label for="inputImagePath" class="bmd-label-static">Hình ảnh</label>
+            <input style="margin:auto; width:80%; height: 260px;display:block" id="text_modify" type="image" class="form-control"
+              placeholder="" onclick="document.getElementById('fileInput').click();" readonly src="{{ directorImg }}" />
+            <!-- disabled -->
+            <input id="fileInput_modify" type="file" style="display:none;" (change)="getImageDataAndName($event, 'text_modify')" />
+          </div>
+
+
+          <!-- Edit status -->
+          <div class="form-group">
+            <label for="Statusoptions">Trạng thái </label>
+            <select style="border-radius: 10px; background-color: beige; border: 2px solid #73AD21;" class="form-control selectpicker"
+              data-style="btn btn-link" id="Statusoptions" [(ngModel)]="directorStatus" [ngModelOptions]="{standalone: true}">
+              <option value="true"> Hiện </option>
+              <option value="false"> Ẩn </option>
+            </select>
+          </div>
+
+
+          <!-- Edit describe -->
+          <div class="form-group">
+            <label for="exampleFormControlTextarea1">Mô tả</label>
+            <textarea style="background-color: beige;" class="form-control" id="exampleFormControlTextarea1" rows="5"
+              [(ngModel)]="directorDescribe" [ngModelOptions]="{standalone: true}"></textarea>
+
+            <label *ngIf="_DirectorDescribeValidate != ''"><span>{{ _DirectorDescribeValidate }}</span></label>
+          </div>
+        </form>
+
+      </div>
+      <!-- Button save and refresh -->
+      <div class="form-group">
+        <button type="reset" class="btn btn-danger btn-sm">Làm Mới<div class="ripple-container"></div></button>
+        <button type="reset" class="btn btn-success btn-sm float-right" data-dismiss="modal" (click)="editDirector()">Chỉnh
+          Sửa<div class="ripple-container"></div></button>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+
+
+
+<!-- Delete modal -->
+
+<div class="modal fade" id="DeleteDirector" tabindex="-1" role="dialog" aria-labelledby="myEditFilmModel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="align-center">Xoá Đạo Diễn</h4>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form>
+          <p style="font-size: 17px; color:teal;">
+            Bạn đang muốn xóa đạo diễn: <input style="border: none; color:red;" type="text" [(ngModel)]="directorNameDelete"
+              [ngModelOptions]="{standalone: true}" readonly>
+          </p>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="reset" class="btn btn-success btn-sm" data-dismiss="modal">Cancel
+          <div class="ripple-container"></div></button>
+        <button type="reset" class="btn btn-danger btn-sm float-right" data-dismiss="modal" (click)="removeDirector()">
+          OK <div class="ripple-container"></div></button>
       </div>
     </div>
   </div>

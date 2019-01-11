@@ -12,7 +12,7 @@ namespace APIAplication.Controllers
 {
     public class DirectorController : ApiController
     {
-        //    private ServiceDirector db = new ServiceDirector();
+        //    private DirectorService db = new DirectorService();
 
         /// <summary>
         /// GET: gets list director
@@ -23,19 +23,18 @@ namespace APIAplication.Controllers
         public IHttpActionResult GetAllDirectors()
         {
             // create server director
-            ServiceDirector serviceDirector = new ServiceDirector();
+            DirectorService DirectorService = new DirectorService();
+            DirectorService serviceDirector = new DirectorService();
 
             // get list director
-            var select = serviceDirector.GetAllDirectors();
+            var select = DirectorService.GetAllDirectors();
 
             if (select != null)
             {
                 return Ok(select);
             }
-            else
-            {
-                return NotFound();
-            }
+
+            return NotFound();
         }
 
         /// <summary>
@@ -48,20 +47,18 @@ namespace APIAplication.Controllers
         public IHttpActionResult FindDirectorByName(string name)
         {
             // create server director
-            ServiceDirector serviceDirector = new ServiceDirector();
+            DirectorService DirectorService = new DirectorService();
+            DirectorService serviceDirector = new DirectorService();
 
             // get director have directorName like name
-            var select = serviceDirector.FindDirectorByName(name);
+            var select = DirectorService.FindDirectorByName(name);
 
             if (select != null)
             {
                 return Ok(select);
             }
-            else
-            {
-                return NotFound();
-            }
 
+            return NotFound();
         }
 
         /// <summary>
@@ -74,19 +71,17 @@ namespace APIAplication.Controllers
         public IHttpActionResult FindDirectorByID(int id)
         {
             // create server director
-            ServiceDirector serviceDirector = new ServiceDirector();
+            DirectorService DirectorService = new DirectorService();
+            DirectorService serviceDirector = new DirectorService();
 
             // get director have directorID like id
-            var select = serviceDirector.GetDirectorByID(id);
+            var select = DirectorService.GetDirectorByID(id);
 
             if (select != null)
             {
                 return Ok(select);
             }
-            else
-            {
-                return NotFound();
-            }
+            return NotFound();
         }
 
         /// <summary>
@@ -102,10 +97,11 @@ namespace APIAplication.Controllers
             if (director != null)
             {
                 // create server director
-                ServiceDirector serviceDirector = new ServiceDirector();
+                DirectorService DirectorService = new DirectorService();
+                DirectorService serviceDirector = new DirectorService();
 
                 // add director
-                var check = serviceDirector.AddNewDirector(director);
+                var check = DirectorService.AddNewDirector(director);
 
                 // add success
                 if (check > 0)
@@ -119,17 +115,14 @@ namespace APIAplication.Controllers
             }
 
             // director is null
-            else
-            {
-                return BadRequest("Đạo diễn thêm mới đang bị NULL");
-            }
+            return BadRequest("Đạo diễn thêm mới đang bị NULL");
         }
 
         /// <summary>
-        /// POST:  Update a director
+        /// Edit director
         /// </summary>
-        /// <param name="id"> id of director</param>
-        /// <param name="director"> director want update</param>
+        /// <param name="director"> A director you want update </param>
+        /// <returns></returns>
         [HttpPost]
         [Route("api/director/EditDirector/")]
         public IHttpActionResult EditDirector([FromBody]DirectorModel director)
@@ -137,10 +130,11 @@ namespace APIAplication.Controllers
             if (director != null)
             {
                 // create server director
-                ServiceDirector serviceDirector = new ServiceDirector();
+                DirectorService DirectorService = new DirectorService();
+                DirectorService serviceDirector = new DirectorService();
 
                 // Edit director
-                var edit = serviceDirector.UpdateDirector(director);
+                var edit = DirectorService.UpdateDirector(director);
 
                 if (edit > 0)
                 {
@@ -152,7 +146,7 @@ namespace APIAplication.Controllers
                 }
             }
 
-            return BadRequest("Chỉnh sửa đạo diễn muốn xóa đang bị NULL");
+            return BadRequest("Đạo diễn muốn chỉnh sửa đang bị NULL");
         }
 
         /// <summary>
@@ -164,20 +158,19 @@ namespace APIAplication.Controllers
         public IHttpActionResult RemoveDirectorByID(int id)
         {
             // create server director
-            ServiceDirector serviceDirector = new ServiceDirector();
+            DirectorService DirectorService = new DirectorService();
+            DirectorService serviceDirector = new DirectorService();
 
             // Delete directo by ID
-            var check = serviceDirector.RemoveDirectorByID(id);
+            var check = DirectorService.RemoveDirectorByID(id);
 
             // Delete 
             if (check > 0)
             {
                 return Ok(check);
             }
-            else
-            {
-                return BadRequest("Xóa đạo diễn thất bại !");
-            }
+
+            return BadRequest("Xóa đạo diễn thất bại !");
         }
 
         /// <summary>
@@ -188,9 +181,10 @@ namespace APIAplication.Controllers
         private bool DirectorExists(int id)
         {
             // create server director
-            ServiceDirector serviceDirector = new ServiceDirector();
+            DirectorService DirectorService = new DirectorService();
+            DirectorService serviceDirector = new DirectorService();
 
-            var c = serviceDirector.GetDirectorByID(id);
+            var c = DirectorService.GetDirectorByID(id);
 
             // Exists
             if (c != null)
@@ -199,6 +193,33 @@ namespace APIAplication.Controllers
             }
 
             return false;
+        }
+
+        /// <summary>
+        /// Update status director by ID
+        /// </summary>
+        /// <param name="director"></param>
+        /// <returns></returns>
+        [HttpGet]
+        [Route("api/director/UpdateStatusDirectorByID/{id}")]
+        public IHttpActionResult UpdateStatusDirectorByID(int id)
+        {
+
+                // create server director
+                DirectorService serviceDirector = new DirectorService();
+
+                // Edit director
+                var edit = serviceDirector.UpdateStatusDirectorByID(id);
+
+                if (edit > 0)
+                {
+                    return Ok(edit);
+                    // return Ok("Chỉnh sửa đạo diễn thành công !");
+                }
+                else
+                {
+                    return BadRequest("Chỉnh sửa đạo diễn thất bại !");
+                }
         }
     }
 }

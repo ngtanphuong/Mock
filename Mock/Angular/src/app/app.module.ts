@@ -16,7 +16,6 @@ import { UserManagementModule } from './user-management/user-management.module';
 
 import { DatePipe } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
-import { FilmBytypeComponent } from './type/film-bytype/film-bytype.component';
 
 
 @NgModule({
@@ -27,8 +26,7 @@ import { FilmBytypeComponent } from './type/film-bytype/film-bytype.component';
     ActorComponent,
     DirectorComponent,
     FilmComponent,
-    TypeComponent,
-    FilmBytypeComponent
+    TypeComponent
   ],
 
   imports: [

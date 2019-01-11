@@ -4,34 +4,60 @@
     <p>Please fill in this form to add an user.</p>
     <hr>
     <div class="form-group">
-        <label for="name">
-            <b>name</b>
-          </label>
-          <input type="text" class="form-coltrol" [(ngModel)]="nameUser" placeholder="Enter Name" id="name" name="name" required #name="ngModel"  required  appForbiddenName="Trung">
-        <div *ngIf="name.invalid" class="alert alert-danger">
-          <div *ngIf="name.errors.required">
-            Name is required.
-          </div>
-          <div *ngIf="name.errors.forbiddenName">
-            Name must not be Trung.
-          </div>
-        </div>
 
 
-      <label for="email">
-        <b>Email</b>
+      <label for="name">
+        <b>Name</b>
       </label>
-      <input type="text" class="form-coltrol" [(ngModel)]="email" placeholder="Enter Email" id="email" name="email" required >
-     
+
+      <input type="text" class="form-coltrol" [(ngModel)]="nameUser" placeholder="Enter Name" id="name" name="name"
+        required #name="ngModel" required appForbiddenName="Trung">
+
+      <div *ngIf="name.invalid" class="alert alert-danger an">
+        <div *ngIf="name.errors.required">
+          Name is required.
+        </div>
+        <div *ngIf="name.errors.forbiddenName">
+          Name must not be Trung.
+        </div>
+      </div>
+      <div class="row col-sm-12">
+        <div class="col-sm-6">
+          <label for="email" class="labelleft">
+            <b>Email</b>
+          </label>
+        </div>
+      </div>
+
+      <input type="text" class="form-coltrol" [(ngModel)]="email" placeholder="Enter Email" pattern="[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*"
+        id="email" #email1="ngModel" name="email">
+      <div *ngIf="email1.invalid" class="alert alert-danger">
+        <div *ngIf="email1.errors.pattern">
+          Email erorr.
+        </div>
+      </div>
+
+
       <label for="phone">
         <b>Phone</b>
       </label>
-      <input type="text" class="form-coltrol" [(ngModel)]="phone" placeholder="Enter Phone" name="phone" maxlength="10" required>
+
+      <input type="text" class="form-coltrol" [(ngModel)]="phone" placeholder="Enter Phone" pattern="[0-9]*" maxlength="10"
+        name="phone" #phone1="ngModel">
+      <div *ngIf="phone1.invalid" class="alert alert-danger">
+        <div *ngIf="phone1.errors.pattern">
+          Phone must be numbers.
+        </div>
+      </div>
+
 
       <label for="username">
         <b>Username</b>
       </label>
-      <input type="text" class="form-coltrol" [(ngModel)]="username" placeholder="Enter Username" name="username" minlength="6" maxlength="16" pattern="[a-zA-Z0-9 ]*" #username1="ngModel" required>
+
+
+      <input type="text" class="form-coltrol" [(ngModel)]="username" placeholder="Enter Username" name="username"
+        minlength="6" maxlength="16" pattern="[a-zA-Z0-9 ]*" #username1="ngModel" required disabled="true">
       <div *ngIf="username1.invalid" class="alert alert-danger">
         <div *ngIf="username1.errors.required">
           Username is required.
@@ -39,36 +65,49 @@
         <div *ngIf="username1.errors.pattern">
           Username must be characters or numbers.
         </div>
-        <div *ngIf = "username1.errors.minlength">
+        <div *ngIf="username1.errors.minlength">
           Username must be at least 6 characters long.
         </div>
-        <div *ngIf = "username1.errors.maxlength">
-          Username must be at most 16 characters long.
+      </div>
+
+      <!-- NEwPasswod
+      <div class="row col-sm-12">
+        <div class="col-sm-6">
+          <label for="password" class="labelleft">
+            <b>Password</b>
+          </label>
+        </div>
+        <div class="col-sm-6  pull-right">
+          <p class="text-danger">Required</p>
         </div>
       </div>
-      
-      <label for="password">
-        <b>Password</b>
-      </label>
-      <input type="password" class="form-coltrol" [(ngModel)]="password" placeholder="Enter Password" name="password" minlength="6" maxlength="16" pattern="[a-zA-Z0-9]*"
-        required #password1="ngModel" >
-        <div *ngIf="password1.invalid" class="alert alert-danger">
-          <div *ngIf="password1.errors.required">
-            Password is required.
-          </div>
-          <div *ngIf="password1.errors.pattern">
-            Password must be characters or numbers.
-          </div>
-          <div *ngIf="password1.errors.minlength">
-            Password must be at least 6 characters long.
-          </div>
-          <div *ngIf="password1.errors.maxlength">
-            Password must be at most 16 characters long.
-          </div>
-        </div>
 
+      <input type="password" class="form-coltrol" [(ngModel)]="password" placeholder="Enter Password" name="password"
+        required #password1="ngModel">
+      <div *ngIf="username1.invalid" class="alert alert-danger">
+        <div *ngIf="username1.errors.required">
+          Password is required.
+        </div>
+      </div>
+      <div *ngIf="match" class="alert alert-danger">
+        Old password is incorrected
+      </div> -->
+
+      <label for="npassword">
+        <b>New Password</b>
+      </label>
+      <input type="password" class="form-coltrol" [(ngModel)]="newPassword" placeholder="Enter Password" name="npassword"
+        minlength="6" maxlength="16" pattern="[a-zA-Z0-9]*" #password2="ngModel">
+      <div *ngIf="password2.invalid" class="alert alert-danger">
+        <div *ngIf="password2.errors.pattern">
+          Password must be characters or numbers.
+        </div>
+        <div *ngIf="password2.errors.minlength">
+          Password must be at least 6 characters long.
+        </div>
+      </div>
     </div>
-    
+
     <div class="date-gen row col-sm-12" id="date-gen">
       <div class=" date col-sm-6" style="vertical-align: baseline;" id="date">
         <input type="date" [(ngModel)]="date" [ngModelOptions]="{standalone: true}" />
@@ -88,7 +127,8 @@
     </div>
     <div class="row">
       <button type="button" class="cancelbtn form-coltrol btn-round" formnovalidate (click)="activeModal.dismiss('cancel click')">Cancel</button>
-      <button type="submit" class="signupbtn form-coltrol btn-round" (click)="editUser()" [disabled]="!editForm.form.valid">Edit User</button>
+      <button type="submit" class="signupbtn form-coltrol btn-round" (click)="editUser()" [disabled]="!editForm.form.valid">Edit
+        User</button>
     </div>
 
   </div>

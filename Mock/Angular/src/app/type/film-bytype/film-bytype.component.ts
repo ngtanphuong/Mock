@@ -47,6 +47,6 @@ export class FilmBytypeComponent implements OnInit {
     i = i + (4 * (p - 1));
     const id: number = this.Types[i].TypeID;
     this._data.getFilmByType(id).subscribe(res => {
-        });
+     this.Films = res; });
   }
 }

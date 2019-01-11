@@ -79,7 +79,6 @@ namespace DataService.Film
         /// <returns></returns>
         public int EditFilm(FilmModel film)
         {
-
             // tìm kiếm phim theo ID
             var select = database.Films.Where(f => f.FilmID == film.FilmID).FirstOrDefault();
 

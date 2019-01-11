@@ -31,9 +31,11 @@ namespace DataAccess.User
                     Phone = user.Phone,
                     Name = user.Name,
                     Password =user.Password,
-                    isAdmin = user.isAdmin
-                    //,AccessDate = user.AccessDate,
-                    //AccessToken = user.AccessToken
+                    isAdmin = user.isAdmin,
+                    status = true
+                   
+                    // AccessDate = user.AccessDate,
+                    // AccessToken = user.AccessToken
                 };
                 ctx.Users.Add(_tUser);
                 return ctx.SaveChanges();
@@ -54,6 +56,9 @@ namespace DataAccess.User
                     userToEdit.Phone = user.Phone;
                     userToEdit.Birthday = user.Birthday;
                     userToEdit.Gender = user.Gender;
+                    userToEdit.isAdmin = user.isAdmin;
+                    userToEdit.status = user.status;
+                    
                     return ctx.SaveChanges();
                 }
                 else return 0;
@@ -93,7 +98,7 @@ namespace DataAccess.User
         {
             using (FilmDataContext ctx = new FilmDataContext())
             {
-                var user = ctx.Users.Select(a => new UserModel
+                var user = ctx.Users.Where(u => u.status == true).Select(a => new UserModel
                 {
                     UserID = a.UserID,
                     UserName = a.UserName,
@@ -104,7 +109,7 @@ namespace DataAccess.User
                     Name = a.Name,
                     Password = a.Password,
                     isAdmin = a.isAdmin,
-                    FilmModels = (from film in ctx.Films
+                    filmModel = (from film in ctx.Films
                                 join sub in ctx.SubUsers
                                 on film.FilmID equals sub.FilmID
                                 where sub.UserID == a.UserID
@@ -190,5 +195,18 @@ namespace DataAccess.User
             }
         }
 
+        public int setRole(int id, bool admin)
+        {
+            using (FilmDataContext ctx = new FilmDataContext())
+            {
+                DataObject.EF.User user = ctx.Users.Where(u => u.UserID == id).FirstOrDefault();
+                if (user != null)
+                {
+                    user.isAdmin = admin;
+                    return ctx.SaveChanges();
+                }
+                else return 0;
+            }
+        }
     }
 }

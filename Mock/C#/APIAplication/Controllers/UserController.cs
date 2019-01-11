@@ -15,38 +15,119 @@ namespace APIAplication.Controllers
         UserServices userServices = new UserServices();
 
         // GET api/user/getUser
-        public List<UserModel> GetUser()
+        public IHttpActionResult GetUser()
         {
-            var result= userServices.GetAllUsers();
-            return result;
+            try
+            {
+                var result = userServices.GetAllUsers();
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+
+                return Content(HttpStatusCode.BadRequest, ex);
+            }
+
         }
 
         // GET api/user/getUser/5
-        public UserModel GetUser(int id)
+        public IHttpActionResult GetUser(int id)
         {
-            return userServices.GetUserById(id);
+            try
+            {
+                var result = userServices.GetUserById(id);
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                return Content(HttpStatusCode.BadRequest, ex);
+            }
+        }
+
+        // POST api/user/EditUser/5
+        [HttpPost]
+        public IHttpActionResult EditUser([FromBody] UserModel user)
+        {
+            
+                if (user != null)
+                {
+                    var result = userServices.EditUser(user.UserID, user);
+                    return Ok(result);
+                }
+                else return Content(HttpStatusCode.BadRequest, "User null");
+           
+            //catch (Exception ex)
+            //{
+            //    return Content(HttpStatusCode.BadRequest, ex);
+            //}
+
         }
 
         // POST api/user/AddUser
         [HttpPost]
-        public int AddUser(UserModel user)
+        public IHttpActionResult AddUser(UserModel user)
         {
-            return userServices.AddUser(user);
+            try
+            {
+                var result = userServices.AddUser(user);
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                return Content(HttpStatusCode.BadRequest, ex);
+
+            }
+
         }
 
-        // PUT api/user/EditUser/5
-        [HttpPut]
-        public int EditUser(int id, [FromBody] UserModel user)
-        {
-            return userServices.EditUser(id, user);
-        }
 
-        // DELETE api/user/DeleteUser/5
+        // DELETE api/user/DeleteUser/5   Real
         [HttpDelete]
-        public IHttpActionResult DeleteUser(int id)
+        public IHttpActionResult DeleteUserForever(int id)
         {
             userServices.DeleteUser(id);
             return Ok(id);
         }
+
+        // DELETE api/user/DeleteUser/5
+        [HttpPost]
+        public IHttpActionResult DeleteUser([FromBody]DataObject.EF.User user)
+        {
+            try
+            {
+                if (user != null)
+                {
+                    var result = userServices.DeleteUser(user.UserID);
+                    return Ok(result);
+                }
+                else return NotFound();
+            }
+            catch (Exception ex)
+            {
+
+                return Content(HttpStatusCode.BadRequest, ex);
+            }
+
+        }
+
+        [HttpPost]
+        public IHttpActionResult SetRole([FromBody]DataObject.EF.User user)
+        {
+            try
+            {
+                if (user != null)
+                {
+                    var result = userServices.setRole(user.UserID, user.isAdmin);
+                    return Ok(result);
+                }
+                else return NotFound();
+            }
+            catch (Exception ex)
+            {
+
+                return Content(HttpStatusCode.BadRequest, ex);
+            }
+        }
+
     }
 }

@@ -60,7 +60,7 @@ export class DataDirectorService {
  }
 
  // Edit gender director
- updateStatusDirector(params): Observable<any> {
-  return this.http.post(this.UrlAPI_UpdateStatus, params);
+ updateStatusDirector(i): Observable<any> {
+  return this.http.get(this.UrlAPI_UpdateStatus + i);
  }
 }

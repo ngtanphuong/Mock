@@ -18,5 +18,7 @@ namespace DataAccess.User
         int EditUser(int id, UserModel user);
 
         int DeleteUser(int id);
+
+        int setRole(int id, bool admin);
     }
 }

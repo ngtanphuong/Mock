@@ -9,12 +9,7 @@ namespace DataObject.EF
     /// </summary>
     [Table("Type")]
     public class TypeFilm
-    {
-        public TypeFilm()
-        {
-            this.SubTypes = new HashSet<SubType>();
-        }
-       
+    {      
         [Key]
         public int TypeID { get; set; }
 

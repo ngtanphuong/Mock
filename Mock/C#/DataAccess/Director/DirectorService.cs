@@ -189,25 +189,19 @@ namespace DataService.Director
         public int UpdateStatusDirectorByID(int id)
         {
 
-            // search director by ID
-            var select = ctx.Directors.Where(d => d.DirectorID == id).SingleOrDefault();
-
-
-            // check select not null
-            if (select != null)
+            using (ctx = new FilmDataContext())
             {
-                // Update director
-                if (select != null)
+                // search director by ID
+                var editDirector = ctx.Directors.Find(id);
+                if (editDirector != null)
                 {
-                    // update
-                    select.DirectorStatus = !select.DirectorStatus;
-                    // return database
+                    editDirector.DirectorStatus = !editDirector.DirectorStatus;
+                    // return status update
                     return ctx.SaveChanges();
                 }
             }
-
-            // return 0 if fail 
-            return 0;
+            // Update fail
+            return -1;
         }
 
     }
