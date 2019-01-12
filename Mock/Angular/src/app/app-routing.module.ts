@@ -18,7 +18,7 @@ const routes: Routes = [
   },
   {
     path: 'type',
-    component: TypeComponent
+    component: TypeComponent,
   },
   {
     path: 'director',

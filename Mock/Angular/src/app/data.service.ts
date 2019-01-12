@@ -12,24 +12,22 @@ export class DataService {
   private directors = new BehaviorSubject<any>([]);
   director = this.directors.asObservable();
   constructor() { }
-
-  ngOnInit() {
-   
+ ngOnInit() {
   }
 
-  addFilm(film){
+  addFilm(film) {
 
   }
 
-  changeFilm(film){
+  changeFilm(film) {
     this.films.next(film);
   }
 
-  addDirector(director){
+  addDirector(director) {
 
   }
 
-  changeDirector(director){
+  changeDirector(director) {
     this.directors.next(director);
   }
 

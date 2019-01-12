@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { DataTypeService } from 'src/app/type/Shared/data-type.service';
-import { Type } from './shared/type.model';
-import { Router  } from '@angular/router';
-
+import { Type, Actor, Director } from './shared/type.model';
+import { Router } from '@angular/router';
 @Component({
   selector: 'app-type',
   templateUrl: './type.component.html',
@@ -20,12 +20,35 @@ export class TypeComponent implements OnInit {
   nameType: string;
   index: number;
 
+  // thuộc tính diễn viên
+  actor: Actor;
+  Actors: any = [];
+  idActor: number;
+  nameActor: string;
+
+  // Thuộc tính đạo diễn
+  director: Director;
+  directors: any = [];
+  idDirector: number;
+  nameDirector: string;
+
+  // Thuộc tính phim
+  Films: any = [];
+  idFilm: number;
+  nameFilm: string;
+  img: string;
+  describe: string;
+  rate: string;
+  year: Date;
+  status: boolean;
+
+  // Validate
   nameTypeValidate: string;
   iconCheck: string;
-
   rgxNoSpecialChar = new RegExp('^[\^\;!@#$%^&*\(\\)\\{\\}\\+\\-\_+:|<>?~\\\\/\\[\.,\'\\"\\]\\`\]*$');
   doSubmit: boolean;
-  constructor(private _data: DataTypeService, private _router: Router) {
+
+  constructor(private modalService: NgbModal, private _data: DataTypeService, private _router: Router) {
     console.log(this.localToken);
     if (this.localToken == null) {
       this._router.navigateByUrl('login');
@@ -50,7 +73,7 @@ export class TypeComponent implements OnInit {
       this._router.navigateByUrl('login');
       console.log('Thể loại: token không tồn tại');
     });
-}
+  }
 
   // tslint:disable-next-line:use-life-cycle-interface
   ngDoCheck() {
@@ -91,13 +114,13 @@ export class TypeComponent implements OnInit {
     this.nameType = '';
   }
 
-   // Tạo mới thể loại
+  // Tạo mới thể loại
   createType(name: string): Type {
     const temptype = new Type(name);
     return temptype;
   }
 
-   // Lấy thể loại theo id
+  // Lấy thể loại theo id
   getId(id: number) {
     return this._data.getIdData(id);
   }
@@ -108,12 +131,12 @@ export class TypeComponent implements OnInit {
     if (!this.doSubmit) {
       return;
     }
-      this.type = this.createType(this.nameType);
-      this._data.postData(this.type).subscribe(res => {
+    this.type = this.createType(this.nameType);
+    this._data.postData(this.type).subscribe(res => {
       this.getData();
-      });
-      this.nameType = '';
-    }
+    });
+    this.nameType = '';
+  }
 
   // Xóa thể loại
   removeType(i, p) {
@@ -137,17 +160,37 @@ export class TypeComponent implements OnInit {
     const id: number = this.Types[i].TypeID;
     this.idType = i;
 
-    console.log('ID : ' + this.idType);
+    // console.log('ID : ' + this.idType);
     this._data.getIdData(id).subscribe(res => this.nameType = res.NameType);
   }
 
   // Thực thi sửa thể loại
   editType() {
     this.type = this.Types[this.idType];
-    this.type.NameType = this.nameType ;
-    console.log(this.type);
+    this.type.NameType = this.nameType;
+    // console.log(this.type);
     this._data.putData(this.type).subscribe(res => {
       this.getData();
+    });
+  }
+
+  // Lấy danh sách phim theo thể loại
+  // getDataByType(id: number) {
+  //   this._data.getFilmByType(id).subscribe(res => {
+  //     this.Films = res;
+  //   });
+  // }
+
+  showFilmByType(i, p) {
+    if (p == null) {
+      p = 1;
+    }
+    i = i + (4 * (p - 1));
+    const id: number = this.Types[i].TypeID;
+    console.log('ID : ' + id);
+    this._data.getFilmByType(id).subscribe(res => {
+      this.Films = res;
+      console.log(this.Films);
     });
   }
 }
