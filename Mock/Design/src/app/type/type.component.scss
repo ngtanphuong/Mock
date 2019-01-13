@@ -1,0 +1,36 @@
+#customers {
+    font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+    border-collapse: collapse;
+    width: 100%;
+    
+  }
+  
+  #customers td, #customers th {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: center;
+  }
+
+  
+  #customers tr:hover {background-color: #e2e6eb;
+  box-shadow: 0 0.5rem 0.5rem #c2c7cc}
+  
+  #customers th {
+    padding-top: 12px;
+    padding-bottom: 12px;
+    background-color: #30d6ec;
+    color: white;
+  }
+
+  #customers td a {
+    color: #1d8cf8;
+  }
+
+  #item-table{
+    margin: 0 0 2.5% 2.5%;
+  }
+
+  #btnthem button{
+    margin-left: 2.5%;
+    width: 210px;
+  }

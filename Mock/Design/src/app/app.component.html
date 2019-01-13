@@ -1,0 +1,63 @@
+<div class="header">
+    <h1><i class="fas fa-film"></i></h1>
+    <p>Management Film</p>
+  </div>
+  <div class="leftcolumn">
+    <div class="card card-nav-tabs">
+      <div class="card-header card-header-info">
+        <i class="fas fa-database"></i>
+      </div>
+      <div class="card-body">
+        <div class="settingbtn">
+          <button class="btn btn-info">Phim <i class="fas fa-film"></i></button>
+          <div class="dropdown-divider"></div>
+          <button class="btn btn-info">Thể loại <i class="fab fa-youtube"></i></button>
+          <div class="dropdown-divider"></div>
+          <button class="btn btn-info">Đạo diễn <i class="fas fa-video"></i></button>
+          <div class="dropdown-divider"></div>
+          <button class="btn btn-info">Diễn viên <i class="fas fa-user-astronaut"></i></button>
+          <div class="dropdown-divider"></div>
+          <button class="btn btn-info">Người dùng <i class="fas fa-users"></i></button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="rightcolumn">
+    <nav class="navbar navbar-expand-lg bg-info">
+      <div class="container">
+        <div class="navbar-translate">
+          <a class="navbar-brand" href="#0">Primary Color</a>
+          <button class="navbar-toggler" type="button" data-toggle="collapse" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="navbar-toggler-icon"></span>
+            <span class="navbar-toggler-icon"></span>
+            <span class="navbar-toggler-icon"></span>
+          </button>
+        </div>
+        <div class="collapse navbar-collapse">
+          <ul class="navbar-nav ml-auto">
+            <li class="nav-item">
+              <a href="#pablo" class="nav-link">
+                <i class="material-icons">account_circle</i> User
+              </a>
+            </li>
+            <li class="dropdown nav-item">
+              <a href="#pablo" class="dropdown-toggle nav-link" data-toggle="dropdown" aria-expanded="true">
+                <i class="material-icons">settings</i>
+                <b class="caret"></b>
+                <div class="ripple-container"></div>
+              </a>
+              <div class="dropdown-menu dropdown-menu-right">
+                <a href="#pablo" class="dropdown-item">Acount</a>
+                <div class="dropdown-divider"></div>
+                <a href="#pablo" class="dropdown-item">Login</a>
+                <div class="dropdown-divider"></div>
+                <a href="#pablo" class="dropdown-item">Logout</a>
+              </div>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+    <router-outlet></router-outlet>
+  </div>
