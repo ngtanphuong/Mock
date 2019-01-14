@@ -1,0 +1,236 @@
+<div class="col-lg-12">
+
+    <nav aria-label="breadcrumb" role="navigation">
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item"><a routerLink=''>Home</a></li>
+          <li class="breadcrumb-item active" aria-current="page">Actor</li>
+        </ol>
+    </nav>
+
+  <!--Thêm actor mới-->
+  <div class="float-right">
+    <!--button thêm-->
+    <span class="font-bold pr-2">THÊM DIỄN VIÊN MỚI</span>
+    <button type="button" class="btn btn-rose" data-toggle="modal" data-target="#AddModal" (click)="SetDefaultDataBinding()">Thêm</button>
+  </div>
+
+  <!--Modal(show dialog thêm infomation of a actor -->
+  <div class="modal fade" id="AddModal" tabindex="-1" role="dialog" aria-labelledby="TitleLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="TitleLabel">THÊM DIỄN VIÊN MỚI</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+
+        <!--input Name-->
+        <div class="modal-body text-left">
+          <div class="form-group">
+            <label for="inputNameAdd" class="bmd-label-static">TÊN</label>
+            <input  placeholder="Nhập tên diễn viên" type="text" class="form-control" id="inputName" [(ngModel)]="Name" maxlength="64"/>
+           <label style="color:red; " *ngIf="checkName"><span>{{ errorMessage }}</span></label>
+          </div>
+
+          <!--Get image-->
+          <div class="form-group">
+            <label for="inputImagePath" class="bmd-label-static">HÌNH ẢNH</label>
+            <input id="text" type="text" class="form-control" value="{{ ImageName }}" placeholder="Click vào đây để thêm ảnh..." onclick="document.getElementById('fileInput').click();"
+              readonly />
+            <!-- disabled -->
+            <input id="fileInput" type="file" style="display:none;" (change)="getImageData($event,'text')" />
+
+          </div>
+          <!--input gender-->
+          <div class="form-group">
+            <label for="GenderoptionsAdd">GIỚI TÍNH</label>
+            <select class="form-control selectpicker" data-style="btn btn-link" id="Genderoptions" [(ngModel)]="Gender">
+              <option value="true">Nam</option>
+              <option value="false">Nữ</option>
+            </select>
+          </div>
+
+          <!--input birthday-->
+          <div class="form-group bmd-form-group is-filled">
+            <label class="label-control bmd-label-static">NGÀY SINH</label>
+            <input type="date" class="form-control" [(ngModel)]="Birthday" />
+          </div>
+          <!--input Describe-->
+          <div class="form-group bmd-form-group">
+            <label for="inputHobbyAdd" class="bmd-label-static">MÔ TẢ</label>
+            <textarea class="form-control" id="inputDecribeAdd" rows="5" [(ngModel)]="Describe"></textarea>
+          </div>
+
+          <!--input status-->
+          <div class="form-group">
+            <label for="StatusOptionsAdd">TRẠNG THÁI</label>
+            <select class="form-control selectpicker" data-style="btn btn-link" id="Statusoptions" [(ngModel)]="status">
+              <option value="true">Hiện diễn viên</option>
+              <option value="false">Ẩn diễn viên</option>
+            </select>
+          </div>
+
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">ĐÓNG</button>
+          <button type="button" class="btn btn-primary" (click)="AddActor()" data-dismiss="modal">THÊM</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!--END MODAL ADD ACTOR-->
+
+  <!--Table list infomation of actors-->
+  <table id="customers" class="table-bordered table-sm card-body">
+
+    <!--Row header-->
+    <tr class="text-center bgBlue">
+      <th>TÊN</th>
+      <th>HÌNH ẢNH</th>
+      <th>GIỚI TÍNH</th>
+      <th>NGÀY SINH</th>
+      <th>MÔ TẢ</th>
+      <th>TRẠNG THÁI</th>
+      <th>CHỈNH SỬA</th>
+    </tr>
+    <!--End rows header-->
+
+    <!--rows Actors-->
+    <tr class="text-left" *ngFor="let actor of lstActor | paginate: { itemsPerPage: rowCount, currentPage: p }; let i = index ">
+      <td>{{ actor.ActorName }}</td>
+      <td>
+        <img data-enlargable style="cursor: zoom-in" [src]="actor.Img" alt="Load image is fail" width="200em" height="200em" />
+      </td>
+      <td>
+        <p *ngIf="actor.Gender; else gai">Nam</p>
+        <ng-template #gai>
+        <p>Nữ</p>
+        </ng-template>
+      </td>
+      <td>{{ actor.Birthday | date: 'dd/MM/yyyy' }}</td>
+      <td>{{ actor.Describe }}</td>
+      <td >
+        <span *ngIf="actor.Status; else dangerBadge">
+            <span style="cursor: pointer; color: black;" class="badge badge-pill badge-success" (click)="ChangeStatus(actor)">Hiện diễn viên</span>
+        </span>
+      </td>
+      <ng-template #dangerBadge>
+          <span style="cursor: pointer; color: black;" class="badge badge-pill badge-danger" (click)="ChangeStatus(actor)">Ẩn diễn viên</span>
+      </ng-template>
+      <td>
+        <!--Sửa một actor-->
+        <div class="float-right">
+          <!--Xóa một actor-->
+          <button class="btn btn-error float-right" (click)="SetActorIDFromModal(actor.ActorID); RemoveActor()">XÓA</button>
+          <!--button Sửa-->
+          <button class="btn btn-primary float-right" data-toggle="modal" data-target="#ModifyModal" (click)="SetActorIDFromModal(actor.ActorID);SetActorFromModal(actor)">Sửa</button>
+        </div>
+        
+        <!--MODAL (show dialog Sửa infomation of a actor -->
+        <div class="modal fade" id="ModifyModal" tabindex="-1" role="dialog" aria-labelledby="TitleLabelModify"
+          aria-hidden="true">
+          <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="TitleLabelModify">CHỈNH SỬA DIỄN VIÊN : {{Name}}</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div class="modal-body">
+
+                <!--input Name (modify side)-->
+                <div class="modal-body text-left">
+                  <div class="form-group">
+                    <label for="inputNameModify" class="bmd-label-static">TÊN</label>
+                    <input placeholder="Nhập tên diễn viên" type="text" class="form-control" id="inputName" [(ngModel)]="Name" maxlength="64" #validateName="ngModel">
+                    <!-- <label style="color:red; " *ngIf="checkName"><span>{{ errorMessage }}</span></label>
+                    <ng-container *ngIf="validateName.invalid">
+                        <label  style="color:red; " *ngIf = "username1.errors.maxlength">
+                           <span>Tên diễn viên phải nhiều hơn 64 kí tự.</span>
+                        </label>
+                    </ng-container> -->
+                  </div>
+
+                  <!--Get image (modify side)-->
+                  <div class="form-group form-file-upload form-file-simple">
+                    <label for="inputImagePath" class="bmd-label-static">HÌNH ẢNH</label>
+                    <input id="text_modify" type="text" class="form-control" value="{{ ImageName }}" placeholder="Click vào đây để thêm ảnh..." onclick="document.getElementById('fileInput_modify').click();"
+                      readonly />
+                    <!-- disabled -->
+                    <input id="fileInput_modify" type="file" style="display:none;" (change)="getImageData($event,'text_modify')" />
+                  </div>
+
+                  <!--input gender (modify side)-->
+                  <div class="form-group">
+                    <label for="GenderoptionsModify">GIỚI TÍNH</label>
+                    <select class="form-control selectpicker" data-style="btn btn-link" id="Genderoptionsmodify"
+                      [(ngModel)]="Gender">
+                      <option value="true">Nam</option>
+                      <option value="false">Nữ</option>
+                    </select>
+                  </div>
+
+                  <!--input birthday (modify side)-->
+                  <div class="form-group bmd-form-group is-filled">
+                    <label class="label-control bmd-label-static">NGÀY SINH</label>
+                    <input type="date" class="form-control" [(ngModel)] = "Birthday">
+                  </div>
+                  <!--input Decribe (modify side)-->
+                  <div class="form-group bmd-form-group">
+                    <label for="lbStoryModify" class="bmd-label-static">MÔ TẢ</label>
+                    <textarea class="form-control" id="inputDecribeModify" rows="5" [(ngModel)]="Describe">{{Decribe}}</textarea>
+                  </div>
+
+                  <!--input status (modify side)-->
+                  <div class="form-group">
+                    <label for="StatusOptionsAdd">TRẠNG THÁI</label>
+                    <select class="form-control selectpicker" data-style="btn btn-link" id="Statusoptions" [(ngModel)]="status">
+                      <option value="true">Hiện diễn viên</option>
+                      <option value="false">Ẩn diễn viên</option>
+                    </select>
+                  </div>
+                  <!-- END input status (modify side)-->
+
+                </div>
+                <!--Button close and save change-->
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-dismiss="modal">ĐÓNG</button>
+                  <button type="button" class="btn btn-primary" data-dismiss="modal" (click)="ModifyActor();">CHỈNH SỬA</button>
+                </div>
+
+              </div>
+
+            </div>
+          </div>
+        </div>
+        <!--END MODAL MODIFY-->
+      </td>
+    </tr>
+
+  </table>
+  <!--End table contain list actor-->
+
+  <!---pagination giúp load danh sách actor khác-->
+  <div class="col-lg-4 float-right">
+    <pagination-controls class="paginate justify-content-center" (pageChange)="p = $event"></pagination-controls>
+  </div>
+</div>
+<script>
+//Full screen image
+$('img[data-enlargable]').addClass('img-enlargable').click(function () {
+    var src = $(this).attr('src');
+    $('<div>').css({
+      background: 'RGBA(0,0,0,.5) url(' + src + ') no-repeat center',
+      backgroundSize: 'contain',
+      width: '100%', height: '100%',
+      position: 'fixed',
+      zIndex: '10000',
+      top: '0', left: '0',
+      cursor: 'zoom-out'
+    }).click(function () {
+      $(this).remove();
+    }).appendTo('body');
+  });
+</script>

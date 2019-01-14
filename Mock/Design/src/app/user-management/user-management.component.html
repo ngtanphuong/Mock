@@ -1,0 +1,121 @@
+  <div class="container-fluid">
+    <div class="row" style="text-align:center">
+      <h1 class="text-center" id="title" style="margin:0 auto">Thông Tin Người Dùng</h1>
+    </div>
+    <br>
+    <div class="row">
+      <div class="col-sm-6" >
+          
+              <div [hidden]="!show">
+                  <div *ngIf="code; else sai" class="alert alert-success"  role="alert">
+                      <div class="container row">
+                        <div class="alert-icon">
+                            <i class="far fa-thumbs-up"></i>
+                        </div>
+                        <br>
+                        <strong> &emsp; &ensp;     Well done!</strong> Thank you, your request was successful.
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                          <span aria-hidden="true">
+                              <i class="fas fa-times"></i>
+                          </span>
+                        </button>
+                      </div>
+                    </div>
+                <ng-template #sai>
+
+                
+                  <div class="alert alert-danger" role="alert">
+                    <div class="container">
+                      <div class="alert-icon">
+                        <i class="now-ui-icons objects_support-17"></i>
+                      </div>
+                      <strong>Oh no!</strong> Your request is unsuccessful, please try again.
+                      <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">
+                          <i class="now-ui-icons ui-1_simple-remove"></i>
+                        </span>
+                      </button>
+                    </div>
+                  </div>
+                </ng-template>
+                </div>
+              </div>
+              <div class="col-sm-6">
+        <div class="input-group">
+         
+          <input type="text" class="form-control" id="searchBar" placeholder="Search by name ............."  [(ngModel)]="nameSearch" (change)="searchlistUser()">
+          <div class="input-group-prepend">
+            <span class="input-group-text" (click)="searchlistUser()"><i class="fab fa-searchengin"></i></span>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <br>
+    <div class="row">
+      <div class="col-md-12">
+        <table id="datatable" class="TFtable " cellspacing="0" width="100%">
+          <thead>
+            <tr>
+              <th>Id</th>
+              <th>Name</th>
+              <th>Gender</th>
+              <th>Birthday</th>
+              <th>Email</th>
+              <th>Phone</th>
+              <th>Username</th>
+              <th>Password</th>
+              <th>Admin</th>
+              <th>Edit</th>
+              <th>Delete</th>
+            </tr>
+          </thead>
+          <tfoot>
+            <tr>
+              <td colspan="100%">
+                <button class="btn btn-primary  btn-round btn-lar" (click)="addModal()">
+                  <i class="fas fa-plus-circle"></i> Add New User
+                </button>
+              </td>
+            </tr>
+          </tfoot>
+          <tbody>
+            <tr *ngFor="let user of lUsers | paginate: { itemsPerPage: 6, currentPage: p }; let i = index">
+              <td>{{user.UserID}}</td>
+              <td>{{user.Name}}</td>
+              <td>
+                <p *ngIf="user.Gender; else gai">Trai</p>
+                <ng-template #gai>
+                    <p>Gai</p>
+                </ng-template>
+              </td>
+              <td>{{user.Birthday | date:'dd-MM-yyyy'}}</td>
+              <td>{{user.Email}}</td>
+              <td>{{user.Phone}}</td>
+              <td>{{user.UserName}}</td>
+              <td class="hidetext">******</td>
+              <td>
+                  <label class="switch">
+                      <input type="checkbox" [checked]=user.Role (click)="setRole(user)">
+                      <span class="slider round"></span>
+                    </label>
+              </td>
+              <td>
+                <button class="btn btn-primary  btn-round" (click)="editModal(user)" >
+                  <i class="fas fa-user-edit"></i>
+                </button>
+              </td>
+              <td>
+                <button class="btn btn-primary  btn-round" (click)="deleteModal(user)"><i class="fas fa-sword"></i></button>
+              </td>
+            </tr>
+          </tbody>
+          
+        </table>
+        <div class="pagination pull-right">
+        <pagination-controls (pageChange)="p = $event"></pagination-controls>
+        </div>
+      </div>
+   
+    </div>
+    </div>
