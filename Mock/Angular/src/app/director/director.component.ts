@@ -155,8 +155,13 @@ export class DirectorComponent implements OnInit {
       'DirectorBirthday': this.directorBirthday,
       'DirectorDescribe': this.directorDescribe,
       'DirectorImg': this.directorImg,
-      'DirectorStatus': true
+      'DirectorStatus': this.directorStatus
     };
+
+    if ( this.directorName === '' || this.directorImg === '' || this.directorDescribe === '') {
+      console.log('YAMETE !');
+      return 'YAMETE !';
+    }
 
     // Call API and add new director to database
     this.directorService.addDirector(parameter).subscribe(data => {

@@ -15,6 +15,19 @@ export class FilmComponent implements OnInit {
   localToken: any;
 
   lstFilm: any = [];
+
+  //
+  selectFilm: any = null;
+
+  lstTypeFilm: any = [];
+  lstTypeFilmNotIn: any = [];
+
+  lstActorFilm: any = [];
+  lstActorFilmNotIn: any = [];
+
+  lstDirectorFilm: any = [];
+  lstDirectorFilmNotIn: any = [];
+
   find: any;
 
   // thuộc tính
@@ -26,12 +39,13 @@ export class FilmComponent implements OnInit {
   filmImage: string;
   Status: boolean;
 
+  filmNameSearch: string;
   // Validate
   _filmNameValidate: string;
   _filmDescribeValidate: string;
   _filmFilmImageValidate: string;
   // rgxNoSpecialChar = new RegExp('^[!@#$%^&*()_+:|<>?~`]*$');
-  rgxNoSpecialChar = new RegExp('^[a-zA-Z0-9 ]*$');
+  rgxNoSpecialChar = new RegExp('^[\^\;!@#$%^&*\(\\)\\{\\}\\+\\-\_+:|<>?~\\\\/\\[\.,\'\\"\\]\\`\]*$');
 
   doSubmit: boolean;
 
@@ -92,20 +106,34 @@ export class FilmComponent implements OnInit {
 
     if (this.localToken == null) {
       this._router.navigateByUrl('login');
-      console.log('Phim: token không tồn tại! đăng nhập lại');
+      // console.log('Phim: token không tồn tại! đăng nhập lại');
     } else {
-      console.log('Phim: local token: ' + this.localToken);
+     //  console.log('Phim: local token: ' + this.localToken);
       this.checkToken();
     }
+  }
+
+  // search
+  searchlistFilm() {
+    if (this.filmNameSearch === '') {
+      this.getData();
+      return;
+    }
+
+    this.filmService.searchData(this.localToken, this.filmNameSearch).subscribe(data => {
+      this.lstFilm = data;
+    }, Error => {
+      // console.log('Get List Film False');
+    });
   }
 
   // lấy list data
   getData() {
     this.filmService.getData(this.localToken).subscribe(data => {
-      console.log('Get List Film Success');
+      // console.log('Get List Film Success');
       this.lstFilm = data;
     }, Error => {
-      console.log('Get List Film False');
+      // console.log('Get List Film False');
     });
   }
 
@@ -115,13 +143,13 @@ export class FilmComponent implements OnInit {
       };
 
       this.filmService.sendToken(params).subscribe(data => {
-        console.log('Phim: token hợp lệ');
+        // console.log('Phim: token hợp lệ');
         this.getData();
       }, Error => {
         localStorage.removeItem('My-Token');
         localStorage.clear();
         this._router.navigateByUrl('login');
-        console.log('Phim: token không tồn tại');
+        // console.log('Phim: token không tồn tại');
       });
   }
 
@@ -142,9 +170,9 @@ export class FilmComponent implements OnInit {
 
     this.filmService.addFilm(params, this.localToken).subscribe(data => {
       this.getData();
-      console.log('Add film succsess');
+      // console.log('Add film succsess');
     }, Error => {
-      console.log('Add Film False');
+      // console.log('Add Film False');
     });
   }
 
@@ -152,9 +180,9 @@ export class FilmComponent implements OnInit {
   removeFilm(i) {
     this.filmService.removeFilm(i , this.localToken).subscribe(data => {
       this.getData();
-      console.log('Remove Film Success');
+      // console.log('Remove Film Success');
     }, Error => {
-      console.log('Remove Film False: ' + Error);
+      // console.log('Remove Film False: ' + Error);
     });
   }
 
@@ -162,9 +190,9 @@ export class FilmComponent implements OnInit {
   updateStatusFilm(i) {
     this.filmService.updateStatusFilm(i, this.localToken).subscribe(data => {
       this.getData();
-      console.log('Update Status Film Success');
+      // console.log('Update Status Film Success');
     }, Error => {
-      console.log('Update Status Film False: ' + Error);
+      // console.log('Update Status Film False: ' + Error);
     });
   }
 
@@ -187,9 +215,9 @@ export class FilmComponent implements OnInit {
 
     this.filmService.findEditFilm(id , this.localToken).subscribe(data => {
       this.find = data;
-      console.log('Find Film Success');
+      // console.log('Find Film Success');
     }, Error => {
-      console.log('Find Film False');
+      // console.log('Find Film False');
     });
   }
 
@@ -211,9 +239,9 @@ export class FilmComponent implements OnInit {
 
     this.filmService.editFilm(params , this.localToken).subscribe(data => {
       this.getData();
-      console.log('Update Succsses');
+      // console.log('Update Succsses');
     }, Error => {
-      console.log('Update False');
+      // console.log('Update False');
     });
   }
 
@@ -249,5 +277,185 @@ export class FilmComponent implements OnInit {
       (<HTMLInputElement>document.getElementById('text_modify')).value = event.target.files[0].name;
     }
   }
+
+  // ###############################TYLE#################################
+  showTypesFilmByFilmID(id) {
+    this.selectFilm = id;
+    this.findTypeByFilmID(id);
+    this.findTypeNotInByFilmID(id);
+  }
+
+  findTypeByFilmID(id) {
+    this.lstTypeFilm = null;
+    this.filmService.findTypeByFilmID(id , this.localToken).subscribe(data => {
+      this.lstTypeFilm = data;
+    }, Error => {
+    });
+  }
+
+  findTypeNotInByFilmID(id) {
+    this.lstTypeFilmNotIn = null;
+    this.filmService.findTypeNotInByFilmID(id , this.localToken).subscribe(data => {
+      this.lstTypeFilmNotIn = data;
+    }, Error => {
+    });
+  }
+
+  updateAddTypeFilm(id) {
+
+    if (this.selectFilm === 0) {
+      return;
+    }
+
+    const params = {
+      'FilmID': this.selectFilm,
+      'TypeID': id,
+    };
+
+    this.filmService.updateAddTypeFilm(params , this.localToken).subscribe(data => {
+      this.lstTypeFilmNotIn = data;
+      this.getData();
+      this.showTypesFilmByFilmID(this.selectFilm);
+    }, Error => {
+    });
+  }
+
+  updateRemoveTypeFilm(id) {
+    if (this.selectFilm === 0) {
+      return;
+    }
+
+    const params = {
+      'FilmID': this.selectFilm,
+      'TypeID': id,
+    };
+
+    this.filmService.updateRemoveTypeFilm(params , this.localToken).subscribe(data => {
+      this.lstTypeFilmNotIn = data;
+      this.getData();
+      this.showTypesFilmByFilmID(this.selectFilm);
+    }, Error => {
+    });
+  }
+
+  // ###############################ACTOR#################################
+  showActorFilmByFilmID(id) {
+    this.selectFilm = id;
+    this.findActorByFilmID(id);
+    this.findActorNotInByFilmID(id);
+  }
+
+  findActorByFilmID(id) {
+    this.lstTypeFilm = null;
+    this.filmService.findActorByFilmID(id , this.localToken).subscribe(data => {
+      this.lstActorFilm = data;
+    }, Error => {
+    });
+  }
+
+  findActorNotInByFilmID(id) {
+    this.lstTypeFilmNotIn = null;
+    this.filmService.findActorNotInByFilmID(id , this.localToken).subscribe(data => {
+      this.lstActorFilmNotIn = data;
+    }, Error => {
+    });
+  }
+
+  updateAddActorFilm(id) {
+
+    if (this.selectFilm === 0) {
+      return;
+    }
+
+    const params = {
+      'FilmID': this.selectFilm,
+      'ActorID': id,
+    };
+
+    this.filmService.updateAddActorFilm(params , this.localToken).subscribe(data => {
+      this.lstTypeFilmNotIn = data;
+      this.getData();
+      this.showActorFilmByFilmID(this.selectFilm);
+    }, Error => {
+    });
+  }
+
+  updateRemoveActorFilm(id) {
+    if (this.selectFilm === 0) {
+      return;
+    }
+
+    const params = {
+      'FilmID': this.selectFilm,
+      'ActorID': id,
+    };
+
+    this.filmService.updateRemoveActorFilm(params , this.localToken).subscribe(data => {
+      this.lstTypeFilmNotIn = data;
+      this.getData();
+      this.showActorFilmByFilmID(this.selectFilm);
+    }, Error => {
+    });
+  }
+
+    // ###############################DIRECTOR#################################
+    showDirectorFilmByFilmID(id) {
+      this.selectFilm = id;
+      this.findDirectorByFilmID(id);
+      this.findDirectorNotInByFilmID(id);
+    }
+
+    findDirectorByFilmID(id) {
+      this.lstDirectorFilm = null;
+      this.filmService.findDirectorByFilmID(id , this.localToken).subscribe(data => {
+        this.lstDirectorFilm = data;
+      }, Error => {
+      });
+    }
+
+    findDirectorNotInByFilmID(id) {
+      this.lstDirectorFilmNotIn = null;
+      this.filmService.findDirectorNotInByFilmID(id , this.localToken).subscribe(data => {
+        this.lstDirectorFilmNotIn = data;
+      }, Error => {
+      });
+    }
+
+    updateAddDirectorFilm(id) {
+
+      if (this.selectFilm === 0) {
+        return;
+      }
+
+      const params = {
+        'FilmID': this.selectFilm,
+        'DirectorID': id,
+      };
+
+      this.filmService.updateAddDirectorFilm(params , this.localToken).subscribe(data => {
+        this.lstDirectorFilmNotIn = data;
+        this.getData();
+        this.showDirectorFilmByFilmID(this.selectFilm);
+      }, Error => {
+      });
+    }
+
+    updateRemoveDirectorFilm(id) {
+      if (this.selectFilm === 0) {
+        return;
+      }
+
+      const params = {
+        'FilmID': this.selectFilm,
+        'DirectorID': id,
+      };
+
+      this.filmService.updateRemoveDirectorFilm(params , this.localToken).subscribe(data => {
+        this.lstDirectorFilmNotIn = data;
+        this.getData();
+        this.showDirectorFilmByFilmID(this.selectFilm);
+      }, Error => {
+      });
+    }
 }
 

@@ -45,7 +45,9 @@ export class ActorComponent implements OnInit {
 
   tActor: Actor;
   rowCount = 5;
-
+  // search input binding
+  nameSearch: string;
+  // obj actor binding
   actorID: number;
   Name: string;
   Image: string;
@@ -75,7 +77,7 @@ export class ActorComponent implements OnInit {
       this.checkToken();
     }
   }
-
+  // --------------------Method with api--------------------------------------------
   checkToken() {
     const params = {
       'Token': this.localToken
@@ -94,30 +96,14 @@ export class ActorComponent implements OnInit {
       return -1;
     });
   }
-  /**
-  * Creating a actor
-  */
-  CreateActor(name: string, img: string, gender: boolean, birthday, Describe: string, Status: boolean): Actor {
-    const actor = new Actor();
-    actor.ActorName = name;
-    actor.Img = img;
-    actor.Birthday = birthday;
-    actor.Gender = gender;
-    actor.Describe = Describe;
-    actor.Status = Status;
-    return actor;
-  }
 
-  // Set default data binding
-  SetDefaultDataBinding() {
-    this.tActor = null;
-    this.Name = '';
-    this.Gender = true;
-    this.Describe = '';
-    this.ImageName = '';
-    this.Image = '';
-    this.Birthday = this.datepipe.transform(new Date(), 'yyyy-MM-dd');
-    this.status = true;
+  searchlistActor() {
+    if (this.nameSearch === '') {
+      this.getAllActor();
+      return;
+    }
+    console.log('search value' + this.nameSearch);
+    this.Actordata.searchActorByName(this.nameSearch, this.localToken).subscribe(res => this.lstActor = res);
   }
 
   // position pagination ----------------
@@ -161,23 +147,6 @@ export class ActorComponent implements OnInit {
       alert('Oops !Tên nhập vào không hợp lệ !');
     }
   }
-  // Set actor id
-  SetActorIDFromModal(id: number) {
-    // console.log("actor id: "+ id);
-    this.actorID = id;
-  }
-
-  // Set actor entity anad image name
-  SetActorFromModal(actor: Actor, nameImg: string) {
-    this.tActor = actor;
-    this.Name = actor.ActorName;
-    this.Image = actor.Img;
-    this.ImageName = nameImg;
-    this.Gender = actor.Gender;
-    this.Birthday = this.datepipe.transform(actor.Birthday, 'yyyy-MM-dd');
-    this.Describe = actor.Describe;
-    this.status = actor.Status;
-  }
   // Change
   ChangeStatus(actor: Actor) {
     this.SetActorIDFromModal(actor.ActorID);
@@ -212,7 +181,49 @@ export class ActorComponent implements OnInit {
       console.log(this.lstActor);
     });
   }
+  // --------------------method not use api------------------------------------------
+  /**
+  * Creating a actor
+  */
+ CreateActor(name: string, img: string, gender: boolean, birthday, Describe: string, Status: boolean): Actor {
+  const actor = new Actor();
+  actor.ActorName = name;
+  actor.Img = img;
+  actor.Birthday = birthday;
+  actor.Gender = gender;
+  actor.Describe = Describe;
+  actor.Status = Status;
+  return actor;
+}
 
+// Set default data binding
+SetDefaultDataBinding() {
+  this.tActor = null;
+  this.Name = '';
+  this.Gender = true;
+  this.Describe = '';
+  this.ImageName = '';
+  this.Image = '';
+  this.Birthday = this.datepipe.transform(new Date(), 'yyyy-MM-dd');
+  this.status = true;
+}
+  // Set actor id
+  SetActorIDFromModal(id: number) {
+    // console.log("actor id: "+ id);
+    this.actorID = id;
+  }
+
+  // Set actor entity anad image name
+  SetActorFromModal(actor: Actor, nameImg: string) {
+    this.tActor = actor;
+    this.Name = actor.ActorName;
+    this.Image = actor.Img;
+    this.ImageName = nameImg;
+    this.Gender = actor.Gender;
+    this.Birthday = this.datepipe.transform(actor.Birthday, 'yyyy-MM-dd');
+    this.Describe = actor.Describe;
+    this.status = actor.Status;
+  }
   // get data image and set text to input tag via ID attribute
   getImageData(event: any, id?: string) {
     this.ImageName = '';
@@ -230,7 +241,6 @@ export class ActorComponent implements OnInit {
       (<HTMLInputElement>document.getElementById(id)).value = this.ImageName;
     }
   }
-
   // -----------------------Lifecycle Hooks------------------------ //
   // tslint:disable-next-line:use-life-cycle-interface
   ngDoCheck() {

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Type, Film } from '../shared/type.model';
 
 @Injectable({
@@ -19,9 +19,16 @@ export class DataTypeService {
   public Delete     = this.UrlAPI + 'DeleteType';
   public GetFilms   = this.UrlAPI + 'GetFilmByTypes';
   public BaseToken  = 'http://localhost:51215/api/login/check';
+
   // GET
-  getData(): Observable<Array<Type>> {
-    return this.http.get<Array<Type>>(this.Get);
+  getData(token): Observable<Array<Type>> {
+    const reqHeader = new HttpHeaders({
+      'Authorization': 'Bearer ' + token
+    });
+
+    return this.http.get<Array<Type>>(this.Get, {
+      headers: reqHeader
+    });
   }
 
   // POST
@@ -30,28 +37,58 @@ export class DataTypeService {
   }
 
   // GET ID
-  getIdData(id: number): Observable<Type> {
-    return this.http.get<Type>(this.GetID + `/${id}`);
+  getIdData(id, token): Observable<Type> {
+    const reqHeader = new HttpHeaders({
+      'Authorization': 'Bearer ' + token
+    });
+
+    return this.http.get<Type>(this.GetID + `/${id}`, {
+      headers: reqHeader
+    });
   }
 
   // GET Film By Type
-  getFilmByType(id: number): Observable<any> {
-    return this.http.get(this.GetFilms + `/${id}`);
+  getFilmByType(id, token): Observable<any> {
+    const reqHeader = new HttpHeaders({
+      'Authorization': 'Bearer ' + token
+    });
+
+    return this.http.get(this.GetFilms + `/${id}`, {
+      headers: reqHeader
+    });
   }
 
   // POST
-  postData(type: Type): Observable<Type> {
-    return this.http.post<Type>(this.Post, type);
+  postData(type, token): Observable<Type> {
+    const reqHeader = new HttpHeaders({
+      'Authorization': 'Bearer ' + token
+    });
+
+    return this.http.post<Type>(this.Post, type, {
+      headers: reqHeader
+    });
   }
 
   // DELETE
-  deleteData(id: number): Observable<Type> {
-    return this.http.delete<Type>(this.Delete + `/${id}`);
+  deleteData(id, token): Observable<Type> {
+    const reqHeader = new HttpHeaders({
+      'Authorization': 'Bearer ' + token
+    });
+
+    return this.http.delete<Type>(this.Delete + `/${id}`, {
+      headers: reqHeader
+    });
   }
 
   // PUT
-  putData( type: Type): Observable<Type> {
-    return this.http.put<Type>(this.Put, type);
+  putData(type, token): Observable<Type> {
+    const reqHeader = new HttpHeaders({
+      'Authorization': 'Bearer ' + token
+    });
+
+    return this.http.put<Type>(this.Put, type, {
+      headers: reqHeader
+    });
   }
 
 }

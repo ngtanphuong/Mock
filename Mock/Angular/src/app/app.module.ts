@@ -13,9 +13,9 @@ import { HomeComponent } from './home/home.component';
 import { LoginComponent } from './login/login.component';
 import { ActorComponent } from 'src/app/actor/actor.component';
 import { UserManagementModule } from './user-management/user-management.module';
+import { FilmBytypeComponent } from './type/film-bytype/film-bytype.component';
 import { DatePipe } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
-import { FilmbytypeComponent } from './type/filmbytype/filmbytype.component';
 
 
 @NgModule({
@@ -27,7 +27,7 @@ import { FilmbytypeComponent } from './type/filmbytype/filmbytype.component';
     DirectorComponent,
     FilmComponent,
     TypeComponent,
-    FilmbytypeComponent,
+    FilmBytypeComponent
   ],
 
   imports: [
@@ -39,6 +39,10 @@ import { FilmbytypeComponent } from './type/filmbytype/filmbytype.component';
     NgxPaginationModule,
     HttpClientModule
   ],
+  entryComponents: [
+    FilmBytypeComponent
+  ],
+
   providers: [DataService, DatePipe],
   bootstrap: [AppComponent]
 })

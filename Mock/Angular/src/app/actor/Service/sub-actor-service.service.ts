@@ -6,7 +6,6 @@ import { SubActor } from '../classSubActor';
   providedIn: 'root'
 })
 export class SubActorServiceService {
-
   // Port
   private Port = 51215;
   // ulr

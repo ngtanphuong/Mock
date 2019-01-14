@@ -1,0 +1,51 @@
+<!-- Phim theo thể loại -->
+<!-- Modal -->
+        <div class="modal-content" style="width: 1070px;">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <!-- <p style="font-size: 100%; color: rgb(0, 72, 255)" class="description text-center">
+                    Thể loại:
+                </p> -->
+            </div>
+            <div class="card-body">
+                <div class="form-group" style="text-align: center;">
+                    <table id="customers">
+                        <thead class="style">
+                            <tr>
+                                <th width="200px">Phim</th>
+                                <th width="270px">Hình ảnh</th>
+                                <th width="90px">Năm SX</th>
+                                <th width="170px">Thể loại</th>
+                                <th width="170px">Diễn viên</th>
+                                <th width="170px">Đạo diễn</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let film of Films | paginate: { itemsPerPage: 4, currentPage: p }; let i = index">
+                                <td>{{film.FilmName}}</td>
+                                <td>{{film.Img}}</td>
+                                <td>{{film.Year | date: 'yyyy'}}</td>
+                                <td>
+                                    <tr *ngFor="let type of film.TypeFilms">
+                                        <p>{{type.NameType}}</p>
+                                    </tr>
+                                </td>
+                                <td>
+                                    <tr *ngFor="let director of film.Directors">
+                                        <p>{{director.DirectorName}}</p>
+                                    </tr> 
+                                </td>
+                                <td>     
+                                    <tr *ngFor="let actor of film.Actors">
+                                    <p>{{actor.ActorName}}</p>
+                                </tr>                                    
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <pagination-controls (pageChange)="p = $event"></pagination-controls>
+                </div>
+            </div>
+        </div>

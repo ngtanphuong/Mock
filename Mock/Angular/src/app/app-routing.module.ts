@@ -1,3 +1,4 @@
+import { AppComponent } from './app.component';
 import { LoginComponent } from './login/login.component';
 import { HomeComponent } from './home/home.component';
 import { FilmComponent } from './film/film.component';
@@ -7,6 +8,7 @@ import { Routes, RouterModule } from '@angular/router';
 import { DirectorComponent } from './director/director.component';
 import { TypeComponent } from './type/type.component';
 import { UserManagementComponent} from './user-management/user-management.component';
+
 const routes: Routes = [
   {
     path: 'login',
@@ -18,7 +20,7 @@ const routes: Routes = [
   },
   {
     path: 'type',
-    component: TypeComponent,
+    component: TypeComponent
   },
   {
     path: 'director',
@@ -33,8 +35,12 @@ const routes: Routes = [
     component: FilmComponent
   },
   {
+    path: 'home',
+    component: AppComponent
+  },
+  {
     path: '',
-    component: HomeComponent
+    component: FilmComponent
   }
 ];
 

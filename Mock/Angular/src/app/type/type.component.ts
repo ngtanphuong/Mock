@@ -1,8 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { DataTypeService } from 'src/app/type/Shared/data-type.service';
-import { Type, Actor, Director } from './shared/type.model';
+import { Type } from './shared/type.model';
+import { FilmBytypeComponent } from '../type/film-bytype/film-bytype.component';
 import { Router } from '@angular/router';
+import { NgbModal, NgbModalOptions } from '@ng-bootstrap/ng-bootstrap';
+
 @Component({
   selector: 'app-type',
   templateUrl: './type.component.html',
@@ -12,52 +14,39 @@ import { Router } from '@angular/router';
 })
 export class TypeComponent implements OnInit {
   // Local Token
-  localToken = localStorage.getItem('My-Token');
+  localToken: any;
+
+  // Thuộc tính phim
+  Films: any = [];
+
   // thuộc tính thể loại
   type: Type;
   Types: any = [];
   idType: number;
   nameType: string;
   index: number;
-
-  // thuộc tính diễn viên
-  actor: Actor;
-  Actors: any = [];
-  idActor: number;
-  nameActor: string;
-
-  // Thuộc tính đạo diễn
-  director: Director;
-  directors: any = [];
-  idDirector: number;
-  nameDirector: string;
-
-  // Thuộc tính phim
-  Films: any = [];
-  idFilm: number;
-  nameFilm: string;
-  img: string;
-  describe: string;
-  rate: string;
-  year: Date;
-  status: boolean;
-
-  // Validate
+  idDelte: number;
   nameTypeValidate: string;
   iconCheck: string;
+
   rgxNoSpecialChar = new RegExp('^[\^\;!@#$%^&*\(\\)\\{\\}\\+\\-\_+:|<>?~\\\\/\\[\.,\'\\"\\]\\`\]*$');
   doSubmit: boolean;
-
   constructor(private modalService: NgbModal, private _data: DataTypeService, private _router: Router) {
-    console.log(this.localToken);
+    this.localToken = localStorage.getItem('My-Token');
+
     if (this.localToken == null) {
       this._router.navigateByUrl('login');
-      console.log('Thể loại: token không tồn tại! đăng nhập lại');
+      console.log('thể loại: token không tồn tại! đăng nhập lại');
     } else {
-      console.log('Thể loại: local token: ' + this.localToken);
+      console.log('thể loại: local token: ' + this.localToken);
       this.checkToken();
     }
   }
+  ngbModalOption: NgbModalOptions = {
+    size: 'lg',
+    windowClass: 'Modal',
+    // centered: true
+  };
 
   // Check Token
   checkToken() {
@@ -66,14 +55,15 @@ export class TypeComponent implements OnInit {
     };
 
     this._data.sendToken(params).subscribe(data => {
-      console.log('Thể loại: token hợp lệ');
+      console.log('thể loại: token hợp lệ');
       this.getData();
     }, Error => {
       localStorage.removeItem('My-Token');
+      localStorage.clear();
       this._router.navigateByUrl('login');
-      console.log('Thể loại: token không tồn tại');
+      console.log('thể loại: token không tồn tại');
     });
-  }
+}
 
   // tslint:disable-next-line:use-life-cycle-interface
   ngDoCheck() {
@@ -103,7 +93,7 @@ export class TypeComponent implements OnInit {
 
   // Lấy danh sách thể loại
   getData() {
-    this._data.getData().subscribe(res => {
+    this._data.getData(this.localToken).subscribe(res => {
       this.Types = res;
       // console.log('Danh sách: ' + this.Types);
     });
@@ -122,7 +112,7 @@ export class TypeComponent implements OnInit {
 
   // Lấy thể loại theo id
   getId(id: number) {
-    return this._data.getIdData(id);
+    return this._data.getIdData(id, this.localToken);
   }
 
 
@@ -132,21 +122,19 @@ export class TypeComponent implements OnInit {
       return;
     }
     this.type = this.createType(this.nameType);
-    this._data.postData(this.type).subscribe(res => {
+    this._data.postData(this.type, this.localToken).subscribe(res => {
       this.getData();
     });
     this.nameType = '';
   }
 
   // Xóa thể loại
-  removeType(i, p) {
-    if (p == null) {
-      p = 1;
-    }
-    i = i + (4 * (p - 1));
-    const id: number = this.Types[i].TypeID;
-    // console.log(id);
-    this._data.deleteData(id).subscribe(res => {
+  getIdDelete(type: Type) {
+    this.idDelte = type.TypeID;
+  }
+
+  removeType() {
+    this._data.deleteData(this.idDelte, this.localToken).subscribe(res => {
       this.getData();
     });
   }
@@ -160,37 +148,23 @@ export class TypeComponent implements OnInit {
     const id: number = this.Types[i].TypeID;
     this.idType = i;
 
-    // console.log('ID : ' + this.idType);
-    this._data.getIdData(id).subscribe(res => this.nameType = res.NameType);
+    console.log('ID : ' + this.idType);
+    this._data.getIdData(id, this.localToken).subscribe(res => this.nameType = res.NameType);
   }
 
   // Thực thi sửa thể loại
   editType() {
     this.type = this.Types[this.idType];
     this.type.NameType = this.nameType;
-    // console.log(this.type);
-    this._data.putData(this.type).subscribe(res => {
+    console.log(this.type);
+    this._data.putData(this.type, this.localToken).subscribe(res => {
       this.getData();
     });
   }
 
-  // Lấy danh sách phim theo thể loại
-  // getDataByType(id: number) {
-  //   this._data.getFilmByType(id).subscribe(res => {
-  //     this.Films = res;
-  //   });
-  // }
-
-  showFilmByType(i, p) {
-    if (p == null) {
-      p = 1;
-    }
-    i = i + (4 * (p - 1));
-    const id: number = this.Types[i].TypeID;
-    console.log('ID : ' + id);
-    this._data.getFilmByType(id).subscribe(res => {
-      this.Films = res;
-      console.log(this.Films);
-    });
+  // Show modal Film by Type
+  filmByType(type: any) {
+    const modalDelRef = this.modalService.open(FilmBytypeComponent, this.ngbModalOption);
+    modalDelRef.componentInstance.id = type.TypeID;
   }
 }

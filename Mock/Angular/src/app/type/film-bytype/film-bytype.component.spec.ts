@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { FilmbytypeComponent } from './filmbytype.component';
+import { FilmBytypeComponent } from './film-bytype.component';
 
-describe('FilmbytypeComponent', () => {
-  let component: FilmbytypeComponent;
-  let fixture: ComponentFixture<FilmbytypeComponent>;
+describe('FilmBytypeComponent', () => {
+  let component: FilmBytypeComponent;
+  let fixture: ComponentFixture<FilmBytypeComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ FilmbytypeComponent ]
+      declarations: [ FilmBytypeComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(FilmbytypeComponent);
+    fixture = TestBed.createComponent(FilmBytypeComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

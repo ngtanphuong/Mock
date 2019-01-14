@@ -25,7 +25,8 @@ export class ActorServiceService {
   private DeleteActorToAPI = `${this.ActorRoute}/api/Actor/DeleteActor`;
   // GET : change status of actor
   private GetChangeStatusActor = `${this.ActorRoute}/api/Actor/EditStatusById`;
-
+  // GET: search actor by name
+  private searchByName = `${this.ActorRoute}/api/Actor/searchListActorByName?name=`;
   private BaseToken = this.ActorRoute + '/api/login/check';
   // --------------------------------------------------------------------------//
 
@@ -95,6 +96,17 @@ export class ActorServiceService {
     });
   }
 
+  // search actor by name
+  searchActorByName(name: string, myToken): Observable<any> {
+    const reqHeader = new HttpHeaders({
+      'Authorization': 'Bearer ' + myToken
+    });
+    return this.http.get<any>(`${this.searchByName}${name}`, {
+      headers: reqHeader
+    });
+  }
+
+  // send token to api
   sendToken(params): Observable<any> {
     return this.http.post(this.BaseToken, params);
   }
