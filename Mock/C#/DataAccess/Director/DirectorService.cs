@@ -94,7 +94,9 @@ namespace DataService.Director
                     DirectorStatus = director.DirectorStatus,
                     DirectorDescribe = director.DirectorDescribe
                 };
+                // Add director
                 ctx.Directors.Add(addDirector);
+                // return 1 if success, 0 if fail
                 return ctx.SaveChanges();
             }
         }
@@ -120,8 +122,41 @@ namespace DataService.Director
                     return ctx.SaveChanges();
                 }
             }
-            //fail delete
-            return -1;
+            return 0;
+        }
+
+        /// <summary>
+        /// Remove director
+        /// </summary>
+        /// <param name="director"> director </param>
+        /// <returns> status remove </returns>
+        public int RemoveDirector(DirectorModel director)
+        {
+            using (FilmDataContext database = new FilmDataContext())
+            {
+                if (director == null)
+                {
+                    return -1;
+                }
+                else
+                {
+                    DataObject.EF.Director _tDirector = new DataObject.EF.Director()
+                    {
+                        DirectorStatus = director.DirectorStatus,
+                        DirectorBirthday = director.DirectorBirthday,
+                        DirectorDescribe = director.DirectorDescribe,
+                        DirectorGender = director.DirectorGender,
+                        DirectorID = director.DirectorID,
+                        DirectorImg = director.DirectorImg,
+                        DirectorName = director.DirectorName
+                    };
+                    // Remove director 
+                    database.Directors.Remove(_tDirector);
+
+                    // return status add ( return 1 if success, 0 if fail
+                    return database.SaveChanges();
+                }
+            }
         }
 
         /// <summary>
@@ -159,6 +194,7 @@ namespace DataService.Director
             return -1;
         }
 
+
         /// <summary>
         /// Find directors by name
         /// </summary>
@@ -188,7 +224,6 @@ namespace DataService.Director
         /// <returns> result of update </returns>
         public int UpdateStatusDirectorByID(int id)
         {
-
             using (ctx = new FilmDataContext())
             {
                 // search director by ID
@@ -204,5 +239,83 @@ namespace DataService.Director
             return -1;
         }
 
+        /// <summary>
+        /// Lấy director phim cua phim đang tìm
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public List<DirectorModel> GetAllListDirectorByFilmID(int id)
+        {
+            return (from directors in ctx.Directors
+                    where (from sub in ctx.SubDirectors where sub.FilmID == id select sub.DirectorID).Contains(directors.DirectorID)
+                    select new DirectorModel
+                    {
+                        DirectorID = directors.DirectorID,
+                        DirectorBirthday = directors.DirectorBirthday,
+                        DirectorDescribe = directors.DirectorDescribe,
+                        DirectorGender = directors.DirectorGender,
+                        DirectorImg = directors.DirectorImg,
+                        DirectorName = directors.DirectorName,
+                        DirectorStatus = directors.DirectorStatus
+                    }).ToList();
+        }
+
+
+        /// <summary>
+        /// Lấy những director không thuộc phim đang tìm
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public List<DirectorModel> GetAllListDirectorNotInFilmByFilmID(int id)
+        {
+            return (from directors in ctx.Directors
+                    where !(from sub in ctx.SubDirectors where sub.FilmID == id select sub.DirectorID).Contains(directors.DirectorID)
+                    select new DirectorModel
+                    {
+                        DirectorID = directors.DirectorID,
+                        DirectorBirthday = directors.DirectorBirthday,
+                        DirectorDescribe = directors.DirectorDescribe,
+                        DirectorGender = directors.DirectorGender,
+                        DirectorImg = directors.DirectorImg,
+                        DirectorName = directors.DirectorName,
+                        DirectorStatus = directors.DirectorStatus
+                    }).ToList();
+        }
+
+
+
+        /// <summary>
+        /// Thêm mới director
+        /// </summary>
+        /// <param name="filmID"></param>
+        /// <param name="typeID"></param>
+        /// <returns></returns>
+        public int AddDirectorForFilm(int filmID, int directorID)
+        {
+            SubDirector sub = new SubDirector()
+            {
+                FilmID = filmID,
+                DirectorID = directorID
+            };
+
+            ctx.SubDirectors.Add(sub);
+
+            return ctx.SaveChanges();
+        }
+
+
+        /// <summary>
+        /// Xóa Director
+        /// </summary>
+        /// <param name="filmID"></param>
+        /// <param name="typeID"></param>
+        /// <returns></returns>
+        public int RemoveDirectorForFilm(int filmID, int directorID)
+        {
+            var sub = ctx.SubDirectors.Where(s => s.FilmID == filmID && s.DirectorID == directorID).FirstOrDefault();
+            ctx.SubDirectors.Remove(sub);
+
+            return ctx.SaveChanges();
+        }
     }
 }

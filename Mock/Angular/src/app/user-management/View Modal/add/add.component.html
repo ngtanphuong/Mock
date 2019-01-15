@@ -1,113 +1,115 @@
-<form class="" #addForm="ngForm">
-  <div class="container">
-    <h1>Add New User</h1>
-    <p>Please fill in this form to add an user.</p>
-    <hr>
-    <div class="form-group">
-      <label for="name">
-        <b>Name</b>
-      </label>
-      <input type="text" class="form-coltrol" [(ngModel)]="nameUser" placeholder="Enter Name" id="name" name="name"
-        required #name="ngModel" required appForbiddenName="Trung">
-      <div *ngIf="name.invalid" class="alert alert-danger">
-        <div *ngIf="name.errors.required">
-          Name is required.
+<div class="centered-modal">
+  <form class="" #addForm="ngForm">
+    <div class="container">
+      <h1>Add New User</h1>
+      <p>Please fill in this form to add an user.</p>
+      <hr>
+      <div class="form-group">
+        <label for="name">
+          <b>Name</b>
+        </label>
+        <input type="text" class="form-coltrol" [(ngModel)]="nameUser" placeholder="Enter Name" id="name" name="name"
+          required #name="ngModel" required appForbiddenName="Trung">
+        <div *ngIf="name.invalid" class="alert alert-danger">
+          <div *ngIf="name.errors.required">
+            Name is required.
+          </div>
+          <div *ngIf="name.errors.forbiddenName">
+            Name must not be Trung.
+          </div>
         </div>
-        <div *ngIf="name.errors.forbiddenName">
-          Name must not be Trung.
-        </div>
-      </div>
 
 
 
-      <label for="email">
-        <b>Email</b>
-      </label>
-      <input type="text" class="form-coltrol" [(ngModel)]="email" placeholder="Enter Email" pattern="[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*"
-        id="email" #email1="ngModel" name="email">
-      <div *ngIf="email1.invalid" class="alert alert-danger">
-        <div *ngIf="email1.errors.pattern">
-          Email erorr.
+        <label for="email">
+          <b>Email</b>
+        </label>
+        <input type="text" class="form-coltrol" [(ngModel)]="email" placeholder="Enter Email" pattern="[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*"
+          id="email" #email1="ngModel" name="email">
+        <div *ngIf="email1.invalid" class="alert alert-danger">
+          <div *ngIf="email1.errors.pattern">
+            Email erorr.
+          </div>
         </div>
-      </div>
-      <label for="phone">
-        <b>Phone</b>
-      </label>
-      <input type="text" class="form-coltrol" [(ngModel)]="phone" placeholder="Enter Phone" pattern="[0-9]*" maxlength="10"
-        name="phone" #phone1="ngModel">
-      <div *ngIf="phone1.invalid" class="alert alert-danger">
-        <div *ngIf="phone1.errors.pattern">
-          Phone must be numbers.
+        <label for="phone">
+          <b>Phone</b>
+        </label>
+        <input type="text" class="form-coltrol" [(ngModel)]="phone" placeholder="Enter Phone" pattern="[0-9]*"
+          maxlength="10" name="phone" #phone1="ngModel">
+        <div *ngIf="phone1.invalid" class="alert alert-danger">
+          <div *ngIf="phone1.errors.pattern">
+            Phone must be numbers.
+          </div>
         </div>
-      </div>
 
-      <label for="username">
-        <b>Username</b>
-      </label>
-      <input type="text" class="form-coltrol" [(ngModel)]="username" placeholder="Enter Username" name="username"
-        minlength="6" maxlength="16" pattern="[a-zA-Z0-9 ]*" #username1="ngModel" required>
-      <div *ngIf="username1.invalid" class="alert alert-danger">
-        <div *ngIf="username1.errors.required">
-          Username is required.
+        <label for="username">
+          <b>Username</b>
+        </label>
+        <input type="text" class="form-coltrol" [(ngModel)]="username" placeholder="Enter Username" name="username"
+          minlength="6" maxlength="16" pattern="[a-zA-Z0-9 ]*" #username1="ngModel" required>
+        <div *ngIf="username1.invalid" class="alert alert-danger">
+          <div *ngIf="username1.errors.required">
+            Username is required.
+          </div>
+          <div *ngIf="username1.errors.pattern">
+            Username must be characters or numbers.
+          </div>
+          <div *ngIf="username1.errors.minlength">
+            Username must be at least 6 characters long.
+          </div>
+          <div *ngIf="username1.errors.maxlength">
+            Username must be at most 16 characters long.
+          </div>
         </div>
-        <div *ngIf="username1.errors.pattern">
-          Username must be characters or numbers.
-        </div>
-        <div *ngIf="username1.errors.minlength">
-          Username must be at least 6 characters long.
-        </div>
-        <div *ngIf="username1.errors.maxlength">
-          Username must be at most 16 characters long.
-        </div>
-      </div>
-      <div *ngIf="exist" class="alert alert-danger">
+        <div *ngIf="exist" class="alert alert-danger">
           Username is already exist.
         </div>
 
-      <label for="password">
-        <b>Password</b>
-      </label>
-      <input type="password" class="form-coltrol" [(ngModel)]="password" placeholder="Enter Password" name="password"
-        minlength="6" maxlength="16" pattern="[a-zA-Z0-9]*" required #password1="ngModel">
-      <div *ngIf="password1.invalid" class="alert alert-danger">
-        <div *ngIf="password1.errors.required">
-          Password is required.
-        </div>
-        <div *ngIf="password1.errors.pattern">
-          Password must be characters or numbers.
-        </div>
-        <div *ngIf="password1.errors.minlength">
-          Password must be at least 6 characters long.
-        </div>
-        <div *ngIf="password1.errors.maxlength">
-          Password must be at most 16 characters long.
-        </div>
-      </div>
-
-    </div>
-
-    <div class="date-gen row col-sm-12" id="date-gen">
-      <div class=" date col-sm-6" style="vertical-align: baseline;" id="date">
-        <input type="date" [(ngModel)]="date" [ngModelOptions]="{standalone: true}" />
-      </div>
-
-      <div class=" row gender col-sm-6 pull-right" id="gender">
-        <div class=" col-sm-12">
-          <input id="toggle-on" class="toggle toggle-left col-sm-6" name="toggle" value="Female" type="radio" checked
-            [(ngModel)]="gender">
-          <label for="toggle-on" class="btn">Female</label>
-          <input id="toggle-off" class="toggle toggle-right col-sm-6" name="toggle" value="Male" type="radio"
-            [(ngModel)]="gender">
-          <label for="toggle-off" class="btn">Male</label>
+        <label for="password">
+          <b>Password</b>
+        </label>
+        <input type="password" class="form-coltrol" [(ngModel)]="password" placeholder="Enter Password" name="password"
+          minlength="6" maxlength="16" pattern="[a-zA-Z0-9]*" required #password1="ngModel">
+        <div *ngIf="password1.invalid" class="alert alert-danger">
+          <div *ngIf="password1.errors.required">
+            Password is required.
+          </div>
+          <div *ngIf="password1.errors.pattern">
+            Password must be characters or numbers.
+          </div>
+          <div *ngIf="password1.errors.minlength">
+            Password must be at least 6 characters long.
+          </div>
+          <div *ngIf="password1.errors.maxlength">
+            Password must be at most 16 characters long.
+          </div>
         </div>
 
       </div>
-    </div>
-    <div class="row">
-      <button type="button" class="cancelbtn form-coltrol btn-round" formnovalidate (click)="activeModal.dismiss('cancel click')">Cancel</button>
-      <button type="submit" class="signupbtn form-coltrol btn-round" (click)="addUser()" [disabled]="!addForm.form.valid">Add
-        User</button>
-    </div>
 
-  </div>
-</form>
+      <div class="date-gen row col-sm-12" id="date-gen">
+        <div class=" date col-sm-6" style="vertical-align: baseline;" id="date">
+          <input type="date" [(ngModel)]="date" [ngModelOptions]="{standalone: true}" />
+        </div>
+
+        <div class=" row gender col-sm-6 pull-right" id="gender">
+          <div class=" col-sm-12">
+            <input id="toggle-on" class="toggle toggle-left col-sm-6" name="toggle" value="Female" type="radio" checked
+              [(ngModel)]="gender">
+            <label for="toggle-on" class="btn">Female</label>
+            <input id="toggle-off" class="toggle toggle-right col-sm-6" name="toggle" value="Male" type="radio"
+              [(ngModel)]="gender">
+            <label for="toggle-off" class="btn">Male</label>
+          </div>
+
+        </div>
+      </div>
+      <div class="row">
+        <button type="button" class="cancelbtn form-coltrol btn-round" formnovalidate (click)="activeModal.dismiss('cancel click')">Cancel</button>
+        <button type="submit" class="signupbtn form-coltrol btn-round" (click)="addUser()" [disabled]="!addForm.form.valid">Add
+          User</button>
+      </div>
+
+    </div>
+  </form>
+</div>

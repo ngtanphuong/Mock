@@ -100,10 +100,10 @@ namespace DataAccess.Types
         ///</summary>
         public TypeFilmModel FindById(int id)
         {
-            var myType = db.TypeFilms.Where(a => a.TypeID == id).Select(aa => new TypeFilmModel
+            var myType = db.TypeFilms.Where(a => a.TypeID == id).Select(t => new TypeFilmModel
             {
-                NameType = aa.NameType,
-                TypeID = aa.TypeID
+                NameType = t.NameType,
+                TypeID = t.TypeID
             });
             TypeFilmModel data = myType.FirstOrDefault();
             return data;
@@ -124,6 +124,72 @@ namespace DataAccess.Types
             // transfer
             // List<TypeFilmModel> list = type;
             return type;
+        }
+
+        //----------------------------------------PhatLA UPDATE CODE--------------------------------------------------
+        /// <summary>
+        /// Lấy type phim cua phim đang tìm
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public List<TypeFilmModel> GetAllListTypeByFilmID(int id)
+        {
+            return (from tyles in db.TypeFilms
+                    where (from sub in db.SubTypes where sub.FilmID == id select sub.TypeID).Contains(tyles.TypeID)
+                    select new TypeFilmModel
+                    {
+                        TypeID = tyles.TypeID,
+                        NameType = tyles.NameType
+                    }).ToList();
+        }
+
+        /// <summary>
+        /// Lấy những type không thuộc phim đang tìm
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public List<TypeFilmModel> GetAllListTypeNotInFilmByFilmID(int id)
+        {
+            return (from tyles in db.TypeFilms
+                    where !(from sub in db.SubTypes where sub.FilmID == id select sub.TypeID).Contains(tyles.TypeID)
+                    select new TypeFilmModel
+                    {
+                        TypeID = tyles.TypeID,
+                        NameType = tyles.NameType
+                    }).ToList();
+        }
+
+        /// <summary>
+        /// Thêm mới type
+        /// </summary>
+        /// <param name="filmID"></param>
+        /// <param name="typeID"></param>
+        /// <returns></returns>
+        public int AddTypeForFilm(int filmID, int typeID)
+        {
+            SubType sub = new SubType()
+            {
+                FilmID = filmID,
+                TypeID = typeID
+            };
+
+            db.SubTypes.Add(sub);
+
+            return db.SaveChanges();
+        }
+
+        /// <summary>
+        /// Xóa type
+        /// </summary>
+        /// <param name="filmID"></param>
+        /// <param name="typeID"></param>
+        /// <returns></returns>
+        public int RemoveTypeForFilm(int filmID, int typeID)
+        {
+            var sub = db.SubTypes.Where(s => s.FilmID == filmID && s.TypeID == typeID).FirstOrDefault();
+            db.SubTypes.Remove(sub);
+
+            return db.SaveChanges();
         }
 
         ///<summary>

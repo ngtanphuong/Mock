@@ -18,15 +18,16 @@ export class DataTypeService {
   public Put        = this.UrlAPI + 'UpdateType';
   public Delete     = this.UrlAPI + 'DeleteType';
   public GetFilms   = this.UrlAPI + 'GetFilmByTypes';
+  public GetName    = this.UrlAPI + 'GetTypeName?name=';
   public BaseToken  = 'http://localhost:51215/api/login/check';
 
   // GET
-  getData(token): Observable<Array<Type>> {
+  getData(token): Observable<Array<any>> {
     const reqHeader = new HttpHeaders({
       'Authorization': 'Bearer ' + token
     });
 
-    return this.http.get<Array<Type>>(this.Get, {
+    return this.http.get<Array<any>>(this.Get, {
       headers: reqHeader
     });
   }
@@ -37,12 +38,23 @@ export class DataTypeService {
   }
 
   // GET ID
-  getIdData(id, token): Observable<Type> {
+  getIdData(id, token): Observable<any> {
     const reqHeader = new HttpHeaders({
       'Authorization': 'Bearer ' + token
     });
 
     return this.http.get<Type>(this.GetID + `/${id}`, {
+      headers: reqHeader
+    });
+  }
+
+  // SEARCH Name
+  searchData(name, token): Observable<any> {
+    const reqHeader = new HttpHeaders({
+      'Authorization': 'Bearer ' + token
+    });
+
+    return this.http.get(this.GetName + name, {
       headers: reqHeader
     });
   }
@@ -59,7 +71,7 @@ export class DataTypeService {
   }
 
   // POST
-  postData(type, token): Observable<Type> {
+ insertData(type, token): Observable<Type> {
     const reqHeader = new HttpHeaders({
       'Authorization': 'Bearer ' + token
     });
@@ -80,13 +92,13 @@ export class DataTypeService {
     });
   }
 
-  // PUT
-  putData(type, token): Observable<Type> {
+  // POST
+  updateData(type, token): Observable<Type> {
     const reqHeader = new HttpHeaders({
       'Authorization': 'Bearer ' + token
     });
 
-    return this.http.put<Type>(this.Put, type, {
+    return this.http.post<Type>(this.Put, type, {
       headers: reqHeader
     });
   }

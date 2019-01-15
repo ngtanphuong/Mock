@@ -1,7 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import { UserDataService } from 'src/app/user-management/user-data.service';
-import { UserDelete, User } from 'src/app/user-management/user';
+import { UserDataService } from '../../user-data.service';
+import { UserDelete, User } from '../../user';
 
 
 

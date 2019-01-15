@@ -9,13 +9,13 @@
     <!--Search actor by name -->
     <div style="width: 50%" class="float-right">
       <input type="text" class="form-control" id="searchBar" placeholder="Tiềm kiếm theo tên diễn viên..." [(ngModel)]="nameSearch"
-        (keyup)="searchlistActor()"/>
+        (keyup)="searchlistActor()" />
     </div>
     <!--Thêm actor mới-->
     <div style="width: 50%" class="float-left">
       <!--button thêm-->
-      <button type="button" class="btn btn-rose" data-toggle="modal" data-target="#AddModal" (click)="SetDefaultDataBinding()">THÊM
-        DIỄN VIÊN MỚI</button>
+      <button type="button" class="btn btn-info" data-toggle="modal" data-target="#AddModal" (click)="SetDefaultDataBinding()">THÊM
+        DIỄN VIÊN MỚI <i class="fas fa-user-plus" style="padding-left: 2px"></i></button>
     </div>
   </div>
   <!--Modal(show dialog thêm infomation of a actor -->
@@ -85,148 +85,262 @@
     </div>
   </div>
   <!--END MODAL ADD ACTOR-->
+  <div>
+    <!--Table list infomation of actors-->
+    <table id="customers" class="table-bordered table-sm card-body">
 
-  <!--Table list infomation of actors-->
-  <table id="customers" class="table-bordered table-sm card-body">
+      <!--Row header-->
+      <tr class="text-center bgBlue">
+        <th>TÊN
+          <!--Sort by name-->
+          <span class="float-right">
+            <ng-container *ngIf="sortName; else elseSortName">
+              <i style="cursor: pointer;" class="fas fa-angle-up" (click)="sortAscByName()"></i>
+            </ng-container>
+            <ng-template #elseSortName>
+              <i style="cursor: pointer;" (click)="sortDesByName()" class="fas fa-angle-down"></i>
+            </ng-template>
+          </span>
+        </th>
+        <th>HÌNH ẢNH
+          <!--Sort by Image-->
+          <span class="float-right">
+            <ng-container *ngIf="sortImg; else elseSortImg">
+              <i style="cursor: pointer;" class="fas fa-angle-up" (click)="sortAscByImg()"></i>
+            </ng-container>
+            <ng-template #elseSortImg>
+              <i style="cursor: pointer;" (click)="sortDesByImg()" class="fas fa-angle-down"></i>
+            </ng-template>
+          </span>
+        </th>
+        <th>GIỚI TÍNH
+          <!--Sort by Gender-->
+          <span class="float-right">
+            <ng-container *ngIf="sortGender; else elseSortGender">
+              <i style="cursor: pointer; padding-left: 2px" class="fas fa-angle-up" (click)="sortAscByGender()"></i>
+            </ng-container>
+            <ng-template #elseSortGender>
+              <i style="cursor: pointer;padding-left: 2px" (click)="sortDesByGender()" class="fas fa-angle-down"></i>
+            </ng-template>
+          </span>
+        </th>
+        <th>NGÀY SINH
+          <!--Sort by Birthday-->
+          <span class="float-right">
+            <ng-container *ngIf="sortDate; else elseSortDate">
+              <i style="cursor: pointer;" class="fas fa-angle-up" (click)="sortAscByBirthday()"></i>
+            </ng-container>
+            <ng-template #elseSortDate>
+              <i style="cursor: pointer;" (click)="sortDesByBirthday()" class="fas fa-angle-down"></i>
+            </ng-template>
+          </span>
+        </th>
+        <th>MÔ TẢ
+          <!--Sort by describe-->
+          <span class="float-right">
+            <ng-container *ngIf="sortDescribe; else elseSortDescribe">
+              <i style="cursor: pointer;" class="fas fa-angle-up" (click)="sortAscByDescribe()"></i>
+            </ng-container>
+            <ng-template #elseSortDescribe>
+              <i style="cursor: pointer;" (click)="sortDesByDescribe()" class="fas fa-angle-down"></i>
+            </ng-template>
+          </span>
+        </th>
+        <th>TRẠNG THÁI
+          <!--Sort by status-->
+          <span class="float-right">
+            <ng-container *ngIf="sortStatus; else elseSortStatus">
+              <i style="cursor: pointer;" class="fas fa-angle-up" (click)="sortAscByStatus()"></i>
+            </ng-container>
+            <ng-template #elseSortStatus>
+              <i style="cursor: pointer;" (click)="sortDesByStatus()" class="fas fa-angle-down"></i>
+            </ng-template>
+          </span>
+        </th>
+        <th>CHỈNH SỬA</th>
+      </tr>
+      <!--End rows header-->
 
-    <!--Row header-->
-    <tr class="text-center bgBlue">
-      <th>TÊN</th>
-      <th>HÌNH ẢNH</th>
-      <th>GIỚI TÍNH</th>
-      <th>NGÀY SINH</th>
-      <th>MÔ TẢ</th>
-      <th>TRẠNG THÁI</th>
-      <th>CHỈNH SỬA</th>
-    </tr>
-    <!--End rows header-->
-
-    <!--rows Actors-->
-    <tr class="text-left" *ngFor="let actor of lstActor | paginate: { itemsPerPage: rowCount, currentPage: p }; let i = index ">
-      <td>{{ actor.ActorName }}</td>
-      <td>
-        <img data-enlargable style="cursor: zoom-in" [src]="actor.Img" alt="Load image is fail" width="200em" height="200em" />
-      </td>
-      <td>
-        <p *ngIf="actor.Gender; else gai">Nam</p>
-        <ng-template #gai>
-          <p>Nữ</p>
+      <!--info rows Actors-->
+      <tr class="text-left" *ngFor="let actor of lstActor | paginate: { itemsPerPage: rowCount, currentPage: p }; let i = index ">
+        <td>{{ actor.ActorName }}</td>
+        <td>
+          <img id="myImg" style="cursor: zoom-in" [src]="actor.Img" alt="Load image is fail" width="100em" height="100em" />
+        </td>
+        <td>
+          <p *ngIf="actor.Gender; else gai">Nam</p>
+          <ng-template #gai>
+            <p>Nữ</p>
+          </ng-template>
+        </td>
+        <td>{{ actor.Birthday | date: 'dd/MM/yyyy' }}</td>
+        <td>{{ actor.Describe }}</td>
+        <td>
+          <span *ngIf="actor.Status; else dangerBadge">
+            <div data-toggle="tooltip" data-placement="bottom" title="Giúp hiển thị thông tin diễn viên này lên web!">
+              <span style="cursor: pointer; color: black;" class="badge badge-pill badge-success" (click)="ChangeStatus(actor)">
+                Hiện diễn viên
+              </span>
+            </div>
+          </span>
+        </td>
+        <ng-template #dangerBadge>
+          <div data-toggle="tooltip" data-placement="bottom" title="Giúp ẩn thị thông tin diễn viên này lên web!">
+            <span style="cursor: pointer; color: black;" class="badge badge-pill badge-danger" (click)="ChangeStatus(actor)">Ẩn
+              diễn viên
+            </span>
+          </div>
         </ng-template>
-      </td>
-      <td>{{ actor.Birthday | date: 'dd/MM/yyyy' }}</td>
-      <td>{{ actor.Describe }}</td>
-      <td>
-        <span *ngIf="actor.Status; else dangerBadge">
-          <span style="cursor: pointer; color: black;" class="badge badge-pill badge-success" (click)="ChangeStatus(actor)">Hiện
-            diễn viên</span>
-        </span>
-      </td>
-      <ng-template #dangerBadge>
-        <span style="cursor: pointer; color: black;" class="badge badge-pill badge-danger" (click)="ChangeStatus(actor)">Ẩn
-          diễn viên</span>
-      </ng-template>
-      <td>
-        <!--Sửa một actor-->
-        <div class="float-right">
-          <!--Xóa một actor-->
-          <button class="btn btn-error float-right" (click)="SetActorIDFromModal(actor.ActorID); RemoveActor()">XÓA</button>
-          <!--button Sửa-->
-          <button class="btn btn-primary float-right" data-toggle="modal" data-target="#ModifyModal" (click)="SetActorIDFromModal(actor.ActorID);SetActorFromModal(actor)">Sửa</button>
-        </div>
+        <td>
+          <!--Sửa một actor-->
+          <div>
+            <!--button Sửa-->
+            <span data-toggle="tooltip" data-placement="bottom" title="Giúp chỉnh sửa thông tin của diễn viên!">
+              <button style="width: 5rem;" class="btn btn-info float-right" data-toggle="modal" data-target="#ModifyModal"
+                (click)="SetActorIDFromModal(actor.ActorID);SetActorFromModal(actor)">
+                <i class="fas fa-pencil-alt"></i>
+              </button>
+            </span>
+            <!--Xóa một actor-->
+            <span data-toggle="tooltip" data-placement="bottom" title="Giúp xóa diễn viên!">
+              <button style="width: 5rem;" class="btn btn-info float-right" data-toggle="modal" data-target="#DeleteActor"
+                (click)="SetActorIDFromModal(actor.ActorID); SetActorFromModal(actor)">
+                <i class="fa fa-trash"></i>
+              </button>
+            </span>
+          </div>
 
-        <!--MODAL (show dialog Sửa infomation of a actor -->
-        <div class="modal fade" id="ModifyModal" tabindex="-1" role="dialog" aria-labelledby="TitleLabelModify"
-          aria-hidden="true">
-          <div class="modal-dialog modal-lg" role="document">
-            <div class="modal-content">
-              <div class="modal-header">
-                <h5 class="modal-title" id="TitleLabelModify">CHỈNH SỬA DIỄN VIÊN : {{Name}}</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                  <span aria-hidden="true">&times;</span>
-                </button>
-              </div>
-              <div class="modal-body">
+          <!--MODAL (show dialog Sửa infomation of a actor -->
+          <div class="modal fade" id="ModifyModal" tabindex="-1" role="dialog" aria-labelledby="TitleLabelModify"
+            aria-hidden="true">
+            <div class="modal-dialog modal-lg" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="TitleLabelModify">CHỈNH SỬA DIỄN VIÊN : {{Name}}</h5>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <div class="modal-body">
 
-                <!--input Name (modify side)-->
-                <div class="modal-body text-left">
-                  <div class="form-group">
-                    <label for="inputNameModify" class="bmd-label-static">TÊN</label>
-                    <input placeholder="Nhập tên diễn viên" type="text" class="form-control" id="inputName" [(ngModel)]="Name"
-                      maxlength="64" #validateName="ngModel">
-                    <!-- <label style="color:red; " *ngIf="checkName"><span>{{ errorMessage }}</span></label>
-                    <ng-container *ngIf="validateName.invalid">
-                        <label  style="color:red; " *ngIf = "username1.errors.maxlength">
-                           <span>Tên diễn viên phải nhiều hơn 64 kí tự.</span>
-                        </label>
-                    </ng-container> -->
-                  </div>
+                  <!--input Name (modify side)-->
+                  <div class="modal-body text-left">
+                    <div class="form-group">
+                      <label for="inputNameModify" class="bmd-label-static">TÊN</label>
+                      <input placeholder="Nhập tên diễn viên" type="text" class="form-control" id="inputName"
+                        [(ngModel)]="Name" maxlength="64" #validateName="ngModel">
+                      <!-- <label style="color:red; " *ngIf="checkName"><span>{{ errorMessage }}</span></label>
+                      <ng-container *ngIf="validateName.invalid">
+                          <label  style="color:red; " *ngIf = "username1.errors.maxlength">
+                            <span>Tên diễn viên phải nhiều hơn 64 kí tự.</span>
+                          </label>
+                      </ng-container> -->
+                    </div>
 
-                  <!--Get image (modify side)-->
-                  <div class="form-group form-file-upload form-file-simple">
-                    <label for="inputImagePath" class="bmd-label-static">HÌNH ẢNH</label>
-                    <input id="text_modify" type="text" class="form-control" value="{{ ImageName }}" placeholder="Click vào đây để thêm ảnh..."
-                      onclick="document.getElementById('fileInput_modify').click();" readonly />
-                    <!-- disabled -->
-                    <input id="fileInput_modify" type="file" style="display:none;" (change)="getImageData($event,'text_modify')" />
-                  </div>
+                    <!--Get image (modify side)-->
+                    <div class="form-group form-file-upload form-file-simple">
+                      <label for="inputImagePath" class="bmd-label-static">HÌNH ẢNH</label>
+                      <input id="text_modify" type="text" class="form-control" value="{{ ImageName }}" placeholder="Click vào đây để thêm ảnh..."
+                        onclick="document.getElementById('fileInput_modify').click();" readonly />
+                      <!-- disabled -->
+                      <input id="fileInput_modify" type="file" style="display:none;" (change)="getImageData($event,'text_modify')" />
+                    </div>
 
-                  <!--input gender (modify side)-->
-                  <div class="form-group">
-                    <label for="GenderoptionsModify">GIỚI TÍNH</label>
-                    <select class="form-control selectpicker" data-style="btn btn-link" id="Genderoptionsmodify"
-                      [(ngModel)]="Gender">
-                      <option value="true">Nam</option>
-                      <option value="false">Nữ</option>
-                    </select>
-                  </div>
+                    <!--input gender (modify side)-->
+                    <div class="form-group">
+                      <label for="GenderoptionsModify">GIỚI TÍNH</label>
+                      <select class="form-control selectpicker" data-style="btn btn-link" id="Genderoptionsmodify"
+                        [(ngModel)]="Gender">
+                        <option value="true">Nam</option>
+                        <option value="false">Nữ</option>
+                      </select>
+                    </div>
 
-                  <!--input birthday (modify side)-->
-                  <div class="form-group bmd-form-group is-filled">
-                    <label class="label-control bmd-label-static">NGÀY SINH</label>
-                    <input type="date" class="form-control" [(ngModel)]="Birthday">
-                  </div>
-                  <!--input Decribe (modify side)-->
-                  <div class="form-group bmd-form-group">
-                    <label for="lbStoryModify" class="bmd-label-static">MÔ TẢ</label>
-                    <textarea class="form-control" id="inputDecribeModify" rows="5" [(ngModel)]="Describe">{{Decribe}}</textarea>
-                  </div>
+                    <!--input birthday (modify side)-->
+                    <div class="form-group bmd-form-group is-filled">
+                      <label class="label-control bmd-label-static">NGÀY SINH</label>
+                      <input type="date" class="form-control" [(ngModel)]="Birthday">
+                    </div>
+                    <!--input Decribe (modify side)-->
+                    <div class="form-group bmd-form-group">
+                      <label for="lbStoryModify" class="bmd-label-static">MÔ TẢ</label>
+                      <textarea class="form-control" id="inputDecribeModify" rows="5" [(ngModel)]="Describe">{{Decribe}}</textarea>
+                    </div>
 
-                  <!--input status (modify side)-->
-                  <div class="form-group">
-                    <label for="StatusOptionsAdd">TRẠNG THÁI</label>
-                    <select class="form-control selectpicker" data-style="btn btn-link" id="Statusoptions" [(ngModel)]="status">
-                      <option value="true">Hiện diễn viên</option>
-                      <option value="false">Ẩn diễn viên</option>
-                    </select>
+                    <!--input status (modify side)-->
+                    <div class="form-group">
+                      <label for="StatusOptionsAdd">TRẠNG THÁI</label>
+                      <select class="form-control selectpicker" data-style="btn btn-link" id="Statusoptions"
+                        [(ngModel)]="status">
+                        <option value="true">Hiện diễn viên</option>
+                        <option value="false">Ẩn diễn viên</option>
+                      </select>
+                    </div>
+                    <!-- END input status (modify side)-->
+
                   </div>
-                  <!-- END input status (modify side)-->
+                  <!--Button close and save change-->
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">ĐÓNG</button>
+                    <button type="button" class="btn btn-primary" data-dismiss="modal" (click)="ModifyActor();">CHỈNH
+                      SỬA</button>
+                  </div>
 
                 </div>
-                <!--Button close and save change-->
-                <div class="modal-footer">
-                  <button type="button" class="btn btn-secondary" data-dismiss="modal">ĐÓNG</button>
-                  <button type="button" class="btn btn-primary" data-dismiss="modal" (click)="ModifyActor();">CHỈNH SỬA</button>
-                </div>
 
               </div>
-
             </div>
           </div>
-        </div>
-        <!--END MODAL MODIFY-->
-      </td>
-    </tr>
+          <!--END MODAL MODIFY-->
+        </td>
+      </tr>
 
-  </table>
+    </table>
+  </div>
   <!--End table contain list actor-->
 
   <!---pagination giúp load danh sách actor khác-->
-  <div class="col-lg-4 float-right">
+  <div class="float-right">
     <pagination-controls class="paginate justify-content-center" (pageChange)="p = $event"></pagination-controls>
   </div>
 </div>
+
+<!-- Delete actor (model) -->
+
+<div class="modal fade" id="DeleteActor" tabindex="-1" role="dialog" aria-labelledby="DeleteActor" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="align-center">XÓA DIỄN VIÊN</h4>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form>
+          <p style="font-size: 17px; color:teal;">
+            Bạn đang muốn xóa diễn viên: <input style="border: none; color:red;" type="text" [(ngModel)]="Name"
+              [ngModelOptions]="{standalone: true}" readonly>
+          </p>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="reset" class="btn btn-success" data-dismiss="modal">Cancel
+          <div class="ripple-container"></div></button>
+        <button type="reset" class="btn btn-danger float-right" data-dismiss="modal" (click)="RemoveActor()">
+          OK <div class="ripple-container"></div></button>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- The Modal full img -->
+<div id="myModal1" class="MyModal">
+  <span class="close">&times;</span>
+  <img class="MyModal-content" id="imgActor">
+  <div id="Mycaption"></div>
+</div>
 <script>
-  //Full screen image
+  // Full screen image
   $('img[data-enlargable]').addClass('img-enlargable').click(function () {
     var src = $(this).attr('src');
     $('<div>').css({
@@ -242,5 +356,33 @@
     }).click(function () {
       $(this).remove();
     }).appendTo('body');
+  });
+  // tooltip  
+  $(function () {
+    $('[data-toggle="tooltip"]').tooltip()
+  });
+</script>
+<script>
+  $(function () {
+    // Get the modal
+    var modal = document.getElementById('myModal1');
+
+    // Get the image and insert it inside the modal - use its "alt" text as a caption
+    var img = document.getElementById('myImg');
+    var modalImg = document.getElementById("imgActor");
+    var captionText = document.getElementById("Mycaption");
+    img.onclick = function () {
+      modal.style.display = "block";
+      modalImg.src = this.src;
+      captionText.innerHTML = this.alt;
+    }
+
+    // Get the <span> element that closes the modal
+    var span = document.getElementsByClassName("close")[0];
+
+    // When the user clicks on <span> (x), close the modal
+    span.onclick = function () {
+      modal.style.display = "none";
+    }
   });
 </script>

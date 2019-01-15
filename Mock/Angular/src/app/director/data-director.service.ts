@@ -1,7 +1,7 @@
 import { Director } from './classDirector';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable, of } from 'rxjs';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root'
@@ -9,58 +9,92 @@ import { HttpClient } from '@angular/common/http';
 
 export class DataDirectorService {
 
- // Port default
- private DefaultPort = '51215';
+  // Port default
+  private DefaultPort = '51215';
 
- // Default path
- private DefaultUrl = 'http://localhost:' + this.DefaultPort + '/api/director/';
+  // Default path
+  private DefaultUrl = 'http://localhost:' + this.DefaultPort + '/api/director/';
 
- // API token
- private BaseToken = 'http://localhost:' + this.DefaultPort + '/api/login/check';
+  // API token
+  private BaseToken = 'http://localhost:' + this.DefaultPort + '/api/login/check';
 
- // API
- private UrlAPI = this.DefaultUrl + 'getalldirectors/';
- private UrlAPI_Add = this.DefaultUrl + 'AddNewDirector/';
- private UrlAPI_Del = this.DefaultUrl + 'RemoveDirectorByID/';
- private UrlAPI_FindID = this.DefaultUrl + 'FindDirectorByID/';
- private UrlAPI_Edit = this.DefaultUrl + 'EditDirector/';
- private UrlAPI_UpdateStatus = this.DefaultUrl + 'UpdateStatusDirectorByID/';
+  // API
+  private UrlAPI = this.DefaultUrl + 'getalldirectors/';
+  private UrlAPI_Add = this.DefaultUrl + 'AddNewDirector/';
+  private UrlAPI_Del = this.DefaultUrl + 'RemoveDirectorByID/';
+  private UrlAPI_FindID = this.DefaultUrl + 'FindDirectorByID/';
+  private UrlAPI_Edit = this.DefaultUrl + 'EditDirector/';
+  private UrlAPI_UpdateStatus = this.DefaultUrl + 'UpdateStatusDirectorByID/';
 
- // Constructer
- constructor(private http: HttpClient) { }
+  // Constructer
+  constructor(private http: HttpClient) { }
 
- // Get data from server
- getData(): Observable<any> {
-   // return this.http.get(this.UrlAPI);
-   return this.http.get(this.UrlAPI);
- }
+  // Get data from server
+  getData(token): Observable<any> {
+    const reqHeader = new HttpHeaders({
+      'Authorization': 'Bearer ' + token
+    });
 
- // send token
- sendToken(params): Observable<any> {
-  return this.http.post(this.BaseToken, params);
-}
+    return this.http.get(this.UrlAPI,  {
+      headers: reqHeader
+    });
+  }
 
- // Add new director
- addDirector(params): Observable<any> {
-   return this.http.post(this.UrlAPI_Add, params);
- }
+  // send token
+  sendToken(params): Observable<any> {
+    return this.http.post(this.BaseToken, params);
+  }
 
- // Remove director
- removeDirector(i): Observable<any> {
-   return this.http.get(this.UrlAPI_Del + i);
- }
+  // Add new director
+  addDirector(params, token): Observable<any> {
+    const reqHeader = new HttpHeaders({
+      'Authorization': 'Bearer ' + token
+    });
 
- findDirector(i): Observable<any> {
-  return this.http.get(this.UrlAPI_FindID + i);
- }
+    return this.http.post(this.UrlAPI_Add, params, {
+      headers: reqHeader
+    });
+  }
 
- // Edit director
- findEditDirector(params): Observable<any> {
-   return this.http.post(this.UrlAPI_Edit, params);
- }
+  // Remove director
+  removeDirector(i, token): Observable<any> {
+    const reqHeader = new HttpHeaders({
+      'Authorization': 'Bearer ' + token
+    });
 
- // Edit gender director
- updateStatusDirector(i): Observable<any> {
-  return this.http.get(this.UrlAPI_UpdateStatus + i);
- }
+    return this.http.get(this.UrlAPI_Del + i, {
+      headers: reqHeader
+    });
+  }
+
+  // search director
+  findDirector(i, token): Observable<any> {
+    const reqHeader = new HttpHeaders({
+      'Authorization': 'Bearer ' + token
+    });
+    return this.http.get(this.UrlAPI_FindID + i,  {
+      headers: reqHeader
+    });
+  }
+
+  // Edit director
+  findEditDirector(params, token): Observable<any> {
+    const reqHeader = new HttpHeaders({
+      'Authorization': 'Bearer ' + token
+    });
+    return this.http.post(this.UrlAPI_Edit, params,  {
+      headers: reqHeader
+    });
+  }
+
+  // Edit gender director
+  updateStatusDirector(i, token): Observable<any> {
+    const reqHeader = new HttpHeaders({
+      'Authorization': 'Bearer ' + token
+    });
+
+    return this.http.get(this.UrlAPI_UpdateStatus + i,  {
+      headers: reqHeader
+    });
+  }
 }

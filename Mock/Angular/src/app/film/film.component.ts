@@ -49,6 +49,12 @@ export class FilmComponent implements OnInit {
 
   doSubmit: boolean;
 
+  // sort
+  sortName: boolean;
+  sortID: boolean;
+  sortDate: boolean;
+  sortStatus: boolean;
+  sortPic: boolean;
   // life cycle hook
   ngOnInit() {
 
@@ -65,35 +71,35 @@ export class FilmComponent implements OnInit {
     if (this.filmName === '') {
       this._filmNameValidate = 'Tên phim không được bỏ trống !';
       this.doSubmit = false;
-      console.log('Validate error film name is blank');
+      // console.log('Validate error film name is blank');
       return;
     }
 
     if (!this.rgxNoSpecialChar.test(this.filmName)) {
       this._filmNameValidate = 'Tên phim không được có kí tự đặc biệt !';
       this.doSubmit = false;
-      console.log('Validate error film name');
+      // console.log('Validate error film name');
       return;
     }
 
     if (this.describe === '') {
       this._filmDescribeValidate = 'Giới thiệu phim không được bỏ trống !';
       this.doSubmit = false;
-      console.log('Validate error film describe is blank');
+      // console.log('Validate error film describe is blank');
       return;
     }
 
     if (!this.rgxNoSpecialChar.test(this.describe)) {
       this._filmDescribeValidate = 'Giới thiệu phim không được có kí tự đặc biệt !';
       this.doSubmit = false;
-      console.log('Validate error film describe');
+      // console.log('Validate error film describe');
       return;
     }
 
     if (this.filmImage === '') {
       this._filmFilmImageValidate = 'Tên phim không được bỏ trống !';
       this.doSubmit = false;
-      console.log('Validate error film image is blank');
+      // console.log('Validate error film image is blank');
       return;
     }
 
@@ -111,7 +117,59 @@ export class FilmComponent implements OnInit {
      //  console.log('Phim: local token: ' + this.localToken);
       this.checkToken();
     }
+
+    this.sortName = true;
+    this.sortID = true;
+    this.sortDate = true;
+    this.sortStatus = true;
+    this.sortPic = true;
   }
+
+  sortAscByID() {
+    this.lstFilm.sort((a, b) => a.FilmID.toString().localeCompare(b.FilmID.toString()));
+    this.sortID = !this.sortID;
+  }
+  sortDesByID() {
+    this.lstFilm.sort((a, b) => b.FilmID.toString().localeCompare(a.FilmID.toString()));
+    this.sortID = !this.sortID;
+  }
+
+  sortAscByName() {
+    this.lstFilm.sort((a, b) => a.FilmName.localeCompare(b.FilmName));
+    this.sortName = !this.sortName;
+  }
+  sortDesByName() {
+    this.lstFilm.sort((a, b) => b.FilmName.localeCompare(a.FilmName));
+    this.sortName = !this.sortName;
+  }
+
+  sortAscByDate() {
+    this.lstFilm.sort((a, b) => a.Year.localeCompare(b.Year));
+    this.sortDate = !this.sortDate;
+  }
+  sortDesByDate() {
+    this.lstFilm.sort((a, b) => b.Year.localeCompare(a.Year));
+    this.sortDate = !this.sortDate;
+  }
+
+  sortAscByStatus() {
+    this.lstFilm.sort((a, b) => a.Status.toString().localeCompare(b.Status.toString()));
+    this.sortStatus = !this.sortStatus;
+  }
+  sortDesByStatus() {
+    this.lstFilm.sort((a, b) => b.Status.toString().localeCompare(a.Status.toString()));
+    this.sortStatus = !this.sortStatus;
+  }
+
+  sortAscByPic() {
+    this.lstFilm.sort((a, b) => a.Img.localeCompare(b.Img));
+    this.sortPic = !this.sortPic;
+  }
+  sortDesByPic() {
+    this.lstFilm.sort((a, b) => b.Img.localeCompare(a.Img));
+    this.sortPic = !this.sortPic;
+  }
+
 
   // search
   searchlistFilm() {

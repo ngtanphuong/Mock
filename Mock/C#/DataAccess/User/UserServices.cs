@@ -11,10 +11,10 @@ namespace DataAccess.User
 {
     public class UserServices : IUserServices
     {
-       
+
         public int AddUser(UserModel user)
         {
-            using (FilmDataContext ctx =new FilmDataContext())
+            using (FilmDataContext ctx = new FilmDataContext())
             {
                 if (user == null)
                 {
@@ -30,10 +30,10 @@ namespace DataAccess.User
                     Gender = user.Gender,
                     Phone = user.Phone,
                     Name = user.Name,
-                    Password =user.Password,
+                    Password = user.Password,
                     isAdmin = user.isAdmin,
                     status = true
-                   
+
                     // AccessDate = user.AccessDate,
                     // AccessToken = user.AccessToken
                 };
@@ -58,7 +58,7 @@ namespace DataAccess.User
                     userToEdit.Gender = user.Gender;
                     userToEdit.isAdmin = user.isAdmin;
                     userToEdit.status = user.status;
-                    
+
                     return ctx.SaveChanges();
                 }
                 else return 0;
@@ -75,8 +75,8 @@ namespace DataAccess.User
                     return ctx.SaveChanges();
                 }
                 else return 0;
-                
-               
+
+
             }
         }
 
@@ -110,59 +110,59 @@ namespace DataAccess.User
                     Password = a.Password,
                     isAdmin = a.isAdmin,
                     filmModel = (from film in ctx.Films
-                                join sub in ctx.SubUsers
-                                on film.FilmID equals sub.FilmID
-                                where sub.UserID == a.UserID
-                                select new FilmModel
-                                {
-                                    FilmID = film.FilmID,
-                                    FilmName = film.FilmName,
-                                    Describe = film.Describe,
-                                    Rate = film.Rate,
-                                    Year = film.Year,
-                                    Img = film.Img,
-                                    Status = film.Status,
-                                    //// thể loại phim
-                                    //TypeFilms = (from type in ctx.TypeFilms
-                                    //             join sub in ctx.SubTypes
-                                    //             on type.TypeID equals sub.TypeID
-                                    //             where sub.FilmID == film.FilmID
-                                    //             select new TypeFilmModel
-                                    //             {
-                                    //                 TypeID = type.TypeID,
-                                    //                 NameType = type.NameType
-                                    //             }).ToList(),
-                                    //// diễn viên tham gia
-                                    //Actors = (from actor in ctx.Actors
-                                    //          join sub in ctx.SubActors
-                                    //          on actor.ActorID equals sub.ActorID
-                                    //          where sub.FilmID == film.FilmID
-                                    //          select new ActorModel
-                                    //          {
-                                    //              ActorID = actor.ActorID,
-                                    //              ActorName = actor.ActorName,
-                                    //              Birthday = actor.Birthday,
-                                    //              Describe = actor.Describe,
-                                    //              Gender = actor.Gender,
-                                    //              Img = actor.Img,
-                                    //              Status = actor.Status
-                                    //          }).ToList(),
-                                    //// đạo diễn
-                                    //Directors = (from director in ctx.Directors
-                                    //             join sub in ctx.SubDirectors
-                                    //             on director.DirectorID equals sub.DirectorID
-                                    //             where sub.FilmID == film.FilmID
-                                    //             select new DirectorModel
-                                    //             {
-                                    //                 DirectorBirthday = director.DirectorBirthday,
-                                    //                 DirectorDescribe = director.DirectorDescribe,
-                                    //                 DirectorGender = director.DirectorGender,
-                                    //                 DirectorID = director.DirectorID,
-                                    //                 DirectorImg = director.DirectorImg,
-                                    //                 DirectorName = director.DirectorName,
-                                    //                 DirectorStatus = director.DirectorStatus
-                                    //             }).ToList()
-                                }).ToList()
+                                 join sub in ctx.SubUsers
+                                 on film.FilmID equals sub.FilmID
+                                 where sub.UserID == a.UserID
+                                 select new FilmModel
+                                 {
+                                     FilmID = film.FilmID,
+                                     FilmName = film.FilmName,
+                                     Describe = film.Describe,
+                                     Rate = film.Rate,
+                                     Year = film.Year,
+                                     Img = film.Img,
+                                     Status = film.Status,
+                                     //// thể loại phim
+                                     //TypeFilms = (from type in ctx.TypeFilms
+                                     //             join sub in ctx.SubTypes
+                                     //             on type.TypeID equals sub.TypeID
+                                     //             where sub.FilmID == film.FilmID
+                                     //             select new TypeFilmModel
+                                     //             {
+                                     //                 TypeID = type.TypeID,
+                                     //                 NameType = type.NameType
+                                     //             }).ToList(),
+                                     //// diễn viên tham gia
+                                     //Actors = (from actor in ctx.Actors
+                                     //          join sub in ctx.SubActors
+                                     //          on actor.ActorID equals sub.ActorID
+                                     //          where sub.FilmID == film.FilmID
+                                     //          select new ActorModel
+                                     //          {
+                                     //              ActorID = actor.ActorID,
+                                     //              ActorName = actor.ActorName,
+                                     //              Birthday = actor.Birthday,
+                                     //              Describe = actor.Describe,
+                                     //              Gender = actor.Gender,
+                                     //              Img = actor.Img,
+                                     //              Status = actor.Status
+                                     //          }).ToList(),
+                                     //// đạo diễn
+                                     //Directors = (from director in ctx.Directors
+                                     //             join sub in ctx.SubDirectors
+                                     //             on director.DirectorID equals sub.DirectorID
+                                     //             where sub.FilmID == film.FilmID
+                                     //             select new DirectorModel
+                                     //             {
+                                     //                 DirectorBirthday = director.DirectorBirthday,
+                                     //                 DirectorDescribe = director.DirectorDescribe,
+                                     //                 DirectorGender = director.DirectorGender,
+                                     //                 DirectorID = director.DirectorID,
+                                     //                 DirectorImg = director.DirectorImg,
+                                     //                 DirectorName = director.DirectorName,
+                                     //                 DirectorStatus = director.DirectorStatus
+                                     //             }).ToList()
+                                 }).ToList()
                     //,AccessDate = user.AccessDate,
                     //AccessToken = user.AccessToken
                 }).ToList();
@@ -186,7 +186,21 @@ namespace DataAccess.User
                     Phone = aa.Phone,
                     Name = aa.Name,
                     Password = aa.Password,
-                    isAdmin = aa.isAdmin
+                    isAdmin = aa.isAdmin,
+                    filmModel = (from film in ctx.Films
+                                 join sub in ctx.SubUsers
+                                 on film.FilmID equals sub.FilmID
+                                 where sub.UserID == aa.UserID
+                                 select new FilmModel
+                                 {
+                                     FilmID = film.FilmID,
+                                     FilmName = film.FilmName,
+                                     Describe = film.Describe,
+                                     Rate = film.Rate,
+                                     Year = film.Year,
+                                     Img = film.Img,
+                                     Status = film.Status,
+                                 }).ToList()
                     //,AccessDate = user.AccessDate,
                     //AccessToken = user.AccessToken
                 });
@@ -206,6 +220,43 @@ namespace DataAccess.User
                     return ctx.SaveChanges();
                 }
                 else return 0;
+            }
+        }
+
+        public UserModel GetUserByUsername(string username)
+        {
+            using (FilmDataContext ctx = new FilmDataContext())
+            {
+                var myUser = ctx.Users.Where(a => a.UserName == username).Select(aa => new UserModel
+                {
+                    UserID = aa.UserID,
+                    UserName = aa.UserName,
+                    Birthday = aa.Birthday,
+                    Email = aa.Email,
+                    Gender = aa.Gender,
+                    Phone = aa.Phone,
+                    Name = aa.Name,
+                    Password = aa.Password,
+                    isAdmin = aa.isAdmin,
+                    filmModel = (from film in ctx.Films
+                                 join sub in ctx.SubUsers
+                                 on film.FilmID equals sub.FilmID
+                                 where sub.UserID == aa.UserID
+                                 select new FilmModel
+                                 {
+                                     FilmID = film.FilmID,
+                                     FilmName = film.FilmName,
+                                     Describe = film.Describe,
+                                     Rate = film.Rate,
+                                     Year = film.Year,
+                                     Img = film.Img,
+                                     Status = film.Status,
+                                 }).ToList()
+                    //,AccessDate = user.AccessDate,
+                    //AccessToken = user.AccessToken
+                });
+                UserModel data = myUser.FirstOrDefault();
+                return data;
             }
         }
     }

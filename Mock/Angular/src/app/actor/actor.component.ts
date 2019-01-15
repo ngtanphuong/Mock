@@ -17,7 +17,8 @@ import { DatePipe } from '@angular/common';
   ],
   imports: [
     NgxPaginationModule,
-    NgbDatepicker]
+    NgbDatepicker,
+  ]
 })
 
 @Component({
@@ -59,7 +60,13 @@ export class ActorComponent implements OnInit {
 
   // error message
   errorMessage = '';
-
+  // check sort value
+  sortName: boolean;
+  sortDate: boolean;
+  sortGender: boolean;
+  sortImg: boolean;
+  sortStatus: boolean;
+  sortDescribe: boolean;
   // current time for datatimepicker
   today: string = new Date().toString();
   // contructor
@@ -68,12 +75,12 @@ export class ActorComponent implements OnInit {
     private _router: Router,
     private datepipe: DatePipe,
     private SubActor: SubActorServiceService) {
-    console.log(this.localToken);
+    // console.log(this.localToken);
     if (this.localToken == null) {
       this._router.navigateByUrl('login');
-      console.log('Phim: token không tồn tại! đăng nhập lại');
+      // console.log('Phim: token không tồn tại! đăng nhập lại');
     } else {
-      console.log('Phim: local token: ' + this.localToken);
+      // console.log('Phim: local token: ' + this.localToken);
       this.checkToken();
     }
   }
@@ -84,15 +91,14 @@ export class ActorComponent implements OnInit {
     };
 
     this.Actordata.sendToken(params).subscribe(data => {
-      console.log('Phim: token hợp lệ');
-      console.log(data);
-    this.getAllActor();
+      // console.log('Phim: token hợp lệ');
+      // console.log(data);
       return 1;
     }, Error => {
       localStorage.removeItem('My-Token');
       localStorage.clear();
       this._router.navigateByUrl('login');
-      console.log('Phim: token không tồn tại');
+      // console.log('Phim: token không tồn tại');
       return -1;
     });
   }
@@ -102,7 +108,7 @@ export class ActorComponent implements OnInit {
       this.getAllActor();
       return;
     }
-    console.log('search value' + this.nameSearch);
+   // console.log('search value' + this.nameSearch);
     this.Actordata.searchActorByName(this.nameSearch, this.localToken).subscribe(res => this.lstActor = res);
   }
 
@@ -114,26 +120,28 @@ export class ActorComponent implements OnInit {
   // ------------------------------------
   DeleteSubActor(id: number) {
     this.SubActor.removeSubActorById(id, this.localToken).subscribe(
-      res => {console.log('OK Xóa thành công!'); });
+      res => {
+        // console.log('OK Xóa thành công!');
+      });
   }
   /**
    * Remove the Actor
    */
   RemoveActor() {
     // log to check id actor
-    console.log(this.actorID);
+    // console.log(this.actorID);
     this.DeleteSubActor(this.actorID);
     this.Actordata.removeActor(this.actorID, this.localToken).subscribe(
       res => {
         this.getAllActor();
-        console.log('xóa ok rồi nè senpai <3');
+        // console.log('xóa ok rồi nè senpai <3');
       });
   }
 
   // add new  actor
   AddActor() {
     if (!this.checkName) {
-      console.log(this.Name);
+      // console.log(this.Name);
       // Create actor
       this.tActor = this.CreateActor(this.Name, this.Image, this.Gender, this.Birthday, this.Describe, this.status);
       // console.log(this.tActor);
@@ -150,10 +158,10 @@ export class ActorComponent implements OnInit {
   // Change
   ChangeStatus(actor: Actor) {
     this.SetActorIDFromModal(actor.ActorID);
-    console.log(this.actorID);
+    // console.log(this.actorID);
     this.Actordata.ChangeStatusActor(actor.ActorID, this.localToken).subscribe(
       res => {
-        console.log('Change status sucess');
+        // console.log('Change status sucess');
         this.getAllActor();
       });
   }
@@ -178,7 +186,7 @@ export class ActorComponent implements OnInit {
   getAllActor() {
     this.Actordata.getActor(this.localToken).subscribe(res => {
       this.lstActor = res;
-      console.log(this.lstActor);
+      // console.log(this.lstActor);
     });
   }
   // --------------------method not use api------------------------------------------
@@ -214,7 +222,7 @@ SetDefaultDataBinding() {
   }
 
   // Set actor entity anad image name
-  SetActorFromModal(actor: Actor, nameImg: string) {
+  SetActorFromModal(actor: Actor, nameImg?: string) {
     this.tActor = actor;
     this.Name = actor.ActorName;
     this.Image = actor.Img;
@@ -241,6 +249,62 @@ SetDefaultDataBinding() {
       (<HTMLInputElement>document.getElementById(id)).value = this.ImageName;
     }
   }
+
+  // ---------------------- Sort Function ------------------------- //
+  // ascend by name
+  sortAscByName() {
+    this.lstActor.sort((a, b) => a.ActorName.localeCompare(b.ActorName));
+    this.sortName = !this.sortName;
+  }
+  sortDesByName() {
+    this.lstActor.sort((a, b) => b.ActorName.localeCompare(a.ActorName));
+    this.sortName = !this.sortName;
+  }
+  // ascend by Birthday
+  sortAscByBirthday() {
+    this.lstActor.sort((a, b) => a.Birthday.localeCompare(b.Birthday));
+    this.sortDate = !this.sortDate;
+  }
+  sortDesByBirthday() {
+    this.lstActor.sort((a, b) => b.Birthday.localeCompare(a.Birthday));
+    this.sortDate = !this.sortDate;
+  }
+  // ascend by Gender
+  sortAscByGender() {
+    this.lstActor.sort((a, b) => a.Gender.toString().localeCompare(b.Gender.toString()));
+    this.sortGender = !this.sortGender;
+  }
+  sortDesByGender() {
+    this.lstActor.sort((a, b) => b.Gender.toString().localeCompare(a.Gender.toString()));
+    this.sortGender = !this.sortGender;
+  }
+   // ascend by Img
+   sortAscByImg() {
+    this.lstActor.sort((a, b) => a.Img.localeCompare(b.Img));
+    this.sortImg = !this.sortImg;
+  }
+  sortDesByImg() {
+    this.lstActor.sort((a, b) => b.Img.localeCompare(a.Img));
+    this.sortImg = !this.sortImg;
+  }
+  // ascend by Describe
+  sortAscByDescribe() {
+    this.lstActor.sort((a, b) => a.Describe.localeCompare(b.Describe));
+    this.sortDescribe = !this.sortDescribe;
+  }
+  sortDesByDescribe() {
+    this.lstActor.sort((a, b) => b.Describe.localeCompare(a.Describe));
+    this.sortDescribe = !this.sortDescribe;
+  }
+  // ascend by Status
+  sortAscByStatus() {
+    this.lstActor.sort((a, b) => a.Status.toString().localeCompare(b.Status.toString()));
+    this.sortStatus = !this.sortStatus;
+  }
+  sortDesByStatus() {
+    this.lstActor.sort((a, b) => b.Status.toString().localeCompare(a.Status.toString()));
+    this.sortStatus = !this.sortStatus;
+  }
   // -----------------------Lifecycle Hooks------------------------ //
   // tslint:disable-next-line:use-life-cycle-interface
   ngDoCheck() {
@@ -265,6 +329,12 @@ SetDefaultDataBinding() {
 
   ngOnInit() {
     this.getAllActor();
+    this.sortName = false;
+    this.sortDate = false;
+    this.sortGender = false;
+    this.sortImg = false;
+    this.sortStatus = false;
+    this.sortDescribe = false;
   }
 
   // tslint:disable-next-line:use-life-cycle-interface

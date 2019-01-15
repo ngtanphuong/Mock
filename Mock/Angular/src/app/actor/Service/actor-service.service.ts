@@ -66,7 +66,7 @@ export class ActorServiceService {
       'Authorization': 'Bearer ' + myToken
     });
     // log to check paramater
-    console.log(actor);
+    // console.log(actor);
     return this.http.post<Actor>(this.PostActorToAPI, actor, {
       headers: reqHeader
     });
@@ -78,7 +78,7 @@ export class ActorServiceService {
       'Authorization': 'Bearer ' + myToken
     });
     // log check paramater
-    console.log(actor);
+    // console.log(actor);
     return this.http.put<Actor>(`${this.PutActorToAPI}/${id}`, actor, {
       headers: reqHeader
     });
@@ -90,7 +90,7 @@ export class ActorServiceService {
       'Authorization': 'Bearer ' + myToken
     });
     // log check paramater
-    console.log(id);
+    // console.log(id);
     return this.http.get<Actor>(`${this.GetChangeStatusActor}/${id}`, {
       headers: reqHeader
     });

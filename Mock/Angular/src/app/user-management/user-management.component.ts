@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { UserDataService } from 'src/app/user-management/user-data.service';
-import {AddComponent} from 'src/app/user-management/View Modal/add/add.component';
-import { User, UserSetRole } from 'src/app/user-management/user';
-import { DeleteComponent } from 'src/app/user-management/View Modal/delete/delete.component';
-import { EditComponent } from 'src/app/user-management/View Modal/edit/edit.component';
+import { NgbModal, NgbModalOptions  } from '@ng-bootstrap/ng-bootstrap';
+import { UserDataService } from './user-data.service';
+import {AddComponent} from './View Modal/add/add.component';
+import { User } from './user';
+import { DeleteComponent } from './View Modal/delete/delete.component';
+import { EditComponent } from './View Modal/edit/edit.component';
 import { Router  } from '@angular/router';
 
 
@@ -26,8 +26,9 @@ export class UserManagementComponent implements OnInit {
   data;
   code: boolean;
   show: boolean;
-  userSetRole: UserSetRole;
+
   constructor(private modalService: NgbModal, private _data: UserDataService, private _router: Router) {
+
 
     if (this.localToken == null) {
       this._router.navigateByUrl('login');
@@ -48,7 +49,10 @@ export class UserManagementComponent implements OnInit {
 
 
   addModal() {
-    const modalAddRef = this.modalService.open(AddComponent);
+    const options: NgbModalOptions = {
+      centered : true
+    };
+    const modalAddRef = this.modalService.open(AddComponent, options);
     console.log(this.code);
   }
 
@@ -57,6 +61,10 @@ export class UserManagementComponent implements OnInit {
     modalDelRef.componentInstance.userEdit = user;
   }
 
+  // favoriteModal() {
+  //   console.log('123');
+  //   const modalfavoriteRef = this.modalService.open(FavoriteFilmComponent);
+  // }
   ngOnInit() {
 
   }
@@ -65,20 +73,12 @@ export class UserManagementComponent implements OnInit {
     this.lUsers = this._data.SearchUser(this.nameSearch);
   }
 
-  setRole(user: User) {
-    this.userSetRole = new UserSetRole(user.UserID, user.isAdmin);
-    this._data.SetRole(this.userSetRole);
-    console.log(user.UserID, user.isAdmin);
-  }
-
   // tslint:disable-next-line:use-life-cycle-interface
   ngDoCheck() {
     if (this.nameSearch !== null) {
       this.searchlistUser();
       console.log(this.nameSearch);
     }
-
-
   }
   getData() {
   }

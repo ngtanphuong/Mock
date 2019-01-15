@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
-import { HttpClient  } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
 @Injectable({
@@ -11,6 +11,7 @@ export class DataService {
   // port mặc định
   private BasePort = '51215';
   private BaseToken = 'http://localhost:' + this.BasePort + '/api/login/check';
+  // private GetUsername = this.BasePort + 'GetUserByUsername?name=';
 
   private films = new BehaviorSubject<any>([]);
   film = this.films.asObservable();
@@ -29,4 +30,8 @@ export class DataService {
   }
 
 
+  // Get name
+  // getNameUser(username): Observable<any> {
+  //   return this.http.get(this.GetUsername + username);
+  // }
 }

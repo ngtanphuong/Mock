@@ -20,5 +20,7 @@ namespace DataAccess.User
         int DeleteUser(int id);
 
         int setRole(int id, bool admin);
+
+        UserModel GetUserByUsername(string username);
     }
 }

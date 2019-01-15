@@ -8,8 +8,14 @@ import { Routes, RouterModule } from '@angular/router';
 import { DirectorComponent } from './director/director.component';
 import { TypeComponent } from './type/type.component';
 import { UserManagementComponent} from './user-management/user-management.component';
+import { ProfileComponent } from './user-management/profile/profile.component';
+
 
 const routes: Routes = [
+  {
+    path: 'profile',
+    component: ProfileComponent
+  },
   {
     path: 'login',
     component: LoginComponent

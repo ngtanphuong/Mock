@@ -25,9 +25,11 @@ export class TypeComponent implements OnInit {
   idType: number;
   nameType: string;
   index: number;
-  idDelte: number;
   nameTypeValidate: string;
   iconCheck: string;
+
+  idDelte: number;
+  nameSearch: string;
 
   rgxNoSpecialChar = new RegExp('^[\^\;!@#$%^&*\(\\)\\{\\}\\+\\-\_+:|<>?~\\\\/\\[\.,\'\\"\\]\\`\]*$');
   doSubmit: boolean;
@@ -95,7 +97,7 @@ export class TypeComponent implements OnInit {
   getData() {
     this._data.getData(this.localToken).subscribe(res => {
       this.Types = res;
-      // console.log('Danh sách: ' + this.Types);
+       console.log('Danh sách: ' + this.Types);
     });
   }
 
@@ -115,6 +117,17 @@ export class TypeComponent implements OnInit {
     return this._data.getIdData(id, this.localToken);
   }
 
+  // Tìm tên thể loại
+  searchListType() {
+    if (this.nameSearch === '') {
+      this.getData();
+      return;
+    }
+
+    this._data.searchData(this.nameSearch, this.localToken).subscribe(res => {
+      this.Types = res;
+    });
+  }
 
   // Thêm thể loại
   insertType() {
@@ -122,7 +135,7 @@ export class TypeComponent implements OnInit {
       return;
     }
     this.type = this.createType(this.nameType);
-    this._data.postData(this.type, this.localToken).subscribe(res => {
+    this._data.insertData(this.type, this.localToken).subscribe(res => {
       this.getData();
     });
     this.nameType = '';
@@ -157,7 +170,7 @@ export class TypeComponent implements OnInit {
     this.type = this.Types[this.idType];
     this.type.NameType = this.nameType;
     console.log(this.type);
-    this._data.putData(this.type, this.localToken).subscribe(res => {
+    this._data.updateData(this.type, this.localToken).subscribe(res => {
       this.getData();
     });
   }

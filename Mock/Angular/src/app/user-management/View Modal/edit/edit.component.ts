@@ -1,8 +1,8 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import { UserDataService } from 'src/app/user-management/user-data.service';
+import { UserDataService } from '../../user-data.service';
 import { DatePipe } from '@angular/common';
-import { User, FavoriteFilm } from 'src/app/user-management/user';
+import { User, FavoriteFilm } from '../../user';
 @Component({
   selector: 'app-edit',
   templateUrl: './edit.component.html',

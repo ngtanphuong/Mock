@@ -26,6 +26,7 @@ export class DirectorComponent implements OnInit {
   director: Director;
   // List director
   lstDirector: any = [];
+  lstFilmOFDirector: any = [];
 
   // property
   directorID: number;
@@ -50,20 +51,20 @@ export class DirectorComponent implements OnInit {
 
   rgxNoSpecialChar = new RegExp('^[\^\;!@#$%^&*\(\\)\\{\\}\\+\\-\_+:|<>?~\\\\/\\[\.,\'\\"\\]\\`\]*$');
 
-  doSubmit: boolean;
+  doSubmit = true;
 
   // Constructor: get data
   constructor(private http: HttpClient, private _sanitizer: DomSanitizer, public datepipe: DatePipe,
-    private directorService: DataDirectorService, private _router: Router) {
+    private directorService: DataDirectorService, private _router: Router, private subDirectorService: SubDirectorService) {
 
     //  console.log(this.localToken);
-     if (this.localToken == null) {
-       this._router.navigateByUrl('login');
-       console.log('Đạo diễn: token không tồn tại! đăng nhập lại');
-     } else {
-       console.log('Đạo diễn: local token: ' + this.localToken);
-       this.checkToken();
-     }
+    if (this.localToken == null) {
+      this._router.navigateByUrl('login');
+      console.log('Đạo diễn: token không tồn tại! đăng nhập lại');
+    } else {
+      console.log('Đạo diễn: local token: ' + this.localToken);
+      this.checkToken();
+    }
   }
 
 
@@ -81,20 +82,30 @@ export class DirectorComponent implements OnInit {
       this._router.navigateByUrl('login');
       console.log('Đạo diễn: token không tồn tại');
     });
-}
+  }
 
 
   // Get data from API
   getData() {
 
     // Call API and get database
-    this.directorService.getData().subscribe(data => {
+    this.directorService.getData(this.localToken).subscribe(data => {
 
       // set data from database
       this.lstDirector = data;
+
+      console.log(this.lstDirector);
     });
   }
 
+  getListFilmOfDirector() {
+    // Call API and get database
+    this.subDirectorService.GetAllSubDirector(this.localToken).subscribe(data => {
+
+      // set data from database
+      this.lstFilmOFDirector = data;
+    });
+  }
 
   ngOnInit() {
     this.getData();
@@ -106,6 +117,7 @@ export class DirectorComponent implements OnInit {
     // Use it to extend change detection by performing a custom check.
     // Add 'implements DoCheck' to the class.
 
+    this.doSubmit = true;
     this._DirectorNameValidate = '';
     this._DirectorImageValidate = '';
     this._DirectorDescribeValidate = '';
@@ -139,11 +151,22 @@ export class DirectorComponent implements OnInit {
       this.isValidate = false;
     }
 
-    if (!this.isValidate) {
+    // if (this.isValidate === undefined) {
+    //   console.log('NO NO NO NO NO NO !');
+    //   this.doSubmit = true;
+    // }
+
+    // if (!this.isValidate) {
+    //   console.log('DAMMIT !');
+    //   this.doSubmit = false;
+    // }
+
+
+    if (!this.doSubmit) {
       return;
     }
 
-    this.doSubmit = true;
+   // this.doSubmit = true;
   }
 
   // Add new director
@@ -158,20 +181,19 @@ export class DirectorComponent implements OnInit {
       'DirectorStatus': this.directorStatus
     };
 
-    if ( this.directorName === '' || this.directorImg === '' || this.directorDescribe === '') {
-      console.log('YAMETE !');
-      return 'YAMETE !';
-    }
-
     // Call API and add new director to database
-    this.directorService.addDirector(parameter).subscribe(data => {
+    this.directorService.addDirector(parameter, this.localToken).subscribe(data => {
 
       // Reload data on page
       this.getData();
+
+      console.log(data);
+
+      console.log('SUCCESS');
     });
 
     // Reset data on modal
-    this.ResetData();
+    // this.ResetData();
   }
 
   // find director
@@ -207,20 +229,18 @@ export class DirectorComponent implements OnInit {
     this.lstDirector[this.index].DirectorImg = this.directorImg;
     this.lstDirector[this.index].DirectorStatus = this.directorStatus;
 
+
     // Call API and edit director form database
-    this.directorService.findEditDirector(this.lstDirector[this.index]).subscribe(data => {
+    this.directorService.findEditDirector(this.lstDirector[this.index], this.localToken).subscribe(data => {
       // Reload data on page
       this.getData();
     });
-
-    // Reset data on modal
-    this.ResetData();
   }
 
   // Update status director
   updateStatusDirector(i: number) {
     // Call API and update director gender form database
-    this.directorService.updateStatusDirector(i).subscribe(data => {
+    this.directorService.updateStatusDirector(i, this.localToken).subscribe(data => {
       // Reload data on page
       this.getData();
     });
@@ -229,12 +249,26 @@ export class DirectorComponent implements OnInit {
   // Delete director
   removeDirector() {
 
-   // Call API and delete director form database
-    this.directorService.removeDirector(this.idDirectorDelete).subscribe(data => {
-    // Reload data on page
+    // Call API and delete director form database
+    this.directorService.removeDirector(this.idDirectorDelete, this.localToken).subscribe(data => {
+      // Reload data on page
       this.getData();
     });
   }
+
+
+  getListFilmOfFilmByIDDirector(i: number) {
+    // Call API and get list film from sub-director
+    this.subDirectorService.GetListFilmOfFilmByIDDirector(i, this.localToken).subscribe(data => {
+      this.lstFilmOFDirector = data;
+    });
+  }
+
+  getInformationOfFilmID(i: number) {
+    // Call API and get information of film
+  }
+
+
 
   // get data image and set text to input tag via ID attribute
   getImageDataAndName(event: any, id: string) {

@@ -44,9 +44,9 @@
         <div class="input-group">
          
           <input type="text" class="form-control" id="searchBar" placeholder="Search by name ............."  [(ngModel)]="nameSearch" (change)="searchlistUser()">
-          <div class="input-group-prepend">
+          <!-- <div class="input-group-prepend">
             <span class="input-group-text" (click)="searchlistUser()"><i class="fab fa-searchengin"></i></span>
-          </div>
+          </div> -->
         </div>
       </div>
     </div>
@@ -96,7 +96,7 @@
               <td class="hidetext">******</td>
               <td>
                   <label class="switch">
-                      <input type="checkbox" [checked]=user.Role (click)="setRole(user)">
+                      <input type="checkbox" [checked]=user.Role>
                       <span class="slider round"></span>
                     </label>
               </td>

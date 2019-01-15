@@ -195,6 +195,76 @@ namespace APIAplication.Controllers
             return false;
         }
 
+
+        //PhatLA update code
+        [HttpGet]
+        [Route("api/director/GetAllListDirectorByFilmID/{id}")]
+        public IHttpActionResult GetAllListDirectorByFilmID(int id)
+        {
+            DirectorService serviceType = new DirectorService();
+            var select = serviceType.GetAllListDirectorByFilmID(id);
+
+            if (select != null)
+            {
+                return Ok(select);
+            }
+            else
+            {
+                return BadRequest("Không tìm thấy đạo diễn phim");
+            }
+        }
+
+        [HttpGet]
+        [Route("api/director/GetAllListDirectorNotInFilmByFilmID/{id}")]
+        public IHttpActionResult GetAllListDirectorNotInFilmByFilmID(int id)
+        {
+            DirectorService serviceType = new DirectorService();
+            var select = serviceType.GetAllListDirectorNotInFilmByFilmID(id);
+
+            if (select != null)
+            {
+                return Ok(select);
+            }
+            else
+            {
+                return BadRequest("Không tìm thấy đạo diễn phim");
+            }
+        }
+
+        [HttpPost]
+        [Route("api/director/AddNewDirectorForFilm/")]
+        public IHttpActionResult AddNewDirectorForFilm(AddDirectorFilm model)
+        {
+            DirectorService serviceType = new DirectorService();
+            var add = serviceType.AddDirectorForFilm(model.FilmID, model.DirectorID);
+
+            if (add >= 1)
+            {
+                return Ok(model);
+            }
+            else
+            {
+                return BadRequest("Thêm director thất bại");
+            }
+        }
+
+        [HttpPost]
+        [Route("api/director/RemoveDirectorForFilm/")]
+        public IHttpActionResult RemoveDirectorForFilm(AddDirectorFilm model)
+        {
+            DirectorService serviceType = new DirectorService();
+            var add = serviceType.RemoveDirectorForFilm(model.FilmID, model.DirectorID);
+
+            if (add >= 1)
+            {
+                return Ok(model);
+            }
+            else
+            {
+                return BadRequest("Xóa director thất bại");
+            }
+        }
+
         /// <summary>
         /// Update status director by ID
         /// </summary>
@@ -221,5 +291,11 @@ namespace APIAplication.Controllers
                     return BadRequest("Chỉnh sửa đạo diễn thất bại !");
                 }
         }
+    }
+
+    public class AddDirectorFilm
+    {
+        public int FilmID { get; set; }
+        public int DirectorID { get; set; }
     }
 }

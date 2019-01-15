@@ -1,10 +1,10 @@
 
 import { Component, OnInit } from '@angular/core';
-import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import { User } from 'src/app/user-management/user';
-import { UserDataService } from 'src/app/user-management/user-data.service';
+import { NgbActiveModal, NgbModalOptions } from '@ng-bootstrap/ng-bootstrap';
+import { User } from '../../user';
+import { UserDataService } from '../../user-data.service';
 import { DatePipe } from '@angular/common';
-import { FavoriteFilm } from 'src/app/user-management/user';
+
 
 
 
@@ -32,6 +32,7 @@ export class AddComponent implements OnInit {
   exist: boolean;
   constructor(public activeModal: NgbActiveModal, private _data: UserDataService, private datepipe: DatePipe) {
     this.userNameExist = this._data.userNameExist;
+
   }
   ngOnInit() {
 

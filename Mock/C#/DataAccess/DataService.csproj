@@ -59,6 +59,8 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SubActor\ISubActor.cs" />
     <Compile Include="SubActor\SubActorService.cs" />
+    <Compile Include="SubDirector\ISubDirector.cs" />
+    <Compile Include="SubDirector\SubDirectorService.cs" />
     <Compile Include="Types\InterfaceType.cs" />
     <Compile Include="Types\ServiceType.cs" />
     <Compile Include="User\IUserServices.cs" />

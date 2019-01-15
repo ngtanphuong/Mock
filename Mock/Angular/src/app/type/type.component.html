@@ -1,13 +1,14 @@
 <div class="container">
     <div class="row col-sm-12">
         <div class="col-sm-6">
-            <button class="btn btn-info" data-toggle="modal" data-target="#exampleModalAdd" style="margin: 0 0 15px -15px"
+            <button class="btn btn-success" data-toggle="modal" data-target="#exampleModalAdd" style="margin: 0 0 15px -15px"
                 (click)="init()">
-                Thêm thể loại
+                <i class="material-icons">playlist_add</i>thể loại
             </button>
         </div>
         <div class="col-sm-6 pull-right">
-            <input type="text" style="margin-left: 40px" class="form-control" placeholder="Search" (keyup)="getId(idType)">
+            <input type="text" style="margin-left: 40px" class="form-control" placeholder="Search" [(ngModel)]="nameSearch"
+                (keyup)="searchListType()">
         </div>
     </div>
     <table id="customers">
@@ -23,12 +24,11 @@
                 <td>{{type.TypeID}}</td>
                 <td>{{type.NameType}}</td>
                 <td>
-
-                    <button class="btn btn-info" data-toggle="modal" data-target="#exampleModalEdit" (click)="showType(i,p)"><i
+                    <button class="btn btn-success" data-toggle="modal" data-target="#exampleModalEdit" (click)="showType(i,p)"><i
                             class="fas fa-pencil-alt"></i>
                         <div class="ripple-container"></div>
                     </button>
-                    <button class="btn btn-info" data-toggle="modal" (click)="getIdDelete(type)" data-target="#exampleModalRemove">
+                    <button class="btn btn-danger" data-toggle="modal" (click)="getIdDelete(type)" data-target="#exampleModalRemove">
                         <i class="fa fa-trash"></i>
                     </button>
                     <button class="btn btn-info" (click)="filmByType(type)">
@@ -38,7 +38,9 @@
             </tr>
         </tbody>
     </table>
-    <pagination-controls (pageChange)="p = $event"></pagination-controls>
+    <div class="row col-sm-12"  style="margin-top: 20px;">          
+        <pagination-controls (pageChange)="p = $event"></pagination-controls>
+    </div>
 </div>
 
 
@@ -59,7 +61,8 @@
                 </p>
                 <div class="row">
                     <div style="text-align: center; width: 500px;">
-                        <button type="button" class="btn btn-success" data-dismiss="modal" (click)="removeType()"><i class="fas fa-check"></i></button>
+                        <button type="button" class="btn btn-success" data-dismiss="modal" (click)="removeType()"><i
+                                class="fas fa-check"></i></button>
                         <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fas fa-times"></i></button>
                     </div>
                 </div>
@@ -86,7 +89,8 @@
                         <!-- nhập tên thể loại -->
                         <input type="text" class="form-control" placeholder="Tên thể loại ..." [(ngModel)]="nameType">
                         <label *ngIf="nameTypeValidate != ''"><span style="color: crimson;">
-                                {{nameTypeValidate}}<i class="fas fa-exclamation-circle"></i></span></label>
+                                {{nameTypeValidate}}<i class="fas fa-exclamation-circle"></i></span>
+                        </label>
                     </div>
                 </div>
                 <div class="modal-footer">

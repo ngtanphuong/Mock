@@ -11,10 +11,10 @@ export class User {
     acAccessToken: string;
     AccessDate: any;
     Status: boolean;
-    FavoriteFilm = new Array<FavoriteFilm>();
+    filmModel = new Array<FavoriteFilm>();
 
     constructor (userID: number, name: string, gender: boolean, date: any, email: string,
-        phone: string, role: boolean, userName: string, password: string, status: boolean, favoriteFilm: Array<FavoriteFilm>) {
+        phone: string, role: boolean, userName: string, password: string, status: boolean, filmModel: Array<FavoriteFilm>) {
         this.UserID = userID;
         this.Name = name;
         this.UserName = userName;
@@ -27,8 +27,11 @@ export class User {
         this.acAccessToken = '123';
         this.AccessDate = '1996-12-15';
         this.Status = status;
-        this.FavoriteFilm = favoriteFilm;
+        this.filmModel = filmModel;
     }
+    public static getDefault(): User {
+        return new User(1, '123', null, null, '', '', null, '', '', null, []);
+      }
 
 }
 
@@ -43,17 +46,22 @@ export class UserDelete {
 export class FavoriteFilm {
     FilmId: number;
     FilmName: string;
-    constructor(filmId: number, filmName: string) {
+    Img: string;
+    Describe: string;
+    Rate: number;
+    Year: any;
+    Status: boolean;
+    TypeFilms = null;
+    Actors = null;
+    Directors = null;
+
+    constructor(filmId: number, filmName: string, img: string, describe: string, rate: number, year: any, status: boolean) {
         this.FilmId = filmId;
         this.FilmName = filmName;
-    }
-}
-
-export class UserSetRole {
-    UserID: number;
-    Admin: boolean;
-    constructor(userID: number, admin: boolean) {
-        this.Admin = admin;
-        this.UserID = userID;
+        this.Img = img;
+        this.Rate = rate;
+        this.Status = status;
+        this.Year = year;
+        this.Describe = describe;
     }
 }

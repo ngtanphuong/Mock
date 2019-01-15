@@ -129,5 +129,22 @@ namespace APIAplication.Controllers
             }
         }
 
+
+        // api/getuserbyusername/?username=:username
+        [HttpGet]
+        public IHttpActionResult GetUserByUsername(string username)
+        {
+            try
+            {
+                var result = userServices.GetUserByUsername(username);
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+
+                return Content(HttpStatusCode.BadRequest, ex);
+            }
+        }
+
     }
 }

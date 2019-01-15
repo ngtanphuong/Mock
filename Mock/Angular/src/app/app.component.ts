@@ -1,6 +1,8 @@
 import { DataService } from './data.service';
 import { Component } from '@angular/core';
 import { Router  } from '@angular/router';
+import { UserDataService } from './user-management/user-data.service';
+
 
 @Component({
   selector: 'app-root',
@@ -10,12 +12,15 @@ import { Router  } from '@angular/router';
 export class AppComponent {
   title = 'Film Management';
 
+  username: string;
   public isLogin: boolean;
   localToken: any;
+  currentName: string;
 
-  constructor(private router: Router, private _data: DataService) {
+  constructor(private router: Router, private _data: DataService, private _UserDataService: UserDataService) {
     this.localToken = localStorage.getItem('My-Token');
 
+    this._UserDataService.currentName.subscribe(res => this.currentName = res);
     if (this.localToken != null) {
       this.checkToken();
     } else {
@@ -28,7 +33,6 @@ export class AppComponent {
 
   }
 
-
   checkToken() {
     const params = {
       'Token': this.localToken
@@ -38,6 +42,7 @@ export class AppComponent {
       this.isLogin = true;
     }, Error => {
       localStorage.removeItem('My-Token');
+      localStorage.removeItem('My-username');
       this.isLogin = false;
     });
 }
@@ -45,8 +50,13 @@ export class AppComponent {
   Logout() {
     this.isLogin = false;
     localStorage.removeItem('My-Token');
-    localStorage.clear();
+    localStorage.removeItem('My-username');
+    this.currentName = '';
+
     this.router.navigateByUrl('login');
   }
 }
+
+
+
 

@@ -1,6 +1,6 @@
-<div id="content">
+<div class="content">
 
-  <div id="right-content">
+  <div id="container">
 
     <div id="director-control">
       <nav aria-label="breadcrumb" role="navigation">
@@ -18,18 +18,18 @@
     </div>
 
     <!-- List directors -->
-    <div id="director-list">
+    <div id="director">
       <div id="header-table"></div>
       <div id="item-table">
         <div class="float-right col-lg-12">
-          <table id="director" class="table-bordered table-sm">
+          <table class="table-bordered table-sm">
             <thead>
               <tr class="text-center bgBlue">
                 <th width="2%"> ID </th>
                 <th> Tên đạo diễn </th>
                 <th> Giới tính</th>
                 <th> Năm sinh</th>
-                <th> Hình ảnh</th>
+                <th width="25%"> Hình ảnh</th>
                 <th> Trạng thái </th>
                 <th> Mô tả </th>
                 <th width="8%"> Tuỳ chỉnh </th>
@@ -39,6 +39,7 @@
             <!-- information of director -->
             <tbody>
               <tr class="text-center" *ngFor="let item of lstDirector | paginate: { itemsPerPage: 6, currentPage: p }; let i = index">
+
                 <td>{{ item.DirectorID }}</td>
                 <td>{{ item.DirectorName }}</td>
 
@@ -50,16 +51,17 @@
                 </ng-template>
 
                 <td>{{item.DirectorBirthday | date:'dd-MM-yyyy'}}</td>
-                <td style="width:400px"><img src="{{ item.DirectorImg }}" alt="Không có hình ảnh để hiển thị."></td>
+                <td><img src="{{ item.DirectorImg }}" width="150em" height="100em" alt="Không có hình ảnh để hiển thị."></td>
 
                 <td *ngIf="item.DirectorStatus; else An">
 
-                  <label style="padding: 3px; border: 3px solid rgb(175, 170, 170); background-color: rgb(145, 240, 145);" (click)="updateStatusDirector(item.DirectorID)"> Hiện
-                  </label>
+                  <label style="color: red ;padding: 3px; border: 3px solid rgb(175, 170, 170); background-color: rgb(145, 240, 145);"
+                    (click)="updateStatusDirector(item.DirectorID)"> Hiện </label>
                 </td>
                 <ng-template #An>
                   <td>
-                    <label style="padding: 3px; border: 3px solid; background-color: rgb(175, 170, 170);" (click)="updateStatusDirector(item.DirectorID)"> Ẩn
+                    <label style="padding: 3px; border: 3px solid black; background-color: rgb(126, 68, 68);" (click)="updateStatusDirector(item.DirectorID)">
+                      Ẩn
                     </label>
                   </td>
                 </ng-template>
@@ -68,14 +70,20 @@
 
                 <td style="text-align:center">
                   <!-- Buttons modified-->
-                  <ul>
+                  <ul style="margin-left: -40px;">
                     <!-- Delete director -->
-                    <button class="btn btn-primary btn-round" data-toggle="modal" data-target="#DeleteDirector" (click)="findDirectorDelete(item.DirectorID)">Xóa</button>
+                    <button class="btn btn-primary btn-round" data-toggle="modal" data-target="#DeleteDirector" (click)="findDirectorDelete(item.DirectorID)">
+                      <i class="far fa-trash-alt"></i>
+                    </button>
+                    <!-- Edit director -->
                     <button class="btn btn-primary btn-round" data-toggle="modal" data-target=".bd-example-modal-lg-pl"
-                      (click)="findEditDirector(item.DirectorID)"> Chỉnh sửa </button>
+                      (click)="findEditDirector(item.DirectorID)"> <i class="fas fa-edit"></i> </button>
+                    <!-- list film of director -->
+                    <button class="btn btn-primary btn-round" data-toggle="modal" data-target="#ListFilmOfDirector"
+                      (click)="getListFilmOfFilmByIDDirector(item.DirectorID)"> <i class="far fa-list-alt"></i>
+                    </button>
                   </ul>
                 </td>
-
               </tr>
 
             </tbody>
@@ -89,13 +97,13 @@
       </div>
     </div>
   </div>
+
+  
 </div>
 
 
 
-
 <!-- Add director modal -->
-
 <div class="modal fade" id="directorModalLong" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle"
   aria-hidden="true">
   <div class="modal-dialog" role="document">
@@ -168,22 +176,35 @@
 
       </div>
 
-      <!-- buttons modified -->
       <div class="modal-footer">
+        <!-- Button save and refresh -->
+        <div class="form-group">
+          <button type="reset" class="btn btn-success btn-sm float-right" *ngIf="doSubmit; else Cancel" (click)="addDirector()"
+            data-dismiss="modal"> Lưu <div class="ripple-container"></div></button>
+
+          <ng-template #Cancel>
+            <button type="reset" class="btn btn-danger btn-sm float-right"> Hãy nhập dữ liệu <div class="ripple-container"></div></button>
+          </ng-template>
+
+          <button type="reset" class="btn btn-danger btn-sm" data-dismiss="modal"> Đóng <div class="ripple-container"></div></button>
+        </div>
+      </div>
+
+      <!-- buttons modified -->
+      <!-- <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
         <button type="button" class="btn btn-primary" data-dismiss="modal" (click)="addDirector()">Save
           changes</button>
-      </div>
+      </div> -->
+
+
     </div>
   </div>
 </div>
 
 
-
-
 <!-- Edit director modal-->
-
-<div class="modal fade bd-example-modal-lg-pl" tabindex="-1" role="dialog" aria-labelledby="myEditFilmModel"
+<div class="modal fade bd-example-modal-lg-pl" tabindex="-1" role="dialog" aria-labelledby="myEditDirectorModel"
   aria-hidden="true">
   <div class="modal-dialog modal-lg">
     <div class="modal-content">
@@ -257,9 +278,14 @@
       </div>
       <!-- Button save and refresh -->
       <div class="form-group">
-        <button type="reset" class="btn btn-danger btn-sm">Làm Mới<div class="ripple-container"></div></button>
-        <button type="reset" class="btn btn-success btn-sm float-right" data-dismiss="modal" (click)="editDirector()">Chỉnh
-          Sửa<div class="ripple-container"></div></button>
+        <button type="reset" class="btn btn-success btn-sm float-right" *ngIf="doSubmit; else TAME" (click)="editDirector()"
+          data-dismiss="modal">Chỉnh Sửa<div class="ripple-container"></div></button>
+
+        <ng-template #TAME>
+          <button type="reset" class="btn btn-danger btn-sm float-right"> Hãy nhập dữ liệu <div class="ripple-container"></div></button>
+        </ng-template>
+
+        <button type="reset" class="btn btn-danger btn-sm" data-dismiss="modal"> Hủy <div class="ripple-container"></div></button>
       </div>
 
     </div>
@@ -267,11 +293,9 @@
 </div>
 
 
-
-
 <!-- Delete modal -->
-
-<div class="modal fade" id="DeleteDirector" tabindex="-1" role="dialog" aria-labelledby="myEditFilmModel" aria-hidden="true">
+<div class="modal fade" id="DeleteDirector" tabindex="-1" role="dialog" aria-labelledby="myDeleteDirectorModel"
+  aria-hidden="true">
   <div class="modal-dialog modal-lg">
     <div class="modal-content">
       <div class="modal-header">
@@ -288,11 +312,63 @@
           </p>
         </form>
       </div>
-      <div class="modal-footer">
-        <button type="reset" class="btn btn-success btn-sm" data-dismiss="modal">Cancel
-          <div class="ripple-container"></div></button>
-        <button type="reset" class="btn btn-danger btn-sm float-right" data-dismiss="modal" (click)="removeDirector()">
-          OK <div class="ripple-container"></div></button>
+      <!-- Button save -->
+      <div class="form-group">
+        <button type="reset" class="btn btn-danger btn-sm" data-dismiss="modal">Không<div class="ripple-container"></div></button>
+        <button type="reset" class="btn btn-success btn-sm float-right" data-dismiss="modal" (click)="removeDirector()">
+          Có <div class="ripple-container"></div></button>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+
+<!-- List film of director -->
+<div class="modal fade" id="ListFilmOfDirector" tabindex="-1" role="dialog" aria-labelledby="myEditFilmModel"
+  aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="align-center"> Danh sách phim của đạo diễn </h4>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+
+        <table class="table-bordered table-sm">
+          <thead>
+            <tr class="text-center bgBlue">
+              <th width="2%"> ID </th>
+              <th> Tên phim </th>
+              <th> Hình ảnh </th>
+              <th> Đánh giá </th>
+              <th> Năm sản xuất </th>
+              <th> Mô tả phim </th>
+
+            </tr>
+          </thead>
+
+          <!-- information of director -->
+          <tbody>
+            <tr class="text-center" *ngFor="let film of lstFilmOFDirector | paginate: { itemsPerPage: 6, currentPage: p }; let i = index">
+              <td>{{ film.FilmID }}</td>
+              <td>{{ film.FilmName }}</td>
+              <td><img src="{{ film.Img }}" height="290px" width="290px" alt="Không có hình ảnh để hiển thị."></td>
+              <td>{{ film.Rate }}</td>
+              <td>{{ film.Year | date:'dd-MM-yyyy' }}</td>
+              <td>{{ film.Describe }}</td>
+            </tr>
+
+          </tbody>
+        </table>
+
+        <!-- paging -->
+        <div class="pagination pull-right">
+          <pagination-controls (pageChange)="p = $event"></pagination-controls>
+        </div>
+
       </div>
     </div>
   </div>

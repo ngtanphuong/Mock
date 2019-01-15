@@ -20,25 +20,25 @@ namespace DataObject.EF
 
         [MaxLength(20)]
         [Required(ErrorMessage = "Không được bỏ trống")]
-        [RegularExpression("[^!@#$%^&*()_+:|<>?~`]{5,20}$", ErrorMessage = "Không chấp nhận ký tự đặc biệt, và dài từ 5-20 kí tự")]
+        [RegularExpression("[^!@#$%^&*()_+:|<>?~`]{3,20}$", ErrorMessage = "Không chấp nhận ký tự đặc biệt, và dài từ 3-20 kí tự")]
         public string UserName { get; set; }
 
         [MaxLength(20)]
         [Required(ErrorMessage = "Không được bỏ trống")]
-        [RegularExpression("[^!@#$%^&*()_+:|<>?~`]{5,20}$", ErrorMessage = "Không chấp nhận ký tự đặc biệt, và dài từ 5-20 kí tự")]
+        [RegularExpression("[^!@#$%^&*()_+:|<>?~`]{3,20}$", ErrorMessage = "Không chấp nhận ký tự đặc biệt, và dài từ 3-20 kí tự")]
         public string Password { get; set; }
 
         public bool Gender { get; set; }
 
         public DateTime Birthday { get; set; }
 
+        [MaxLength(30)]
         public string Email { get; set; }
 
         [MaxLength(15)]
         public string Phone { get; set; }
         
         public bool isAdmin { get; set; }
-
 
         public bool status { get; set; }
 

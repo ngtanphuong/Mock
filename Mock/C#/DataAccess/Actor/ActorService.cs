@@ -29,7 +29,7 @@ namespace DataService.Actor
         {
             using (ctx = new FilmDataContext())
             {
-                if(actor == null)
+                if (actor == null)
                 {
                     return -1;
                 }
@@ -188,5 +188,94 @@ namespace DataService.Actor
             return -1;
         }
         #endregion
+
+        //PhatLA update code
+
+        /// <summary>
+        /// Lấy actor phim cua phim đang tìm
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public List<ActorModel> GetAllListActorByFilmID(int id)
+        {
+            using (ctx = new FilmDataContext())
+            {
+                return (from actors in ctx.Actors
+                        where (from sub in ctx.SubActors where sub.FilmID == id select sub.ActorID).Contains(actors.ActorID)
+                        select new ActorModel
+                        {
+                            ActorID = actors.ActorID,
+                            ActorName = actors.ActorName,
+                            Birthday = actors.Birthday,
+                            Describe = actors.Describe,
+                            Gender = actors.Gender,
+                            Img = actors.Img,
+                            Status = actors.Status
+                        }).ToList();
+            }
+        }
+
+        /// <summary>
+        /// Lấy những actor không thuộc phim đang tìm
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public List<ActorModel> GetAllListActorNotInFilmByFilmID(int id)
+        {
+            using (ctx = new FilmDataContext())
+            {
+                return (from actors in ctx.Actors
+                        where !(from sub in ctx.SubActors where sub.FilmID == id select sub.ActorID).Contains(actors.ActorID)
+                        select new ActorModel
+                        {
+                            ActorID = actors.ActorID,
+                            ActorName = actors.ActorName,
+                            Birthday = actors.Birthday,
+                            Describe = actors.Describe,
+                            Gender = actors.Gender,
+                            Img = actors.Img,
+                            Status = actors.Status
+                        }).ToList();
+            }
+        }
+
+        /// <summary>
+        /// Thêm mới actor
+        /// </summary>
+        /// <param name="filmID"></param>
+        /// <param name="typeID"></param>
+        /// <returns></returns>
+        public int AddActorForFilm(int filmID, int actorID)
+        {
+            using (ctx = new FilmDataContext())
+            {
+                SubActor sub = new SubActor()
+                {
+                    FilmID = filmID,
+                    ActorID = actorID
+                };
+
+                ctx.SubActors.Add(sub);
+
+                return ctx.SaveChanges();
+            }
+        }
+
+        /// <summary>
+        /// Xóa actor
+        /// </summary>
+        /// <param name="filmID"></param>
+        /// <param name="typeID"></param>
+        /// <returns></returns>
+        public int RemoveActorForFilm(int filmID, int actorID)
+        {
+            using (ctx = new FilmDataContext())
+            {
+                var sub = ctx.SubActors.Where(s => s.FilmID == filmID && s.ActorID == actorID).FirstOrDefault();
+                ctx.SubActors.Remove(sub);
+
+                return ctx.SaveChanges();
+            }
+        }
     }
 }
